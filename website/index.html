@@ -60,9 +60,10 @@
             "@type": "Organization",
             "@id": "https://sikalens.app/#org",
             "name": "Celestial Web Solutions",
-            "url": "https://sikalens.app/",
+            "url": "https://www.celestialwebsolutions.net/",
             "email": "support@sikalens.app",
-            "logo": "https://sikalens.app/og-image.png"
+            "logo": "https://sikalens.app/og-image.png",
+            "sameAs": ["https://www.celestialwebsolutions.net/"]
           },
           {
             "@type": "WebSite",
@@ -86,7 +87,15 @@
             "publisher": { "@id": "https://sikalens.app/#org" },
             "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
             "downloadUrl": ["https://play.google.com/store/apps/details?id=com.sikalens.app"],
-            "installUrl": "https://play.google.com/store/apps/details?id=com.sikalens.app"
+            "installUrl": "https://play.google.com/store/apps/details?id=com.sikalens.app",
+            "featureList": [
+              "Paste MoMo SMS from MTN, Telecel, AirtelTigo",
+              "Multi-wallet balances for MoMo, bank, and cash",
+              "Budgets and monthly insights",
+              "PIN and biometric lock",
+              "Encrypted backups and CSV or PDF export",
+              "Offline-first ledger on device"
+            ]
           }
         ]
       }
@@ -102,9 +111,9 @@
       </a>
       <nav aria-label="Primary">
         <a href="#download">Download</a>
-        <a href="#how">How it works</a>
+        <a href="#features">Features</a>
         <a href="/privacy">Privacy</a>
-        <a href="mailto:support@sikalens.app">Support</a>
+        <a href="https://www.celestialwebsolutions.net/" rel="noopener noreferrer">Celestial</a>
       </nav>
     </header>
 
@@ -168,15 +177,139 @@
         </div>
 
         <div class="hero-visual reveal delay-1" aria-hidden="true">
-          <img
-            class="hero-photo"
-            src="https://images.unsplash.com/photo-1763729948735-df50fc3540df?auto=format&amp;fit=crop&amp;w=1400&amp;q=80"
-            width="1400"
-            height="900"
-            alt=""
-          />
+          <div class="phone phone-hero">
+            <div class="phone-notch"></div>
+            <div class="phone-screen mock-home">
+              <p class="mock-hello">Good evening</p>
+              <p class="mock-brand">SikaLens</p>
+              <div class="mock-balance">
+                <span>Total balance</span>
+                <strong>GH₵ ••••</strong>
+              </div>
+              <div class="mock-row">
+                <span>Received</span>
+                <em class="in">+ GH₵ •••</em>
+              </div>
+              <div class="mock-row">
+                <span>Expenses</span>
+                <em class="out">− GH₵ •••</em>
+              </div>
+              <div class="mock-chips">
+                <span>Paste SMS</span>
+                <span>Wallets</span>
+                <span>Insights</span>
+              </div>
+            </div>
+          </div>
           <img class="hero-cedi" src="/cedi-200-bubble.png" width="280" height="280" alt="" />
         </div>
+      </section>
+
+      <section id="what" class="band reveal">
+        <p class="section-kicker">What it does</p>
+        <h2 class="section-title">A private ledger for Ghana MoMo and banks</h2>
+        <p class="section-lead">
+          SikaLens helps you understand spends and balances on your phone. Demo screens below use masked sample data —
+          no real names, numbers, or SMS text from anyone’s account.
+        </p>
+      </section>
+
+      <section id="features" class="features reveal" aria-label="Features with mockups">
+        <article class="feature">
+          <div class="feature-copy">
+            <h3>Paste MoMo SMS</h3>
+            <p>
+              Drop in an MTN, Telecel, or AirtelTigo message. SikaLens reads amount, fee, and direction so you can save
+              the entry without retyping.
+            </p>
+            <ul class="ticks">
+              <li>Works offline after install</li>
+              <li>Review fields before you save</li>
+              <li>Duplicate transaction IDs are ignored</li>
+            </ul>
+          </div>
+          <div class="phone" aria-hidden="true">
+            <div class="phone-notch"></div>
+            <div class="phone-screen mock-sms">
+              <p class="mock-title">Import SMS</p>
+              <div class="mock-sms-box">
+                Payment of GHS *** to Merchant. Fee GHS *. Current Balance: GHS ****. Ref: TX••••
+              </div>
+              <div class="mock-fields">
+                <span>Amount · masked</span>
+                <span>Category · Food</span>
+                <span>Wallet · MoMo</span>
+              </div>
+              <div class="mock-cta">Save entry</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="feature feature-flip">
+          <div class="feature-copy">
+            <h3>Wallets that stay in sync</h3>
+            <p>
+              Set an opening balance for MoMo, bank, or cash. Every send, receive, and cash-out updates the book —
+              balances do not reset when you add a transaction.
+            </p>
+            <ul class="ticks">
+              <li>Hide totals with one tap</li>
+              <li>Multiple wallets side by side</li>
+              <li>Bank and cash books included</li>
+            </ul>
+          </div>
+          <div class="phone" aria-hidden="true">
+            <div class="phone-notch"></div>
+            <div class="phone-screen mock-wallets">
+              <p class="mock-title">My wallets</p>
+              <div class="mock-wallet">
+                <span>MoMo</span>
+                <strong>GH₵ ••••</strong>
+              </div>
+              <div class="mock-wallet">
+                <span>Bank</span>
+                <strong>GH₵ ••••</strong>
+              </div>
+              <div class="mock-wallet">
+                <span>Cash</span>
+                <strong>GH₵ •••</strong>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="feature">
+          <div class="feature-copy">
+            <h3>Budgets &amp; insights</h3>
+            <p>
+              Set category limits, page by month, and see where money went — graphs stay on device with your ledger.
+            </p>
+            <ul class="ticks">
+              <li>Monthly received vs expenses</li>
+              <li>Category breakdown</li>
+              <li>Optional Premium themes</li>
+            </ul>
+          </div>
+          <div class="phone" aria-hidden="true">
+            <div class="phone-notch"></div>
+            <div class="phone-screen mock-insights">
+              <p class="mock-title">Insights</p>
+              <div class="mock-bars" aria-hidden="true">
+                <i style="--h: 42%"></i>
+                <i style="--h: 68%"></i>
+                <i style="--h: 35%"></i>
+                <i style="--h: 80%"></i>
+                <i style="--h: 55%"></i>
+                <i style="--h: 48%"></i>
+              </div>
+              <div class="mock-cat">
+                <span>Food</span>
+                <span>Transport</span>
+                <span>Airtime</span>
+              </div>
+            </div>
+          </div>
+        </article>
       </section>
 
       <section id="how" class="band reveal">
@@ -186,50 +319,77 @@
           <li>
             <span class="step-num">01</span>
             <h3>Paste a MoMo SMS</h3>
-            <p>MTN, Telecel, or AirtelTigo — SikaLens reads the amount, party, and fee.</p>
+            <p>Review the parsed fields, pick a category, save. No account signup.</p>
           </li>
           <li>
             <span class="step-num">02</span>
             <h3>Watch the wallets</h3>
-            <p>Opening balances plus every send, receive, and cash-out keep GH₵ totals true.</p>
+            <p>Opening balances plus every movement keep GH₵ totals true.</p>
           </li>
           <li>
             <span class="step-num">03</span>
-            <h3>Stay private</h3>
-            <p>PIN or biometrics lock the app. Encrypted backups leave only when you share them.</p>
+            <h3>Lock &amp; export</h3>
+            <p>PIN or biometrics. Encrypted backups and CSV/PDF when you choose to share.</p>
           </li>
         </ol>
       </section>
 
-      <section class="split reveal">
-        <div class="split-copy">
-          <p class="section-kicker">Built for Ghana</p>
-          <h2 class="section-title">MoMo networks and bank books, one lens.</h2>
-          <p class="section-lead">
-            Track MTN MoMo, Telecel Cash, AirtelTigo Money, and your bank or cash wallets side by side — with budgets,
-            insights, and exports when you need them.
-          </p>
-          <ul class="ticks">
-            <li>Offline SQLite — nothing uploaded to our servers</li>
-            <li>CSV and PDF exports without raw SMS text</li>
-            <li>Currency converter for travel and remittances</li>
-          </ul>
+      <section class="feature-grid reveal" aria-label="More features">
+        <h2 class="section-title">Everything that ships with SikaLens</h2>
+        <div class="grid-tiles">
+          <div>
+            <h3>PIN &amp; biometrics</h3>
+            <p>Lock the app when you leave. Optional fingerprint or Face ID unlock.</p>
+          </div>
+          <div>
+            <h3>Encrypted backups</h3>
+            <p>Passphrase-protected files you create and share yourself. PIN never leaves the phone.</p>
+          </div>
+          <div>
+            <h3>CSV &amp; PDF export</h3>
+            <p>Share a month or everything. Raw MoMo SMS text is omitted from CSV.</p>
+          </div>
+          <div>
+            <h3>Currency converter</h3>
+            <p>Check rates when you need them — the ledger itself stays offline-first.</p>
+          </div>
+          <div>
+            <h3>Activity history</h3>
+            <p>Browse, edit, and delete entries. Categories remember who you pay.</p>
+          </div>
+          <div>
+            <h3>No cloud account</h3>
+            <p>Nothing is uploaded to SikaLens servers. Your ledger lives in on-device storage.</p>
+          </div>
         </div>
-        <figure class="split-media">
-          <img src="/icon.png" width="512" height="512" alt="SikaLens app icon with cedi lens mark" />
-        </figure>
       </section>
 
       <section class="trust reveal">
         <h2 class="section-title">Your money stays on your device</h2>
         <p class="section-lead">
-          SikaLens does not create an account. Privacy and terms are published for the stores — read them anytime.
+          SikaLens does not create an account. Mockups on this page are illustrative only and hide amounts on purpose.
         </p>
         <div class="trust-links">
           <a class="text-link" href="/privacy">Privacy policy</a>
           <a class="text-link" href="/terms">Terms of use</a>
           <a class="text-link" href="mailto:support@sikalens.app">support@sikalens.app</a>
+          <a class="text-link" href="https://www.celestialwebsolutions.net/" rel="noopener noreferrer"
+            >celestialwebsolutions.net</a
+          >
         </div>
+      </section>
+
+      <section class="publisher reveal">
+        <p class="section-kicker">Publisher</p>
+        <h2 class="section-title">Made by Celestial Web Solutions</h2>
+        <p class="section-lead">
+          SikaLens is built in Ghana by
+          <a href="https://www.celestialwebsolutions.net/" rel="noopener noreferrer">Celestial Web Solutions</a>
+          — web, apps, and digital products for businesses across Accra, Keta, and beyond.
+        </p>
+        <a class="btn-celestial" href="https://www.celestialwebsolutions.net/" rel="noopener noreferrer"
+          >Visit celestialwebsolutions.net</a
+        >
       </section>
     </main>
 
@@ -238,14 +398,19 @@
         <img src="/sikalens-logo.png" width="36" height="36" alt="" />
         <div>
           <strong>SikaLens</strong>
-          <p>By Celestial Web Solutions</p>
+          <p>
+            By
+            <a href="https://www.celestialwebsolutions.net/" rel="noopener noreferrer">Celestial Web Solutions</a>
+          </p>
         </div>
       </div>
       <div class="footer-links">
         <a href="#download">Download</a>
+        <a href="#features">Features</a>
         <a href="/privacy">Privacy</a>
         <a href="/terms">Terms</a>
         <a href="mailto:support@sikalens.app">Support</a>
+        <a href="https://www.celestialwebsolutions.net/" rel="noopener noreferrer">Celestial</a>
       </div>
       <p class="footer-copy">© <span id="y"></span> Celestial Web Solutions</p>
     </footer>

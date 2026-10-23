@@ -1,6 +1,7 @@
 /** Publisher and public links for SikaLens. */
 export const APP_NAME = 'SikaLens';
 export const APP_OWNER = 'Celestial Web Solutions';
+export const PUBLISHER_URL = 'https://www.celestialwebsolutions.net/';
 export const APP_PACKAGE = 'com.sikalens.app';
 
 /** Primary product site (.app). Point DNS here first; use .com as redirect. */

@@ -9,6 +9,7 @@ import {
   APP_STORE_URL,
   PLAY_STORE_URL,
   PRIVACY_URL,
+  PUBLISHER_URL,
   SHARE_MESSAGE,
   SITE_URL,
   SUPPORT_EMAIL,
@@ -301,8 +302,9 @@ export default function Settings() {
             <Button title="Change PIN" variant="quiet" onPress={() => setMode('verify-for-change')} />
             <Button title="Turn off lock" variant="quiet" onPress={() => setMode('verify-for-off')} />
             <AppText variant="caption" tone="soft">
-              Log out locks SikaLens and asks for your PIN again. If you forget your PIN, the only way back in is to clear
-              the app's data, which deletes your records. Export a CSV now and then.
+              Log out locks SikaLens and asks for your PIN again. Forgot your PIN? Use Forgot PIN on the lock screen to
+              confirm with your phone lock and set a new one — or erase app data if you need a full reset. Export a backup
+              regularly.
             </AppText>
           </>
         ) : (
@@ -369,7 +371,12 @@ export default function Settings() {
         <AppText variant="caption" tone="soft">
           {SUPPORT_EMAIL}
         </AppText>
-        <Button title="Open website" variant="quiet" onPress={() => void Linking.openURL(SITE_URL)} />
+        <Button title="Open SikaLens website" variant="quiet" onPress={() => void Linking.openURL(SITE_URL)} />
+        <Button
+          title="Celestial Web Solutions"
+          variant="quiet"
+          onPress={() => void Linking.openURL(PUBLISHER_URL)}
+        />
         <Button title="Email support" variant="quiet" onPress={() => void Linking.openURL(`mailto:${SUPPORT_EMAIL}`)} />
       </Card>
 

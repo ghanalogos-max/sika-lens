@@ -1,6 +1,6 @@
 import { Linking, View } from 'react-native';
 
-import { APP_NAME, APP_OWNER, PRIVACY_URL, SUPPORT_EMAIL } from '@/features/about/brand';
+import { APP_NAME, APP_OWNER, PRIVACY_URL, PUBLISHER_URL, SUPPORT_EMAIL } from '@/features/about/brand';
 import { AppText, Button, Card, Screen } from '@/ui/kit';
 import { space } from '@/ui/theme';
 
@@ -37,8 +37,9 @@ export default function PrivacyScreen() {
       <Card style={{ gap: space.sm }}>
         <AppText variant="label">Store purchases</AppText>
         <AppText tone="soft">
-          Premium is billed by Google Play or the App Store. Those stores handle payment details under their own privacy
-          policies. {APP_OWNER} does not receive your card number.
+          Optional Premium will be billed through Google Play or the App Store when store billing is live. Until then,
+          in-app purchase is not charged. Those stores handle payment details under their own privacy policies.{' '}
+          {APP_OWNER} does not receive your card number.
         </AppText>
       </Card>
 
@@ -46,8 +47,10 @@ export default function PrivacyScreen() {
         <AppText variant="label">Contact</AppText>
         <AppText tone="soft">Questions about privacy: {SUPPORT_EMAIL}</AppText>
         <AppText tone="soft">Also published at {PRIVACY_URL}</AppText>
+        <AppText tone="soft">Publisher: {APP_OWNER}</AppText>
         <Button title="Email support" variant="quiet" onPress={() => void Linking.openURL(`mailto:${SUPPORT_EMAIL}`)} />
         <Button title="Open online" variant="quiet" onPress={() => void Linking.openURL(PRIVACY_URL)} />
+        <Button title="Celestial Web Solutions" variant="quiet" onPress={() => void Linking.openURL(PUBLISHER_URL)} />
       </Card>
     </Screen>
   );

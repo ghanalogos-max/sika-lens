@@ -1,6 +1,6 @@
 import { Linking, View } from 'react-native';
 
-import { APP_NAME, APP_OWNER, SUPPORT_EMAIL, TERMS_URL } from '@/features/about/brand';
+import { APP_NAME, APP_OWNER, PUBLISHER_URL, SUPPORT_EMAIL, TERMS_URL } from '@/features/about/brand';
 import { AppText, Button, Card, Screen } from '@/ui/kit';
 import { space } from '@/ui/theme';
 
@@ -47,9 +47,9 @@ export default function TermsScreen() {
       <Card style={{ gap: space.sm }}>
         <AppText variant="label">Premium</AppText>
         <AppText tone="soft">
-          Optional Premium features renew through Google Play or the App Store until you cancel in that store's
-          subscription settings. Prices shown in the app may be listed in US dollars; the store charges in your local
-          currency.
+          Optional Premium features will renew through Google Play or the App Store once billing is live, until you
+          cancel in that store's subscription settings. Prices shown may be listed in US dollars; the store charges in
+          your local currency. Store purchase is not charged while billing shows Coming soon.
         </AppText>
       </Card>
 
@@ -67,6 +67,7 @@ export default function TermsScreen() {
         <AppText tone="soft">Also published at {TERMS_URL}</AppText>
         <Button title="Email support" variant="quiet" onPress={() => void Linking.openURL(`mailto:${SUPPORT_EMAIL}`)} />
         <Button title="Open online" variant="quiet" onPress={() => void Linking.openURL(TERMS_URL)} />
+        <Button title="Celestial Web Solutions" variant="quiet" onPress={() => void Linking.openURL(PUBLISHER_URL)} />
       </Card>
     </Screen>
   );

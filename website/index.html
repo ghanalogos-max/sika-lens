@@ -20,7 +20,6 @@
     <link rel="alternate" href="https://sikalens.app/" hreflang="en-GH" />
     <link rel="alternate" href="https://sikalens.app/" hreflang="x-default" />
 
-    <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="SikaLens" />
     <meta property="og:locale" content="en_GH" />
@@ -35,8 +34,7 @@
     <meta property="og:image:height" content="1024" />
     <meta property="og:image:alt" content="SikaLens app icon — Ghana cedi lens" />
 
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="SikaLens — MoMo &amp; bank tracker for Ghana" />
     <meta
       name="twitter:description"
@@ -46,6 +44,12 @@
 
     <link rel="icon" href="/favicon.png" type="image/png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="/styles.css" />
 
     <script type="application/ld+json">
@@ -80,14 +84,8 @@
             "image": "https://sikalens.app/og-image.png",
             "author": { "@id": "https://sikalens.app/#org" },
             "publisher": { "@id": "https://sikalens.app/#org" },
-            "offers": {
-              "@type": "Offer",
-              "price": "0",
-              "priceCurrency": "USD"
-            },
-            "downloadUrl": [
-              "https://play.google.com/store/apps/details?id=com.sikalens.app"
-            ],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "downloadUrl": ["https://play.google.com/store/apps/details?id=com.sikalens.app"],
             "installUrl": "https://play.google.com/store/apps/details?id=com.sikalens.app"
           }
         ]
@@ -98,98 +96,173 @@
     <a class="skip" href="#main">Skip to content</a>
 
     <header class="top">
-      <a class="brand" href="/">SikaLens</a>
+      <a class="brand" href="/">
+        <img class="brand-mark" src="/sikalens-logo.png" width="40" height="40" alt="" />
+        <span>SikaLens</span>
+      </a>
       <nav aria-label="Primary">
         <a href="#download">Download</a>
+        <a href="#how">How it works</a>
         <a href="/privacy">Privacy</a>
-        <a href="/terms">Terms</a>
         <a href="mailto:support@sikalens.app">Support</a>
       </nav>
     </header>
 
     <main id="main">
-      <section class="hero">
-        <p class="eyebrow">Ghana · MoMo &amp; bank ledger</p>
-        <h1>See where your MoMo goes</h1>
-        <p class="lead">
-          SikaLens tracks MTN, Telecel, AirtelTigo and bank wallets on your phone. Paste SMS, set budgets, and keep an
-          offline GH₵ ledger — nothing uploaded to our servers.
-        </p>
-
-        <section id="download" class="download" aria-labelledby="download-heading">
-          <h2 id="download-heading" class="sr-only">Download SikaLens</h2>
-          <p class="download-note">
-            Store listings are preparing. Buttons use the final package / search URLs — replace the App Store id when
-            App Store Connect is live.
+      <section class="hero" aria-label="SikaLens">
+        <div class="hero-copy reveal">
+          <img class="hero-logo" src="/sikalens-logo.png" width="88" height="88" alt="SikaLens" />
+          <p class="brand-word">SikaLens</p>
+          <h1>See where your MoMo goes</h1>
+          <p class="lead">
+            Paste SMS, track bank wallets, and keep a GH₵ ledger on your phone — offline, PIN-locked, yours alone.
           </p>
-          <div class="store-row">
-            <!-- PLAY: live package id com.sikalens.app -->
-            <a
-              class="store-badge play"
-              id="btn-play"
-              href="https://play.google.com/store/apps/details?id=com.sikalens.app"
-              rel="noopener noreferrer"
-              aria-label="Get SikaLens on Google Play (listing coming soon)">
-              <span class="store-badge-mark" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="28" height="28" focusable="false">
-                  <path fill="currentColor" d="M3.6 2.9c-.4.2-.6.6-.6 1.1v16c0 .5.2.9.6 1.1l.1.1 9.1-9.1v-.2L3.7 2.8l-.1.1zm12.1 7L13 12.6l2.7 2.7 3.2-1.8c.9-.5.9-1.4 0-1.9l-3.2-1.7zM4.3 20.8l8.4-8.4 2.4 2.4-9.5 5.5c-.5.3-1 .2-1.3.5zM14.9 9.4l-2.4 2.4L4.3 3.2c.3.1.7.1 1.1-.1l9.5 5.5v.8z" />
-                </svg>
-              </span>
-              <span class="store-badge-copy">
-                <span class="store-badge-kicker">GET IT ON</span>
-                <span class="store-badge-name">Google Play</span>
-                <span class="store-badge-status">Coming soon</span>
-              </span>
-            </a>
 
-            <!-- APP STORE: replace APPLE_APP_ID below once listed -->
-            <a
-              class="store-badge apple"
-              id="btn-apple"
-              href="https://apps.apple.com/app/idAPPLE_APP_ID"
-              rel="noopener noreferrer"
-              aria-label="Download SikaLens on the App Store (listing coming soon)">
-              <span class="store-badge-mark" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="28" height="28" focusable="false">
-                  <path fill="currentColor" d="M16.4 12.7c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.2-2.8.9-3.5.9s-1.8-.8-3-.8c-1.5 0-2.9.9-3.7 2.3-1.6 2.7-.4 6.8 1.1 9 .8 1.1 1.7 2.3 2.9 2.2 1.2-.1 1.6-.7 3-.7s1.8.7 3 .7 2-.1 2.9-2.2c1.1-1.1 1.5-2.2 1.5-2.3-.1 0-2.8-1.1-2.8-4.1zM14.5 5.7c.6-.8 1.1-1.9.9-3-.9.1-2 .6-2.6 1.4-.6.7-1.1 1.8-.9 2.9 1 .1 2-.5 2.6-1.3z" />
-                </svg>
-              </span>
-              <span class="store-badge-copy">
-                <span class="store-badge-kicker">Download on the</span>
-                <span class="store-badge-name">App Store</span>
-                <span class="store-badge-status">Coming soon</span>
-              </span>
-            </a>
-          </div>
-        </section>
+          <section id="download" class="download" aria-labelledby="download-heading">
+            <h2 id="download-heading" class="sr-only">Download SikaLens</h2>
+            <div class="store-row">
+              <a
+                class="store-badge play"
+                id="btn-play"
+                href="https://play.google.com/store/apps/details?id=com.sikalens.app"
+                rel="noopener noreferrer"
+                aria-label="Get SikaLens on Google Play (listing coming soon)">
+                <span class="store-badge-mark" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="28" height="28" focusable="false">
+                    <path
+                      fill="currentColor"
+                      d="M3.6 2.9c-.4.2-.6.6-.6 1.1v16c0 .5.2.9.6 1.1l.1.1 9.1-9.1v-.2L3.7 2.8l-.1.1zm12.1 7L13 12.6l2.7 2.7 3.2-1.8c.9-.5.9-1.4 0-1.9l-3.2-1.7zM4.3 20.8l8.4-8.4 2.4 2.4-9.5 5.5c-.5.3-1 .2-1.3.5zM14.9 9.4l-2.4 2.4L4.3 3.2c.3.1.7.1 1.1-.1l9.5 5.5v.8z"
+                    />
+                  </svg>
+                </span>
+                <span class="store-badge-copy">
+                  <span class="store-badge-kicker">GET IT ON</span>
+                  <span class="store-badge-name">Google Play</span>
+                  <span class="store-badge-status">Coming soon</span>
+                </span>
+              </a>
+
+              <a
+                class="store-badge apple"
+                id="btn-apple"
+                href="https://apps.apple.com/app/idAPPLE_APP_ID"
+                rel="noopener noreferrer"
+                aria-label="Download SikaLens on the App Store (listing coming soon)">
+                <span class="store-badge-mark" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="28" height="28" focusable="false">
+                    <path
+                      fill="currentColor"
+                      d="M16.4 12.7c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.2-2.8.9-3.5.9s-1.8-.8-3-.8c-1.5 0-2.9.9-3.7 2.3-1.6 2.7-.4 6.8 1.1 9 .8 1.1 1.7 2.3 2.9 2.2 1.2-.1 1.6-.7 3-.7s1.8.7 3 .7 2-.1 2.9-2.2c1.1-1.1 1.5-2.2 1.5-2.3-.1 0-2.8-1.1-2.8-4.1zM14.5 5.7c.6-.8 1.1-1.9.9-3-.9.1-2 .6-2.6 1.4-.6.7-1.1 1.8-.9 2.9 1 .1 2-.5 2.6-1.3z"
+                    />
+                  </svg>
+                </span>
+                <span class="store-badge-copy">
+                  <span class="store-badge-kicker">Download on the</span>
+                  <span class="store-badge-name">App Store</span>
+                  <span class="store-badge-status">Coming soon</span>
+                </span>
+              </a>
+            </div>
+            <p class="download-note">Store listings are preparing — buttons already point to the final package URLs.</p>
+          </section>
+        </div>
+
+        <div class="hero-visual reveal delay-1" aria-hidden="true">
+          <img
+            class="hero-photo"
+            src="https://images.unsplash.com/photo-1763729948735-df50fc3540df?auto=format&amp;fit=crop&amp;w=1400&amp;q=80"
+            width="1400"
+            height="900"
+            alt=""
+          />
+          <img class="hero-cedi" src="/cedi-200-bubble.png" width="280" height="280" alt="" />
+        </div>
       </section>
 
-      <section class="points" aria-label="Why SikaLens">
-        <article>
-          <h2>On your phone</h2>
-          <p>SQLite on device. PIN lock. Encrypted backups you control.</p>
-        </article>
-        <article>
-          <h2>Built for Ghana</h2>
-          <p>MTN, Telecel, AirtelTigo parsers, bank wallets, and GH₵-first money math.</p>
-        </article>
-        <article>
-          <h2>Publisher</h2>
-          <p>Celestial Web Solutions · <a href="mailto:support@sikalens.app">support@sikalens.app</a></p>
-        </article>
+      <section id="how" class="band reveal">
+        <p class="section-kicker">How it works</p>
+        <h2 class="section-title">Three steps. Ledger on the phone.</h2>
+        <ol class="steps">
+          <li>
+            <span class="step-num">01</span>
+            <h3>Paste a MoMo SMS</h3>
+            <p>MTN, Telecel, or AirtelTigo — SikaLens reads the amount, party, and fee.</p>
+          </li>
+          <li>
+            <span class="step-num">02</span>
+            <h3>Watch the wallets</h3>
+            <p>Opening balances plus every send, receive, and cash-out keep GH₵ totals true.</p>
+          </li>
+          <li>
+            <span class="step-num">03</span>
+            <h3>Stay private</h3>
+            <p>PIN or biometrics lock the app. Encrypted backups leave only when you share them.</p>
+          </li>
+        </ol>
+      </section>
+
+      <section class="split reveal">
+        <div class="split-copy">
+          <p class="section-kicker">Built for Ghana</p>
+          <h2 class="section-title">MoMo networks and bank books, one lens.</h2>
+          <p class="section-lead">
+            Track MTN MoMo, Telecel Cash, AirtelTigo Money, and your bank or cash wallets side by side — with budgets,
+            insights, and exports when you need them.
+          </p>
+          <ul class="ticks">
+            <li>Offline SQLite — nothing uploaded to our servers</li>
+            <li>CSV and PDF exports without raw SMS text</li>
+            <li>Currency converter for travel and remittances</li>
+          </ul>
+        </div>
+        <figure class="split-media">
+          <img src="/icon.png" width="512" height="512" alt="SikaLens app icon with cedi lens mark" />
+        </figure>
+      </section>
+
+      <section class="trust reveal">
+        <h2 class="section-title">Your money stays on your device</h2>
+        <p class="section-lead">
+          SikaLens does not create an account. Privacy and terms are published for the stores — read them anytime.
+        </p>
+        <div class="trust-links">
+          <a class="text-link" href="/privacy">Privacy policy</a>
+          <a class="text-link" href="/terms">Terms of use</a>
+          <a class="text-link" href="mailto:support@sikalens.app">support@sikalens.app</a>
+        </div>
       </section>
     </main>
 
-    <footer>
-      <a href="/privacy">Privacy</a>
-      <a href="/terms">Terms of use</a>
-      <a href="#download">Download</a>
-      <span>© <span id="y"></span> Celestial Web Solutions</span>
+    <footer class="site-footer">
+      <div class="footer-brand">
+        <img src="/sikalens-logo.png" width="36" height="36" alt="" />
+        <div>
+          <strong>SikaLens</strong>
+          <p>By Celestial Web Solutions</p>
+        </div>
+      </div>
+      <div class="footer-links">
+        <a href="#download">Download</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+        <a href="mailto:support@sikalens.app">Support</a>
+      </div>
+      <p class="footer-copy">© <span id="y"></span> Celestial Web Solutions</p>
     </footer>
 
     <script src="/stores.js" defer></script>
     <script>
       document.getElementById('y').textContent = new Date().getFullYear();
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.querySelectorAll('.reveal').forEach(function (el, i) {
+          el.style.animationDelay = 0.08 * i + 's';
+          el.classList.add('in');
+        });
+      } else {
+        document.querySelectorAll('.reveal').forEach(function (el) {
+          el.classList.add('in');
+        });
+      }
     </script>
   </body>
 </html>

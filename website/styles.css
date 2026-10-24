@@ -658,6 +658,68 @@ main {
   background: var(--primary);
 }
 
+.shots {
+  padding: 12px 0 40px;
+}
+
+.shot-rail {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(180px, 220px);
+  gap: 16px;
+  overflow-x: auto;
+  padding: 8px 4px 16px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.shot-card {
+  margin: 0;
+  scroll-snap-align: start;
+}
+
+.shot-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.shot-card figcaption {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--soft);
+  text-align: center;
+}
+
+.feature-shot {
+  margin: 0;
+  justify-self: center;
+  width: min(100%, 280px);
+}
+
+.feature-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 22px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.hero-shot {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 280px);
+  height: auto;
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  justify-self: center;
+}
+
 .features {
   display: grid;
   gap: 48px;

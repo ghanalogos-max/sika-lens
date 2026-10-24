@@ -13,6 +13,20 @@ Or in Vercel → Project → Settings → General → **Root Directory** = `webs
 
 Point `sikalens.app` DNS at Vercel after the deploy is healthy. Store badges: edit `website/stores.js` — set `PLAY_LIVE` / `APP_STORE_LIVE` and replace `APPLE_APP_ID` when listings go public.
 
+### Store listing graphics
+
+Ready-to-upload assets (from device screenshots in `mockups/`):
+
+| Console | Path |
+|---------|------|
+| Play icon 512×512 | `store/play/icon-512.png` |
+| Play feature graphic 1024×500 | `store/play/feature-graphic-1024x500.png` |
+| Play phone screenshots | `store/play/screenshots/*.png` (1080×1920) |
+| App Store icon 1024×1024 | `store/appstore/icon-1024.png` |
+| App Store 6.7″ screenshots | `store/appstore/screenshots-6.7/*.png` (1290×2796) |
+
+Rebuild after new mockups: `python scripts/build_store_assets.py` (needs Pillow). Web copies live under `website/store/`.
+
 ## Run it (Windows, PowerShell)
 
 ```powershell

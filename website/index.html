@@ -191,6 +191,7 @@
       </button>
       <nav id="site-nav" aria-label="Primary">
         <a href="#download">Download</a>
+        <a href="#screenshots">Screens</a>
         <a href="#features">Features</a>
         <a href="#faq">FAQ</a>
         <a href="/privacy">Privacy</a>
@@ -258,31 +259,14 @@
           </section>
         </div>
 
-        <div class="hero-visual reveal delay-1" aria-hidden="true">
-          <div class="phone phone-hero">
-            <div class="phone-notch"></div>
-            <div class="phone-screen mock-home">
-              <p class="mock-hello">Good evening</p>
-              <p class="mock-brand">SikaLens</p>
-              <div class="mock-balance">
-                <span>Total balance</span>
-                <strong>GH₵ ••••</strong>
-              </div>
-              <div class="mock-row">
-                <span>Received</span>
-                <em class="in">+ GH₵ •••</em>
-              </div>
-              <div class="mock-row">
-                <span>Expenses</span>
-                <em class="out">− GH₵ •••</em>
-              </div>
-              <div class="mock-chips">
-                <span>Paste SMS</span>
-                <span>Wallets</span>
-                <span>Insights</span>
-              </div>
-            </div>
-          </div>
+        <div class="hero-visual reveal delay-1">
+          <img
+            class="hero-shot"
+            src="/store/screenshots/02-home.png"
+            width="720"
+            height="1280"
+            alt="SikaLens home screen on a phone"
+          />
           <img class="hero-cedi" src="/cedi-200-bubble.png" width="280" height="280" alt="" />
         </div>
       </section>
@@ -296,7 +280,53 @@
         </p>
       </section>
 
-      <section id="features" class="features reveal" aria-label="Features with mockups">
+      <section id="screenshots" class="shots reveal" aria-labelledby="shots-heading">
+        <p class="section-kicker">App screens</p>
+        <h2 id="shots-heading" class="section-title">Real SikaLens screenshots</h2>
+        <p class="section-lead">
+          Device captures from the app — PIN lock, home, activity, budgets, insights, MoMo and bank pickers, and more.
+        </p>
+        <div class="shot-rail" role="list">
+          <figure class="shot-card" role="listitem">
+            <img src="/store/screenshots/01-lock.png" width="720" height="1280" alt="SikaLens lock screen with Login" loading="lazy" />
+            <figcaption>PIN lock</figcaption>
+          </figure>
+          <figure class="shot-card" role="listitem">
+            <img src="/store/screenshots/02-home.png" width="720" height="1280" alt="SikaLens home with wallets and quick actions" loading="lazy" />
+            <figcaption>Home</figcaption>
+          </figure>
+          <figure class="shot-card" role="listitem">
+            <img src="/store/screenshots/03-activity.png" width="720" height="1280" alt="Activity list for MoMo and bank entries" loading="lazy" />
+            <figcaption>Activity</figcaption>
+          </figure>
+          <figure class="shot-card" role="listitem">
+            <img src="/store/screenshots/04-insights.png" width="720" height="1280" alt="Monthly insights and spend chart" loading="lazy" />
+            <figcaption>Insights</figcaption>
+          </figure>
+          <figure class="shot-card" role="listitem">
+            <img src="/store/screenshots/05-budgets.png" width="720" height="1280" alt="Budgets by category with monthly limits" loading="lazy" />
+            <figcaption>Budgets</figcaption>
+          </figure>
+          <figure class="shot-card" role="listitem">
+            <img src="/store/screenshots/06-momo-networks.png" width="720" height="1280" alt="Choose MTN MoMo, Telecel Cash, or AirtelTigo Money" loading="lazy" />
+            <figcaption>MoMo networks</figcaption>
+          </figure>
+          <figure class="shot-card" role="listitem">
+            <img src="/store/screenshots/07-choose-bank.png" width="720" height="1280" alt="Choose a Ghana bank for a transfer" loading="lazy" />
+            <figcaption>Banks</figcaption>
+          </figure>
+          <figure class="shot-card" role="listitem">
+            <img src="/store/screenshots/08-settings.png" width="720" height="1280" alt="Settings for theme and Ghana cedi" loading="lazy" />
+            <figcaption>Settings</figcaption>
+          </figure>
+          <figure class="shot-card" role="listitem">
+            <img src="/store/screenshots/09-currency.png" width="720" height="1280" alt="Live currency converter from Ghana cedi" loading="lazy" />
+            <figcaption>Currency</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="features" class="features reveal" aria-label="Features">
         <article class="feature">
           <div class="feature-copy">
             <h3>Paste MoMo SMS</h3>
@@ -310,21 +340,9 @@
               <li>Duplicate transaction IDs are ignored</li>
             </ul>
           </div>
-          <div class="phone" aria-hidden="true">
-            <div class="phone-notch"></div>
-            <div class="phone-screen mock-sms">
-              <p class="mock-title">Import SMS</p>
-              <div class="mock-sms-box">
-                Payment of GHS *** to Merchant. Fee GHS *. Current Balance: GHS ****. Ref: TX••••
-              </div>
-              <div class="mock-fields">
-                <span>Amount · masked</span>
-                <span>Category · Food</span>
-                <span>Wallet · MoMo</span>
-              </div>
-              <div class="mock-cta">Save entry</div>
-            </div>
-          </div>
+          <figure class="feature-shot">
+            <img src="/store/screenshots/06-momo-networks.png" width="720" height="1280" alt="MoMo network picker in SikaLens" loading="lazy" />
+          </figure>
         </article>
 
         <article class="feature feature-flip">
@@ -340,24 +358,9 @@
               <li>Bank and cash books included</li>
             </ul>
           </div>
-          <div class="phone" aria-hidden="true">
-            <div class="phone-notch"></div>
-            <div class="phone-screen mock-wallets">
-              <p class="mock-title">My wallets</p>
-              <div class="mock-wallet">
-                <span>MoMo</span>
-                <strong>GH₵ ••••</strong>
-              </div>
-              <div class="mock-wallet">
-                <span>Bank</span>
-                <strong>GH₵ ••••</strong>
-              </div>
-              <div class="mock-wallet">
-                <span>Cash</span>
-                <strong>GH₵ •••</strong>
-              </div>
-            </div>
-          </div>
+          <figure class="feature-shot">
+            <img src="/store/screenshots/02-home.png" width="720" height="1280" alt="SikaLens home showing total balance and wallets" loading="lazy" />
+          </figure>
         </article>
 
         <article class="feature">
@@ -372,25 +375,9 @@
               <li>Optional Premium themes</li>
             </ul>
           </div>
-          <div class="phone" aria-hidden="true">
-            <div class="phone-notch"></div>
-            <div class="phone-screen mock-insights">
-              <p class="mock-title">Insights</p>
-              <div class="mock-bars" aria-hidden="true">
-                <i style="--h: 42%"></i>
-                <i style="--h: 68%"></i>
-                <i style="--h: 35%"></i>
-                <i style="--h: 80%"></i>
-                <i style="--h: 55%"></i>
-                <i style="--h: 48%"></i>
-              </div>
-              <div class="mock-cat">
-                <span>Food</span>
-                <span>Transport</span>
-                <span>Airtime</span>
-              </div>
-            </div>
-          </div>
+          <figure class="feature-shot">
+            <img src="/store/screenshots/04-insights.png" width="720" height="1280" alt="Insights screen with monthly spend chart" loading="lazy" />
+          </figure>
         </article>
       </section>
 
@@ -545,6 +532,7 @@
       </div>
       <div class="footer-links">
         <a href="#download">Download</a>
+        <a href="#screenshots">Screens</a>
         <a href="#features">Features</a>
         <a href="#faq">FAQ</a>
         <a href="/privacy">Privacy</a>

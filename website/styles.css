@@ -1,9 +1,9 @@
 :root {
-  --bg: #f3f7f6;
-  --bg-deep: #e5efed;
+  --bg: #f7f9f8;
+  --bg-deep: #eef2f1;
   --ink: #122028;
   --soft: #5a6b72;
-  --line: #d5e2df;
+  --line: #dce5e3;
   --primary: #0e6a62;
   --primary-deep: #0a4f49;
   --gold: #c4891e;
@@ -51,7 +51,7 @@ html,
 body {
   margin: 0;
   padding: 0;
-  background: var(--bg);
+  background: #f7f9f8;
   color: var(--ink);
   font-family: var(--font);
   line-height: 1.55;
@@ -59,10 +59,7 @@ body {
 }
 
 body {
-  background:
-    radial-gradient(1000px 520px at 110% -10%, rgba(14, 106, 98, 0.14), transparent 55%),
-    radial-gradient(800px 420px at -15% 8%, rgba(196, 137, 30, 0.12), transparent 50%),
-    linear-gradient(180deg, #eef6f4 0%, var(--bg) 42%, #f7faf9 100%);
+  background: var(--bg);
   min-height: 100%;
 }
 
@@ -144,9 +141,8 @@ main {
   border-radius: 28px;
   overflow: hidden;
   color: var(--hero-ink);
-  background:
-    radial-gradient(700px 420px at 85% 15%, rgba(196, 137, 30, 0.28), transparent 55%),
-    linear-gradient(145deg, #0a4f49 0%, #0e6a62 42%, #083b38 100%);
+  background: var(--primary);
+  border: 1px solid var(--primary-deep);
 }
 
 .hero-copy {
@@ -220,8 +216,7 @@ main {
 }
 
 .phone-hero {
-  transform: rotate(-2deg);
-  box-shadow: none;
+  transform: none;
 }
 
 .phone-notch {
@@ -236,7 +231,7 @@ main {
   border-radius: 20px;
   padding: 16px;
   min-height: 360px;
-  background: linear-gradient(180deg, #f7faf9 0%, #eef5f3 100%);
+  background: var(--surface);
   color: var(--ink);
 }
 
@@ -381,7 +376,7 @@ main {
   flex: 1;
   height: var(--h);
   border-radius: 6px 6px 2px 2px;
-  background: linear-gradient(180deg, #5bc4cb, var(--primary));
+  background: var(--primary);
   display: block;
 }
 
@@ -800,10 +795,10 @@ main {
 @keyframes drift {
   0%,
   100% {
-    transform: translate(0, 0) rotate(-2deg);
+    transform: translate(0, 0);
   }
   50% {
-    transform: translate(-8px, -10px) rotate(2deg);
+    transform: translate(-6px, -8px);
   }
 }
 

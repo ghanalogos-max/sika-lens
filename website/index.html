@@ -15,21 +15,21 @@
     <meta name="author" content="Celestial Web Solutions" />
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <meta name="theme-color" content="#0E6A62" />
-    <link rel="canonical" href="https://sikalens.app/" />
-    <link rel="alternate" href="https://sikalens.app/" hreflang="en" />
-    <link rel="alternate" href="https://sikalens.app/" hreflang="en-GH" />
-    <link rel="alternate" href="https://sikalens.app/" hreflang="x-default" />
+    <link rel="canonical" href="https://www.sikalens.app/" />
+    <link rel="alternate" href="https://www.sikalens.app/" hreflang="en" />
+    <link rel="alternate" href="https://www.sikalens.app/" hreflang="en-GH" />
+    <link rel="alternate" href="https://www.sikalens.app/" hreflang="x-default" />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="SikaLens" />
     <meta property="og:locale" content="en_GH" />
-    <meta property="og:url" content="https://sikalens.app/" />
+    <meta property="og:url" content="https://www.sikalens.app/" />
     <meta property="og:title" content="SikaLens — see where your MoMo goes" />
     <meta
       property="og:description"
       content="Offline MoMo and bank ledger for Ghana. Track wallets on your phone — nothing uploaded to our servers."
     />
-    <meta property="og:image" content="https://sikalens.app/og-image.png" />
+    <meta property="og:image" content="https://www.sikalens.app/og-image.png" />
     <meta property="og:image:width" content="1024" />
     <meta property="og:image:height" content="1024" />
     <meta property="og:image:alt" content="SikaLens app icon — Ghana cedi lens" />
@@ -40,7 +40,7 @@
       name="twitter:description"
       content="Offline ledger for MTN, Telecel, AirtelTigo and bank wallets. Download on Google Play and the App Store."
     />
-    <meta name="twitter:image" content="https://sikalens.app/og-image.png" />
+    <meta name="twitter:image" content="https://www.sikalens.app/og-image.png" />
 
     <link rel="icon" href="/favicon.png" type="image/png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -58,33 +58,33 @@
         "@graph": [
           {
             "@type": "Organization",
-            "@id": "https://sikalens.app/#org",
+            "@id": "https://www.sikalens.app/#org",
             "name": "Celestial Web Solutions",
             "url": "https://www.celestialwebsolutions.net/",
             "email": "support@sikalens.app",
-            "logo": "https://sikalens.app/og-image.png",
+            "logo": "https://www.sikalens.app/og-image.png",
             "sameAs": ["https://www.celestialwebsolutions.net/"]
           },
           {
             "@type": "WebSite",
-            "@id": "https://sikalens.app/#website",
-            "url": "https://sikalens.app/",
+            "@id": "https://www.sikalens.app/#website",
+            "url": "https://www.sikalens.app/",
             "name": "SikaLens",
             "description": "Offline MoMo and bank expense tracker for Ghana.",
-            "publisher": { "@id": "https://sikalens.app/#org" },
+            "publisher": { "@id": "https://www.sikalens.app/#org" },
             "inLanguage": "en-GH"
           },
           {
             "@type": "SoftwareApplication",
-            "@id": "https://sikalens.app/#app",
+            "@id": "https://www.sikalens.app/#app",
             "name": "SikaLens",
             "applicationCategory": "FinanceApplication",
             "operatingSystem": "Android, iOS",
             "description": "Track MoMo and bank money offline on your phone. Built for Ghana.",
-            "url": "https://sikalens.app/",
-            "image": "https://sikalens.app/og-image.png",
-            "author": { "@id": "https://sikalens.app/#org" },
-            "publisher": { "@id": "https://sikalens.app/#org" },
+            "url": "https://www.sikalens.app/",
+            "image": "https://www.sikalens.app/og-image.png",
+            "author": { "@id": "https://www.sikalens.app/#org" },
+            "publisher": { "@id": "https://www.sikalens.app/#org" },
             "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
             "downloadUrl": ["https://play.google.com/store/apps/details?id=com.sikalens.app"],
             "installUrl": "https://play.google.com/store/apps/details?id=com.sikalens.app",
@@ -95,6 +95,68 @@
               "PIN and biometric lock",
               "Encrypted backups and CSV or PDF export",
               "Offline-first ledger on device"
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://www.sikalens.app/#faq",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Does SikaLens upload my MoMo or bank data?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. Your wallets, transactions, budgets, and PIN stay on your phone. SikaLens does not create an account and does not upload your ledger to our servers."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Which MoMo networks does SikaLens support?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Paste SMS from MTN MoMo, Telecel Cash, and AirtelTigo Money. You can also track bank and cash wallets with opening balances you set."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does it work offline?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. The ledger is offline-first on your device. You only need a connection for store downloads, optional currency rates, or when you choose to share an export or backup."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Why doesn’t my wallet match my real MoMo balance?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Set the opening balance, then paste or record every send, receive, cash-out, airtime, bill, and fee for that wallet. Skipping a message leaves the on-phone total behind your real balance."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is Premium required?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. Core tracking works without Premium. Optional Premium will bill through Google Play or the App Store when store billing is live; until then purchase shows Coming soon and is not charged."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How do backups and exports work?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "You create an encrypted backup file with a passphrase you choose, then share it yourself. CSV and PDF exports are files you save or share; raw MoMo SMS text is omitted from CSV."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "When will SikaLens be on Google Play and the App Store?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Listings are preparing. The download buttons already point at the final package URLs. Email support@sikalens.app if you want an update when they go live."
+                }
+              }
             ]
           }
         ]
@@ -109,10 +171,20 @@
         <img class="brand-mark" src="/sikalens-logo.png" width="40" height="40" alt="" />
         <span>SikaLens</span>
       </a>
-      <nav aria-label="Primary">
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="site-nav"
+        aria-label="Open menu">
+        <span class="nav-toggle-bars" aria-hidden="true"></span>
+      </button>
+      <nav id="site-nav" aria-label="Primary">
         <a href="#download">Download</a>
         <a href="#features">Features</a>
+        <a href="#faq">FAQ</a>
         <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
         <a href="https://www.celestialwebsolutions.net/" rel="noopener noreferrer">Celestial</a>
       </nav>
     </header>
@@ -364,6 +436,63 @@
         </div>
       </section>
 
+      <section id="faq" class="faq reveal" aria-labelledby="faq-heading">
+        <p class="section-kicker">FAQ</p>
+        <h2 id="faq-heading" class="section-title">Common questions</h2>
+        <p class="section-lead">Short answers about privacy, MoMo balances, offline use, and store billing.</p>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>Does SikaLens upload my MoMo or bank data?</summary>
+            <p>
+              No. Your wallets, transactions, budgets, and PIN stay on your phone. SikaLens does not create an account and
+              does not upload your ledger to our servers.
+            </p>
+          </details>
+          <details class="faq-item">
+            <summary>Which MoMo networks does it support?</summary>
+            <p>
+              Paste SMS from MTN MoMo, Telecel Cash, and AirtelTigo Money. You can also track bank and cash wallets with
+              opening balances you set.
+            </p>
+          </details>
+          <details class="faq-item">
+            <summary>Does it work offline?</summary>
+            <p>
+              Yes. The ledger is offline-first on your device. You only need a connection for store downloads, optional
+              currency rates, or when you choose to share an export or backup.
+            </p>
+          </details>
+          <details class="faq-item">
+            <summary>Why doesn’t my wallet match my real MoMo balance?</summary>
+            <p>
+              Set the opening balance, then paste or record every send, receive, cash-out, airtime, bill, and fee for that
+              wallet. Skipping a message leaves the on-phone total behind your real balance.
+            </p>
+          </details>
+          <details class="faq-item">
+            <summary>Is Premium required?</summary>
+            <p>
+              No. Core tracking works without Premium. Optional Premium will bill through Google Play or the App Store
+              when store billing is live; until then purchase shows Coming soon and is not charged.
+            </p>
+          </details>
+          <details class="faq-item">
+            <summary>How do backups and exports work?</summary>
+            <p>
+              You create an encrypted backup file with a passphrase you choose, then share it yourself. CSV and PDF exports
+              are files you save or share; raw MoMo SMS text is omitted from CSV.
+            </p>
+          </details>
+          <details class="faq-item">
+            <summary>When will it be on Google Play and the App Store?</summary>
+            <p>
+              Listings are preparing. The download buttons already point at the final package URLs. Email
+              <a href="mailto:support@sikalens.app">support@sikalens.app</a> if you want an update when they go live.
+            </p>
+          </details>
+        </div>
+      </section>
+
       <section class="trust reveal">
         <h2 class="section-title">Your money stays on your device</h2>
         <p class="section-lead">
@@ -407,6 +536,7 @@
       <div class="footer-links">
         <a href="#download">Download</a>
         <a href="#features">Features</a>
+        <a href="#faq">FAQ</a>
         <a href="/privacy">Privacy</a>
         <a href="/terms">Terms</a>
         <a href="mailto:support@sikalens.app">Support</a>
@@ -415,6 +545,7 @@
       <p class="footer-copy">© <span id="y"></span> Celestial Web Solutions</p>
     </footer>
 
+    <script src="/nav.js" defer></script>
     <script src="/stores.js" defer></script>
     <script>
       document.getElementById('y').textContent = new Date().getFullYear();

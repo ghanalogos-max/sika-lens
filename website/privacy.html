@@ -9,12 +9,12 @@
       content="SikaLens privacy policy: your MoMo and bank ledger stays on your phone. Offline storage, encrypted backups, and store billing handled by Google Play or the App Store."
     />
     <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://sikalens.app/privacy" />
+    <link rel="canonical" href="https://www.sikalens.app/privacy" />
     <meta property="og:type" content="article" />
-    <meta property="og:url" content="https://sikalens.app/privacy" />
+    <meta property="og:url" content="https://www.sikalens.app/privacy" />
     <meta property="og:title" content="Privacy Policy — SikaLens" />
     <meta property="og:description" content="Your ledger stays on your phone. Read how SikaLens handles privacy." />
-    <meta property="og:image" content="https://sikalens.app/og-image.png" />
+    <meta property="og:image" content="https://www.sikalens.app/og-image.png" />
     <link rel="icon" href="/favicon.png" type="image/png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -30,8 +30,17 @@
         <img class="brand-mark" src="/sikalens-logo.png" width="40" height="40" alt="" />
         <span>SikaLens</span>
       </a>
-      <nav aria-label="Primary">
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="site-nav"
+        aria-label="Open menu">
+        <span class="nav-toggle-bars" aria-hidden="true"></span>
+      </button>
+      <nav id="site-nav" aria-label="Primary">
         <a href="/#download">Download</a>
+        <a href="/#faq">FAQ</a>
         <a href="/privacy" aria-current="page">Privacy</a>
         <a href="/terms">Terms</a>
         <a href="mailto:support@sikalens.app">Support</a>
@@ -70,12 +79,12 @@
 
       <h2>Contact</h2>
       <p>Questions about privacy: <a href="mailto:support@sikalens.app">support@sikalens.app</a></p>
-      <p>Also published at <a href="https://sikalens.app/privacy">https://sikalens.app/privacy</a></p>
     </main>
 
     <footer class="site-footer">
       <div class="footer-links">
         <a href="/">Home</a>
+        <a href="/#faq">FAQ</a>
         <a href="/terms">Terms of use</a>
         <a href="mailto:support@sikalens.app">Support</a>
         <a href="https://www.celestialwebsolutions.net/" rel="noopener noreferrer">Celestial</a>
@@ -85,5 +94,6 @@
         <a href="https://www.celestialwebsolutions.net/" rel="noopener noreferrer">Celestial Web Solutions</a>
       </p>
     </footer>
+    <script src="/nav.js" defer></script>
   </body>
 </html>

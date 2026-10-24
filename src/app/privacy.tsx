@@ -1,4 +1,4 @@
-import { Linking, View } from 'react-native';
+import { Linking } from 'react-native';
 
 import { APP_NAME, APP_OWNER, PRIVACY_URL, PUBLISHER_URL, SUPPORT_EMAIL } from '@/features/about/brand';
 import { AppText, Button, Card, Screen } from '@/ui/kit';
@@ -46,7 +46,6 @@ export default function PrivacyScreen() {
       <Card style={{ gap: space.sm }}>
         <AppText variant="label">Contact</AppText>
         <AppText tone="soft">Questions about privacy: {SUPPORT_EMAIL}</AppText>
-        <AppText tone="soft">Also published at {PRIVACY_URL}</AppText>
         <AppText tone="soft">Publisher: {APP_OWNER}</AppText>
         <Button title="Email support" variant="quiet" onPress={() => void Linking.openURL(`mailto:${SUPPORT_EMAIL}`)} />
         <Button title="Open online" variant="quiet" onPress={() => void Linking.openURL(PRIVACY_URL)} />

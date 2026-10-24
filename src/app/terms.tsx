@@ -1,4 +1,4 @@
-import { Linking, View } from 'react-native';
+import { Linking } from 'react-native';
 
 import { APP_NAME, APP_OWNER, PUBLISHER_URL, SUPPORT_EMAIL, TERMS_URL } from '@/features/about/brand';
 import { AppText, Button, Card, Screen } from '@/ui/kit';
@@ -64,7 +64,6 @@ export default function TermsScreen() {
       <Card style={{ gap: space.sm }}>
         <AppText variant="label">Contact</AppText>
         <AppText tone="soft">{SUPPORT_EMAIL}</AppText>
-        <AppText tone="soft">Also published at {TERMS_URL}</AppText>
         <Button title="Email support" variant="quiet" onPress={() => void Linking.openURL(`mailto:${SUPPORT_EMAIL}`)} />
         <Button title="Open online" variant="quiet" onPress={() => void Linking.openURL(TERMS_URL)} />
         <Button title="Celestial Web Solutions" variant="quiet" onPress={() => void Linking.openURL(PUBLISHER_URL)} />

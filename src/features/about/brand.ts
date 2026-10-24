@@ -4,11 +4,11 @@ export const APP_OWNER = 'Celestial Web Solutions';
 export const PUBLISHER_URL = 'https://www.celestialwebsolutions.net/';
 export const APP_PACKAGE = 'com.sikalens.app';
 
-/** Primary product site (.app). Point DNS here first; use .com as redirect. */
+/** Primary product site (.app). Apex + .com redirect to www (Vercel Production). */
 export const SITE_HOST = 'sikalens.app';
 export const SITE_HOST_COM = 'sikalens.com';
-export const SITE_URL = `https://${SITE_HOST}`;
-export const SITE_URL_COM = `https://${SITE_HOST_COM}`;
+export const SITE_URL = `https://www.${SITE_HOST}`;
+export const SITE_URL_COM = `https://www.${SITE_HOST_COM}`;
 
 /** Hosted legal pages for store listings (mirror of in-app Privacy / Terms). */
 export const PRIVACY_URL = `${SITE_URL}/privacy`;

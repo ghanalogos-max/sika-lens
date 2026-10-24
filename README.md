@@ -4,7 +4,7 @@ See where your mobile money goes. An Expo (React Native) expense and budget trac
 
 Everything is stored on the phone (SQLite). Nothing leaves the device.
 
-**Site:** [sikalens.app](https://sikalens.app) (primary) · [sikalens.com](https://sikalens.com) (redirect once DNS is live)  
+**Site:** [www.sikalens.app](https://www.sikalens.app) (primary) · [sikalens.com](https://sikalens.com) redirects here  
 **Support:** support@sikalens.app · **Privacy / Terms:** `/privacy` and `/terms` on the primary site (required for store listings)
 
 Static pages live in `website/` (home, privacy, terms, store badges, sitemap). Root `vercel.json` sets `outputDirectory` to `website` so a Vercel project linked to this repo serves the site (not a 404 from the Expo root).

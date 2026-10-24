@@ -44,6 +44,14 @@ export default function PrivacyScreen() {
       </Card>
 
       <Card style={{ gap: space.sm }}>
+        <AppText variant="label">Website</AppText>
+        <AppText tone="soft">
+          The sikalens.app marketing site may use Google Analytics for page-visit stats. That is separate from this app —
+          your ledger stays on this phone and is not sent to Analytics or our servers.
+        </AppText>
+      </Card>
+
+      <Card style={{ gap: space.sm }}>
         <AppText variant="label">Contact</AppText>
         <AppText tone="soft">Questions about privacy: {SUPPORT_EMAIL}</AppText>
         <AppText tone="soft">Publisher: {APP_OWNER}</AppText>

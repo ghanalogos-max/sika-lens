@@ -1,14 +1,14 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { Alert, Platform, Pressable, View } from 'react-native';
+import { Alert, Pressable, View } from 'react-native';
 
 import { usePremium } from '@/features/premium/PremiumProvider';
 import { PREMIUM_PLANS, planTitle, type PremiumPlan } from '@/features/premium/pricing';
+import { productIdForPlan } from '@/features/premium/products';
 import { AppText, Button, Card, Screen } from '@/ui/kit';
 import { fonts, radius, space, useTheme } from '@/ui/theme';
 
-const STORE = Platform.OS === 'ios' ? 'App Store' : 'Google Play';
 const PLAN_ORDER: PremiumPlan[] = ['weekly', 'monthly', 'annual'];
 
 const PERKS: { icon: React.ComponentProps<typeof Ionicons>['name']; title: string; body: string }[] = [
@@ -42,39 +42,68 @@ const PERKS: { icon: React.ComponentProps<typeof Ionicons>['name']; title: strin
 export default function PremiumScreen() {
   const t = useTheme();
   const router = useRouter();
-  const { isPremium, plan, expiresAt, subscribe, cancel } = usePremium();
+  const { isPremium, plan, expiresAt, purchase, restore, cancel, storeName, storeBillingLive } = usePremium();
   const [selected, setSelected] = useState<PremiumPlan>('monthly');
   const [busy, setBusy] = useState(false);
 
-  const purchase = () => {
+  const runPurchase = () => {
     const p = PREMIUM_PLANS[selected];
-    if (!__DEV__) {
-      Alert.alert('Coming soon', `Premium will be billed through ${STORE} in the next update.`);
+    if (!storeBillingLive && !__DEV__) {
+      Alert.alert('Coming soon', `Premium will be billed through ${storeName} in the next update.`);
       return;
     }
-    Alert.alert(
-      'Developer unlock',
-      `${p.labelUsd} ${p.period} (about ${p.labelGhs}).\n\nStore billing isn't wired up yet, so this unlocks Premium on this phone only (dev builds).`,
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: `Unlock · ${p.labelUsd}`,
-          onPress: async () => {
-            setBusy(true);
-            try {
-              await subscribe(selected);
+
+    const body = storeBillingLive
+      ? `${p.labelUsd} ${p.period} (about ${p.labelGhs}).\n\nYou will confirm the charge in ${storeName}.\nProduct: ${productIdForPlan(selected)}`
+      : `${p.labelUsd} ${p.period} (about ${p.labelGhs}).\n\nStore billing isn't live yet — this unlocks Premium on this phone only (dev builds).`;
+
+    Alert.alert(storeBillingLive ? 'Confirm Premium' : 'Developer unlock', body, [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: storeBillingLive ? `Subscribe · ${p.labelUsd}` : `Unlock · ${p.labelUsd}`,
+        onPress: async () => {
+          setBusy(true);
+          try {
+            const result = await purchase(selected);
+            if (result.ok) {
               router.back();
-            } finally {
-              setBusy(false);
+              return;
             }
-          },
+            if (result.reason === 'coming_soon') {
+              Alert.alert('Coming soon', result.message ?? `Billed through ${storeName} soon.`);
+              return;
+            }
+            if (result.reason === 'cancelled') return;
+            Alert.alert('Could not purchase', result.message ?? 'Try again later.');
+          } finally {
+            setBusy(false);
+          }
         },
-      ],
-    );
+      },
+    ]);
   };
 
-  const restore = () =>
-    Alert.alert('Restore purchases', `Purchases made with your ${STORE} account will be restored here once store billing is live.`);
+  const runRestore = async () => {
+    setBusy(true);
+    try {
+      const result = await restore();
+      if (result.ok) {
+        Alert.alert('Restored', 'Your Premium access is active again.');
+        return;
+      }
+      if (result.reason === 'coming_soon') {
+        Alert.alert('Restore purchases', result.message ?? `Available once ${storeName} billing is live.`);
+        return;
+      }
+      if (result.reason === 'not_found') {
+        Alert.alert('Nothing to restore', result.message ?? 'No Premium purchase found for this account.');
+        return;
+      }
+      Alert.alert('Could not restore', result.message ?? 'Try again later.');
+    } finally {
+      setBusy(false);
+    }
+  };
 
   if (isPremium) {
     return (
@@ -99,7 +128,7 @@ export default function PremiumScreen() {
           </View>
         ))}
         <AppText variant="caption" tone="soft" style={{ textAlign: 'center' }}>
-          Manage or cancel your subscription in {STORE} → Subscriptions.
+          Manage or cancel your subscription in {storeName} → Subscriptions.
         </AppText>
         {__DEV__ && (
           <Button
@@ -127,9 +156,14 @@ export default function PremiumScreen() {
           </AppText>
         </View>
         <AppText tone="soft">
-          Bank and MoMo logos stay free. Prices are listed in US dollars; {STORE} charges in your local currency (cedi or
-          dollars).
+          Bank and MoMo logos stay free. Prices are listed in US dollars; {storeName} charges in your local currency
+          (cedi or dollars).
         </AppText>
+        {!storeBillingLive && (
+          <AppText variant="caption" tone="soft">
+            Store billing is not live yet — production shows Coming soon.
+          </AppText>
+        )}
       </View>
 
       <View style={{ gap: space.md }}>
@@ -169,7 +203,13 @@ export default function PremiumScreen() {
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
                   <AppText variant="label">{p.title}</AppText>
                   {p.badge && (
-                    <View style={{ backgroundColor: t.gold, paddingHorizontal: 8, paddingVertical: 2, borderRadius: radius.full }}>
+                    <View
+                      style={{
+                        backgroundColor: t.gold,
+                        paddingHorizontal: 8,
+                        paddingVertical: 2,
+                        borderRadius: radius.full,
+                      }}>
                       <AppText variant="caption" style={{ color: '#fff', fontFamily: fonts.semibold }}>
                         {p.badge}
                       </AppText>
@@ -197,18 +237,18 @@ export default function PremiumScreen() {
       <Button
         title={busy ? 'Working…' : `Continue · ${PREMIUM_PLANS[selected].labelUsd}`}
         variant="gold"
-        onPress={purchase}
+        onPress={runPurchase}
         disabled={busy}
       />
-      <Pressable onPress={restore} style={{ alignSelf: 'center', padding: 8 }}>
+      <Pressable onPress={() => void runRestore()} style={{ alignSelf: 'center', padding: 8 }} disabled={busy}>
         <AppText variant="label" style={{ color: t.primary }}>
           Restore purchases
         </AppText>
       </Pressable>
       <AppText variant="caption" tone="soft" style={{ textAlign: 'center' }}>
-        Billed through {STORE} at {PREMIUM_PLANS.weekly.labelUsd}/week, {PREMIUM_PLANS.monthly.labelUsd}/month, or{' '}
-        {PREMIUM_PLANS.annual.labelUsd}/year. Renews until cancelled in {STORE} → Subscriptions. Logos belong to their
-        owners.
+        Billed through {storeName} at {PREMIUM_PLANS.weekly.labelUsd}/week, {PREMIUM_PLANS.monthly.labelUsd}/month, or{' '}
+        {PREMIUM_PLANS.annual.labelUsd}/year. Renews until cancelled in {storeName} → Subscriptions. Logos belong to
+        their owners.
       </AppText>
     </Screen>
   );

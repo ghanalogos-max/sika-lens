@@ -1,17 +1,32 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 
+import {
+  billingStatusLabel,
+  clearLocalPremium,
+  purchasePremium,
+  restorePremium,
+  STORE_BILLING_LIVE,
+  storeDisplayName,
+  type BillingResult,
+} from './billing';
 import { type PremiumPlan } from './pricing';
-import { activatePremium, clearPremium, loadPremium, type PremiumState } from './storage';
+import { loadPremium, type PremiumState } from './storage';
 
 type Ctx = {
   ready: boolean;
   isPremium: boolean;
   plan: PremiumPlan | null;
   expiresAt: string | null;
-  subscribe: (plan: PremiumPlan) => Promise<void>;
+  storeBillingLive: boolean;
+  storeName: string;
+  billingLabel: string;
+  purchase: (plan: PremiumPlan) => Promise<BillingResult>;
+  restore: () => Promise<BillingResult>;
   refresh: () => Promise<void>;
-  /** Dev / support only */
+  /** Dev / support only — does not cancel a real store subscription */
   cancel: () => Promise<void>;
+  /** @deprecated Use `purchase` — kept for older call sites */
+  subscribe: (plan: PremiumPlan) => Promise<void>;
 };
 
 const PremiumContext = createContext<Ctx>({
@@ -19,13 +34,23 @@ const PremiumContext = createContext<Ctx>({
   isPremium: false,
   plan: null,
   expiresAt: null,
-  subscribe: async () => {},
+  storeBillingLive: false,
+  storeName: 'Google Play',
+  billingLabel: '',
+  purchase: async () => ({ ok: false, reason: 'unavailable' }),
+  restore: async () => ({ ok: false, reason: 'unavailable' }),
   refresh: async () => {},
   cancel: async () => {},
+  subscribe: async () => {},
 });
 
 export function usePremium() {
   return useContext(PremiumContext);
+}
+
+function applyState(setState: (s: PremiumState) => void, result: BillingResult): BillingResult {
+  if (result.ok) setState(result.state);
+  return result;
 }
 
 export function PremiumProvider({ children }: { children: ReactNode }) {
@@ -43,14 +68,29 @@ export function PremiumProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
-  const subscribe = useCallback(async (plan: PremiumPlan) => {
-    setState(await activatePremium(plan));
+  const purchase = useCallback(async (plan: PremiumPlan) => {
+    return applyState(setState, await purchasePremium(plan));
+  }, []);
+
+  const restore = useCallback(async () => {
+    return applyState(setState, await restorePremium());
   }, []);
 
   const cancel = useCallback(async () => {
-    await clearPremium();
+    await clearLocalPremium();
     setState({ active: false, plan: null, expiresAt: null });
   }, []);
+
+  /** Legacy: unlock without surfacing BillingResult (dev flows). */
+  const subscribe = useCallback(
+    async (plan: PremiumPlan) => {
+      const result = await purchase(plan);
+      if (!result.ok && __DEV__) {
+        // keep old throw-free behaviour
+      }
+    },
+    [purchase],
+  );
 
   const value = useMemo(
     () => ({
@@ -58,11 +98,16 @@ export function PremiumProvider({ children }: { children: ReactNode }) {
       isPremium: state.active,
       plan: state.plan,
       expiresAt: state.expiresAt,
-      subscribe,
+      storeBillingLive: STORE_BILLING_LIVE,
+      storeName: storeDisplayName(),
+      billingLabel: billingStatusLabel(),
+      purchase,
+      restore,
       refresh,
       cancel,
+      subscribe,
     }),
-    [ready, state, subscribe, refresh, cancel],
+    [ready, state, purchase, restore, refresh, cancel, subscribe],
   );
 
   return <PremiumContext.Provider value={value}>{children}</PremiumContext.Provider>;

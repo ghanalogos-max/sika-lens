@@ -40,13 +40,25 @@ export async function loadPremium(): Promise<PremiumState> {
 export async function activatePremium(plan: PremiumPlan): Promise<PremiumState> {
   const expires = new Date();
   expires.setDate(expires.getDate() + daysForPlan(plan));
-  const state: PremiumState = {
+  return savePremium({
     active: true,
     plan,
     expiresAt: expires.toISOString(),
-  };
+  });
+}
+
+/** Persist an already-known entitlement (e.g. from the store / RevenueCat). */
+export async function savePremium(state: PremiumState): Promise<PremiumState> {
+  if (!state.active || !state.expiresAt) {
+    await clearPremium();
+    return INACTIVE;
+  }
   await SecureStore.setItemAsync(KEY, JSON.stringify(state));
-  return state;
+  return {
+    active: true,
+    plan: isPlan(state.plan) ? state.plan : 'monthly',
+    expiresAt: state.expiresAt,
+  };
 }
 
 export async function clearPremium(): Promise<void> {

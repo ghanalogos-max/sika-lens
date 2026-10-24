@@ -1,0 +1,7 @@
+# Keep EAS uploads small — not needed for the native Android bundle
+mockups/
+store/
+website/
+**/*.md
+agent-transcripts/
+.cursor/

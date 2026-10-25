@@ -21,11 +21,8 @@ export const PLAY_STORE_URL = `https://play.google.com/store/apps/details?id=${A
  * App Store listing. Replace APPLE_APP_ID with the numeric id from App Store Connect
  * (keep in sync with website/stores.js). Until then, search is the placeholder.
  */
-export const APPLE_APP_ID = 'APPLE_APP_ID';
-export const APP_STORE_URL =
-  APPLE_APP_ID !== 'APPLE_APP_ID'
-    ? `https://apps.apple.com/app/id${APPLE_APP_ID}`
-    : 'https://apps.apple.com/search?term=SikaLens';
+export const APPLE_APP_ID = '6826582927';
+export const APP_STORE_URL = `https://apps.apple.com/app/id${APPLE_APP_ID}`;
 
 export const SUPPORT_EMAIL = `support@${SITE_HOST}`;
 

@@ -19,6 +19,33 @@
     window.addEventListener('scroll', onScroll, { passive: true });
   }
 
+  /* —— In-page anchors clear sticky header —— */
+  function scrollToHash(hash, smooth) {
+    if (!hash || hash === '#') return false;
+    var target = document.querySelector(hash);
+    if (!target) return false;
+    var top = target.getBoundingClientRect().top + window.scrollY - 88;
+    window.scrollTo({ top: Math.max(0, top), behavior: smooth && !reduce ? 'smooth' : 'auto' });
+    return true;
+  }
+
+  document.addEventListener('click', function (event) {
+    var link = event.target.closest('a[href^="#"]');
+    if (!link) return;
+    var hash = link.getAttribute('href');
+    if (!hash || hash.length < 2) return;
+    if (scrollToHash(hash, true)) {
+      event.preventDefault();
+      if (history.replaceState) history.replaceState(null, '', hash);
+    }
+  });
+
+  if (window.location.hash) {
+    window.setTimeout(function () {
+      scrollToHash(window.location.hash, false);
+    }, 60);
+  }
+
   /* —— Scroll reveal —— */
   var reveals = document.querySelectorAll('.reveal');
   if (reduce) {

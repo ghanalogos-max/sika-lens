@@ -35,30 +35,32 @@
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
-    <header class="top">
-      <a class="brand" href="/">
-        <img class="brand-mark" src="/sikalens-logo.png" width="40" height="40" alt="" />
-        <span>SikaLens</span>
-      </a>
-      <button
-        class="nav-toggle"
-        type="button"
-        aria-expanded="false"
-        aria-controls="site-nav"
-        aria-label="Open menu">
-        <span class="nav-toggle-bars" aria-hidden="true"></span>
-      </button>
-      <nav id="site-nav" aria-label="Primary">
-        <a href="/#download">Download</a>
-        <a href="/#faq">FAQ</a>
-        <a href="/privacy" aria-current="page">Privacy</a>
-        <a href="/terms">Terms</a>
-        <a href="mailto:support@sikalens.app">Support</a>
-        <a href="https://www.celestialwebsolutions.net/" rel="noopener noreferrer">Celestial</a>
-      </nav>
+    <header class="top" data-site-header>
+      <div class="top-inner">
+        <a class="brand" href="/">
+          <img class="brand-mark" src="/sikalens-logo.png" width="40" height="40" alt="" />
+          <span>SikaLens</span>
+        </a>
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="site-nav"
+          aria-label="Open menu">
+          <span class="nav-toggle-bars" aria-hidden="true"></span>
+        </button>
+        <nav id="site-nav" aria-label="Primary">
+          <a href="/#screenshots">Screens</a>
+          <a href="/#features">Features</a>
+          <a href="/#faq">FAQ</a>
+          <a href="/privacy" aria-current="page">Privacy</a>
+          <a href="/terms">Terms</a>
+          <a class="nav-cta" href="/#download">Get the app</a>
+        </nav>
+      </div>
     </header>
 
-    <main class="doc" style="max-width: 720px; margin: 0 auto; padding: 24px 24px 64px">
+    <main id="main" class="doc" style="max-width: 720px; margin: 0 auto; padding: 24px 24px 64px">
       <h1>Privacy</h1>
       <p class="meta">Last updated for SikaLens by Celestial Web Solutions.</p>
 
@@ -101,18 +103,42 @@
     </main>
 
     <footer class="site-footer">
-      <div class="footer-links">
-        <a href="/">Home</a>
-        <a href="/#faq">FAQ</a>
-        <a href="/terms">Terms of use</a>
-        <a href="mailto:support@sikalens.app">Support</a>
-        <a href="https://www.celestialwebsolutions.net/" rel="noopener noreferrer">Celestial</a>
+      <div class="footer-panel">
+        <div class="footer-grid">
+          <div class="footer-brand-col">
+            <a class="footer-brand" href="/">
+              <img src="/sikalens-logo.png" width="40" height="40" alt="" />
+              <span>
+                <strong>SikaLens</strong>
+                <em>Offline MoMo &amp; bank tracker for Ghana</em>
+              </span>
+            </a>
+            <a class="footer-mail" href="mailto:support@sikalens.app">support@sikalens.app</a>
+          </div>
+          <div class="footer-col">
+            <h3>Legal</h3>
+            <a href="/privacy" aria-current="page">Privacy</a>
+            <a href="/terms">Terms</a>
+            <a href="mailto:support@sikalens.app">Support</a>
+          </div>
+          <div class="footer-col">
+            <h3>Product</h3>
+            <a href="/">Home</a>
+            <a href="/#faq">FAQ</a>
+            <a href="/#download">Download</a>
+          </div>
+          <div class="footer-col">
+            <h3>Publisher</h3>
+            <a href="https://www.celestialwebsolutions.net/" rel="noopener noreferrer">Celestial Web Solutions</a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p class="footer-copy">© <span id="y"></span> Celestial Web Solutions · Built in Ghana</p>
+          <a class="footer-top" href="#main">Back to top</a>
+        </div>
       </div>
-      <p class="footer-copy">
-        ©
-        <a href="https://www.celestialwebsolutions.net/" rel="noopener noreferrer">Celestial Web Solutions</a>
-      </p>
     </footer>
     <script src="/nav.js" defer></script>
+    <script src="/effects.js" defer></script>
   </body>
 </html>

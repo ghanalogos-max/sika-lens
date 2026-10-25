@@ -176,28 +176,29 @@
   <body>
     <a class="skip" href="#main">Skip to content</a>
 
-    <header class="top">
-      <a class="brand" href="/">
-        <img class="brand-mark" src="/sikalens-logo.png" width="40" height="40" alt="" />
-        <span>SikaLens</span>
-      </a>
-      <button
-        class="nav-toggle"
-        type="button"
-        aria-expanded="false"
-        aria-controls="site-nav"
-        aria-label="Open menu">
-        <span class="nav-toggle-bars" aria-hidden="true"></span>
-      </button>
-      <nav id="site-nav" aria-label="Primary">
-        <a href="#download">Download</a>
-        <a href="#screenshots">Screens</a>
-        <a href="#features">Features</a>
-        <a href="#faq">FAQ</a>
-        <a href="/privacy">Privacy</a>
-        <a href="/terms">Terms</a>
-        <a href="https://www.celestialwebsolutions.net/" rel="noopener noreferrer">Celestial</a>
-      </nav>
+    <header class="top" data-site-header>
+      <div class="top-inner">
+        <a class="brand" href="/">
+          <img class="brand-mark" src="/sikalens-logo.png" width="40" height="40" alt="" />
+          <span>SikaLens</span>
+        </a>
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="site-nav"
+          aria-label="Open menu">
+          <span class="nav-toggle-bars" aria-hidden="true"></span>
+        </button>
+        <nav id="site-nav" aria-label="Primary">
+          <a href="#screenshots">Screens</a>
+          <a href="#features">Features</a>
+          <a href="#how">How it works</a>
+          <a href="#faq">FAQ</a>
+          <a href="/privacy">Privacy</a>
+          <a class="nav-cta" href="#download">Get the app</a>
+        </nav>
+      </div>
     </header>
 
     <main id="main">
@@ -260,13 +261,15 @@
         </div>
 
         <div class="hero-visual reveal delay-1">
-          <img
-            class="hero-shot"
-            src="/store/screenshots/02-home.png"
-            width="720"
-            height="1558"
-            alt="SikaLens on iPhone — home screen with MoMo wallets"
-          />
+          <div class="device-stage">
+            <img
+              class="hero-shot"
+              src="/store/screenshots/02-home.png"
+              width="720"
+              height="1558"
+              alt="SikaLens on iPhone — home screen with MoMo wallets"
+            />
+          </div>
           <img class="hero-cedi" src="/cedi-200-bubble.png" width="280" height="280" alt="" />
         </div>
       </section>
@@ -286,33 +289,48 @@
         <p class="section-lead">
           Real iPhone captures — PIN lock, home, activity, budgets, insights, settings, and wallets.
         </p>
-        <div class="shot-rail" role="list">
+        <p class="shot-hint">Drag or scroll sideways to browse</p>
+        <div class="shot-rail" role="list" tabindex="0" aria-label="SikaLens iPhone screenshots">
           <figure class="shot-card" role="listitem">
-            <img src="/store/screenshots/01-lock.png" width="720" height="1558" alt="SikaLens — PIN-locked MoMo and bank records" loading="lazy" />
+            <div class="shot-frame">
+              <img src="/store/screenshots/01-lock.png" width="720" height="1558" alt="SikaLens — PIN-locked MoMo and bank records" loading="lazy" />
+            </div>
             <figcaption>PIN lock</figcaption>
           </figure>
           <figure class="shot-card" role="listitem">
-            <img src="/store/screenshots/02-home.png" width="720" height="1558" alt="SikaLens — see where your MoMo goes" loading="lazy" />
+            <div class="shot-frame">
+              <img src="/store/screenshots/02-home.png" width="720" height="1558" alt="SikaLens — see where your MoMo goes" loading="lazy" />
+            </div>
             <figcaption>Home</figcaption>
           </figure>
           <figure class="shot-card" role="listitem">
-            <img src="/store/screenshots/03-activity.png" width="720" height="1558" alt="SikaLens activity ledger" loading="lazy" />
+            <div class="shot-frame">
+              <img src="/store/screenshots/03-activity.png" width="720" height="1558" alt="SikaLens activity ledger" loading="lazy" />
+            </div>
             <figcaption>Activity</figcaption>
           </figure>
           <figure class="shot-card" role="listitem">
-            <img src="/store/screenshots/04-budgets.png" width="720" height="1558" alt="SikaLens budgets for Ghana spending" loading="lazy" />
+            <div class="shot-frame">
+              <img src="/store/screenshots/04-budgets.png" width="720" height="1558" alt="SikaLens budgets for Ghana spending" loading="lazy" />
+            </div>
             <figcaption>Budgets</figcaption>
           </figure>
           <figure class="shot-card" role="listitem">
-            <img src="/store/screenshots/05-insights.png" width="720" height="1558" alt="SikaLens monthly insights" loading="lazy" />
+            <div class="shot-frame">
+              <img src="/store/screenshots/05-insights.png" width="720" height="1558" alt="SikaLens monthly insights" loading="lazy" />
+            </div>
             <figcaption>Insights</figcaption>
           </figure>
           <figure class="shot-card" role="listitem">
-            <img src="/store/screenshots/06-settings.png" width="720" height="1558" alt="SikaLens settings and Ghana cedi" loading="lazy" />
+            <div class="shot-frame">
+              <img src="/store/screenshots/06-settings.png" width="720" height="1558" alt="SikaLens settings and Ghana cedi" loading="lazy" />
+            </div>
             <figcaption>Settings</figcaption>
           </figure>
           <figure class="shot-card" role="listitem">
-            <img src="/store/screenshots/07-wallets.png" width="720" height="1558" alt="SikaLens MoMo and bank wallets" loading="lazy" />
+            <div class="shot-frame">
+              <img src="/store/screenshots/07-wallets.png" width="720" height="1558" alt="SikaLens MoMo and bank wallets" loading="lazy" />
+            </div>
             <figcaption>Wallets</figcaption>
           </figure>
         </div>
@@ -333,7 +351,9 @@
             </ul>
           </div>
           <figure class="feature-shot">
-            <img src="/store/screenshots/03-activity.png" width="720" height="1558" alt="Paste MoMo SMS into SikaLens activity" loading="lazy" />
+            <div class="shot-frame">
+              <img src="/store/screenshots/03-activity.png" width="720" height="1558" alt="Paste MoMo SMS into SikaLens activity" loading="lazy" />
+            </div>
           </figure>
         </article>
 
@@ -351,7 +371,9 @@
             </ul>
           </div>
           <figure class="feature-shot">
-            <img src="/store/screenshots/07-wallets.png" width="720" height="1558" alt="SikaLens MoMo and bank wallets" loading="lazy" />
+            <div class="shot-frame">
+              <img src="/store/screenshots/07-wallets.png" width="720" height="1558" alt="SikaLens MoMo and bank wallets" loading="lazy" />
+            </div>
           </figure>
         </article>
 
@@ -368,7 +390,9 @@
             </ul>
           </div>
           <figure class="feature-shot">
-            <img src="/store/screenshots/05-insights.png" width="720" height="1558" alt="SikaLens monthly insights on iPhone" loading="lazy" />
+            <div class="shot-frame">
+              <img src="/store/screenshots/05-insights.png" width="720" height="1558" alt="SikaLens monthly insights on iPhone" loading="lazy" />
+            </div>
           </figure>
         </article>
       </section>
@@ -512,43 +536,50 @@
     </main>
 
     <footer class="site-footer">
-      <div class="footer-brand">
-        <img src="/sikalens-logo.png" width="36" height="36" alt="" />
-        <div>
-          <strong>SikaLens</strong>
-          <p>
-            By
+      <div class="footer-panel">
+        <div class="footer-grid">
+          <div class="footer-brand-col">
+            <a class="footer-brand" href="/">
+              <img src="/sikalens-logo.png" width="40" height="40" alt="" />
+              <span>
+                <strong>SikaLens</strong>
+                <em>Offline MoMo &amp; bank tracker for Ghana</em>
+              </span>
+            </a>
+            <p class="footer-blurb">
+              Keep a private GH₵ ledger on your phone — paste MoMo SMS, track wallets, lock with a PIN.
+            </p>
+            <a class="footer-mail" href="mailto:support@sikalens.app">support@sikalens.app</a>
+          </div>
+          <div class="footer-col">
+            <h3>Product</h3>
+            <a href="#download">Download</a>
+            <a href="#screenshots">Screens</a>
+            <a href="#features">Features</a>
+            <a href="#how">How it works</a>
+            <a href="#faq">FAQ</a>
+          </div>
+          <div class="footer-col">
+            <h3>Legal</h3>
+            <a href="/privacy">Privacy</a>
+            <a href="/terms">Terms</a>
+            <a href="mailto:support@sikalens.app">Support</a>
+          </div>
+          <div class="footer-col">
+            <h3>Publisher</h3>
             <a href="https://www.celestialwebsolutions.net/" rel="noopener noreferrer">Celestial Web Solutions</a>
-          </p>
+            <a href="https://www.celestialwebsolutions.net/" rel="noopener noreferrer">celestialwebsolutions.net</a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p class="footer-copy">© <span id="y"></span> Celestial Web Solutions · Built in Ghana</p>
+          <a class="footer-top" href="#main">Back to top</a>
         </div>
       </div>
-      <div class="footer-links">
-        <a href="#download">Download</a>
-        <a href="#screenshots">Screens</a>
-        <a href="#features">Features</a>
-        <a href="#faq">FAQ</a>
-        <a href="/privacy">Privacy</a>
-        <a href="/terms">Terms</a>
-        <a href="mailto:support@sikalens.app">Support</a>
-        <a href="https://www.celestialwebsolutions.net/" rel="noopener noreferrer">Celestial</a>
-      </div>
-      <p class="footer-copy">© <span id="y"></span> Celestial Web Solutions</p>
     </footer>
 
     <script src="/nav.js" defer></script>
     <script src="/stores.js" defer></script>
-    <script>
-      document.getElementById('y').textContent = new Date().getFullYear();
-      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        document.querySelectorAll('.reveal').forEach(function (el, i) {
-          el.style.animationDelay = 0.08 * i + 's';
-          el.classList.add('in');
-        });
-      } else {
-        document.querySelectorAll('.reveal').forEach(function (el) {
-          el.classList.add('in');
-        });
-      }
-    </script>
+    <script src="/effects.js" defer></script>
   </body>
 </html>

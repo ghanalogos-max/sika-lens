@@ -1,5 +1,5 @@
 (function () {
-  var header = document.querySelector('.top');
+  var header = document.querySelector('[data-site-header]') || document.querySelector('.top');
   var toggle = document.querySelector('.nav-toggle');
   var nav = document.getElementById('site-nav');
   if (!header || !toggle || !nav) return;
@@ -23,6 +23,12 @@
 
   document.addEventListener('keydown', function (event) {
     if (event.key === 'Escape') setOpen(false);
+  });
+
+  document.addEventListener('pointerdown', function (event) {
+    if (!header.classList.contains('nav-open')) return;
+    if (header.contains(event.target)) return;
+    setOpen(false);
   });
 
   window.addEventListener('resize', function () {

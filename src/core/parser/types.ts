@@ -1,8 +1,22 @@
 export const NETWORKS = ['mtn', 'telecel', 'airteltigo', 'unknown'] as const;
 export type Network = (typeof NETWORKS)[number];
 
-export const TX_TYPES = ['expense', 'send', 'receive', 'salary', 'cash_out', 'cash_in', 'airtime', 'bill', 'other'] as const;
+export const TX_TYPES = [
+  'expense',
+  'send',
+  'receive',
+  'salary',
+  'cash_out',
+  'cash_in',
+  'airtime',
+  'bill',
+  'transfer',
+  'other',
+] as const;
 export type TxType = (typeof TX_TYPES)[number];
+
+/** Types the user can pick on the generic add/edit form (wallet moves use Move money). */
+export const MANUAL_TX_TYPES = TX_TYPES.filter((t) => t !== 'transfer');
 
 /** How salary (or similar income) landed in the user's hands. */
 export const PAYMENT_CHANNELS = ['bank', 'momo', 'cash', 'other'] as const;

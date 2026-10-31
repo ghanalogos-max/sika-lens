@@ -4,6 +4,7 @@ import { Platform, StyleSheet, View, type StyleProp, type ViewStyle } from 'reac
 
 import {
   canUseLiquidGlass,
+  glassControlFill,
   glassFallbackFill,
   useReduceTransparency,
   useResolvedColorScheme,
@@ -21,14 +22,15 @@ type Props = {
 
 /**
  * Apple glass surface: native Liquid Glass on supported iOS, translucent
- * frosted fallback on older iOS, solid theme surface elsewhere.
+ * frosted fallback on older iOS / Android, solid when Reduce Transparency is on.
  */
 export function GlassSurface({ children, style, interactive, solid }: Props) {
   const t = useTheme();
   const scheme = useResolvedColorScheme();
   const reduce = useReduceTransparency();
+  const dark = scheme === 'dark';
   const liquid = !solid && !reduce && canUseLiquidGlass();
-  const frostedIos = !solid && !reduce && !liquid && Platform.OS === 'ios';
+  const frosted = !solid && !reduce && !liquid;
 
   const shared: ViewStyle = {
     borderRadius: radius.lg,
@@ -37,7 +39,7 @@ export function GlassSurface({ children, style, interactive, solid }: Props) {
   if (liquid) {
     return (
       <GlassView
-        glassEffectStyle="regular"
+        glassEffectStyle={interactive ? 'clear' : 'regular'}
         isInteractive={interactive}
         colorScheme={scheme}
         style={[shared, style]}>
@@ -46,19 +48,21 @@ export function GlassSurface({ children, style, interactive, solid }: Props) {
     );
   }
 
-  if (frostedIos) {
+  if (frosted) {
+    const fill = interactive ? glassControlFill(dark) : glassFallbackFill(dark);
     return (
       <View
         style={[
           shared,
           {
-            backgroundColor: glassFallbackFill(scheme === 'dark'),
+            backgroundColor: fill,
             borderWidth: StyleSheet.hairlineWidth,
-            borderColor: scheme === 'dark' ? 'rgba(255,255,255,0.12)' : 'rgba(28,36,48,0.08)',
+            borderColor: dark ? 'rgba(255,255,255,0.14)' : 'rgba(28,36,48,0.1)',
             shadowColor: '#1C2430',
-            shadowOpacity: 0.08,
-            shadowRadius: 16,
-            shadowOffset: { width: 0, height: 6 },
+            shadowOpacity: interactive ? 0.06 : 0.1,
+            shadowRadius: interactive ? 10 : 18,
+            shadowOffset: { width: 0, height: interactive ? 3 : 8 },
+            elevation: Platform.OS === 'android' ? (interactive ? 2 : 3) : 0,
           },
           style,
         ]}>

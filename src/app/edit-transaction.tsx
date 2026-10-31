@@ -1,9 +1,16 @@
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { Alert } from 'react-native';
 
-import { getTransaction, updateTransaction } from '@/features/transactions/repository';
+import {
+  deleteTransaction,
+  getTransaction,
+  getTransferPair,
+  updateTransaction,
+  updateTransfer,
+} from '@/features/transactions/repository';
 import { TransactionForm } from '@/features/transactions/TransactionForm';
-import { AppText, Screen } from '@/ui/kit';
+import { TransferForm } from '@/features/transactions/TransferForm';
+import { AppText, Button, Screen } from '@/ui/kit';
 
 export default function EditTransaction() {
   const router = useRouter();
@@ -16,6 +23,59 @@ export default function EditTransaction() {
       <Screen>
         <Stack.Screen options={{ title: 'Edit transaction' }} />
         <AppText tone="out">That transaction was not found. It may have been deleted.</AppText>
+      </Screen>
+    );
+  }
+
+  if (tx.type === 'transfer' && tx.transferGroupId) {
+    const pair = getTransferPair(tx.transferGroupId);
+    if (!pair) {
+      return (
+        <Screen>
+          <Stack.Screen options={{ title: 'Edit transfer' }} />
+          <AppText tone="out">That transfer was not found. It may have been deleted.</AppText>
+        </Screen>
+      );
+    }
+    return (
+      <Screen>
+        <Stack.Screen options={{ title: 'Edit transfer', presentation: 'modal' }} />
+        <TransferForm
+          submitLabel="Save transfer"
+          initial={{
+            fromAccountId: pair.out.accountId,
+            toAccountId: pair.in.accountId,
+            amount: pair.out.amount,
+            fee: pair.out.fee,
+            note: pair.out.note,
+            occurredAt: pair.out.occurredAt,
+          }}
+          onSubmit={(values) => {
+            const result = updateTransfer({ ...values, groupId: tx.transferGroupId! });
+            if (!result.ok) {
+              Alert.alert('Could not save', result.reason);
+              return;
+            }
+            router.back();
+          }}
+        />
+        <Button
+          title="Remove transfer"
+          variant="quiet"
+          onPress={() => {
+            Alert.alert('Remove transfer?', 'Both sides of this move will be deleted and balances updated.', [
+              { text: 'Cancel', style: 'cancel' },
+              {
+                text: 'Remove',
+                style: 'destructive',
+                onPress: () => {
+                  deleteTransaction(tx.id);
+                  router.back();
+                },
+              },
+            ]);
+          }}
+        />
       </Screen>
     );
   }

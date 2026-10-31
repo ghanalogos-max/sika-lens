@@ -381,7 +381,7 @@ export default function Home() {
       </Card>
 
       <View style={{ flexDirection: 'row', gap: space.sm }}>
-        <WideCta icon="qr-code-outline" label="Log transfer" onPress={() => router.push('/add-transaction')} />
+        <WideCta icon="swap-horizontal-outline" label="Move money" onPress={() => router.push('/add-transfer')} />
         <WideCta icon="sparkles-outline" label="Live rates" tone="gold" onPress={() => router.push('/convert')} />
       </View>
 

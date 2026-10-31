@@ -20,7 +20,8 @@ import {
   toDateInput,
 } from '@/lib/dates';
 import { BrandMark } from '@/ui/BrandMark';
-import { AppText, Button, Card, Chip, Field, Screen } from '@/ui/kit';
+import { DateField } from '@/ui/DateField';
+import { AppText, Button, Card, Chip, Screen } from '@/ui/kit';
 import { MonthPager } from '@/ui/MonthPager';
 import { SelectField } from '@/ui/SelectField';
 import { space } from '@/ui/theme';
@@ -32,7 +33,7 @@ const ALL_ACCOUNTS = '__all__';
 const PROBLEM: Record<'empty' | 'sharing_unavailable' | 'bad_range' | 'save_cancelled' | 'save_failed', string> = {
   empty: 'There is nothing to export for that period and account.',
   sharing_unavailable: 'This phone cannot open the share sheet.',
-  bad_range: 'Check the dates. Use YYYY-MM-DD, for example 2026-10-01.',
+  bad_range: 'Check the From and To dates — To should be on or after From.',
   save_cancelled: 'Save cancelled. Choose a folder to keep the file on this phone.',
   save_failed: 'Could not save the file. Try again, or use Share instead.',
 };
@@ -176,22 +177,10 @@ export default function ExportScreen() {
         {mode === 'range' && (
           <View style={{ gap: space.sm }}>
             <AppText variant="caption" tone="soft">
-              Inclusive dates (YYYY-MM-DD). MoMo and bank entries on both days are included.
+              Inclusive range — MoMo and bank entries on both days are included.
             </AppText>
-            <Field
-              label="From"
-              value={from}
-              onChangeText={setFrom}
-              keyboardType="numbers-and-punctuation"
-              placeholder="2026-10-01"
-            />
-            <Field
-              label="To"
-              value={to}
-              onChangeText={setTo}
-              keyboardType="numbers-and-punctuation"
-              placeholder="2026-10-31"
-            />
+            <DateField label="From" value={from} onChange={setFrom} />
+            <DateField label="To" value={to} onChange={setTo} />
           </View>
         )}
 

@@ -66,6 +66,7 @@ export function buildSnapshot(now: Date = new Date(), profileName: string | null
         rawSms: transactions.rawSms,
         paymentChannel: transactions.paymentChannel,
         employer: transactions.employer,
+        transferGroupId: transactions.transferGroupId,
         createdAt: transactions.createdAt,
       })
       .from(transactions)
@@ -116,7 +117,13 @@ export function applySnapshot(snap: LedgerSnapshot): void {
       tx.insert(accounts).values(a).run();
     }
     for (const t of snap.transactions) {
-      tx.insert(transactions).values({ ...t, categoryId: mapCategory(t.categoryId) }).run();
+      tx.insert(transactions)
+        .values({
+          ...t,
+          categoryId: mapCategory(t.categoryId),
+          transferGroupId: 'transferGroupId' in t ? (t.transferGroupId ?? null) : null,
+        })
+        .run();
     }
     for (const b of snap.budgets) {
       const categoryId = categoryIds.get(b.categoryId);

@@ -1,12 +1,23 @@
 import { View } from 'react-native';
 
 import { BrandMark } from '@/ui/BrandMark';
-import { brandsByKind } from '@/ui/brands';
+import { banksBySegment } from '@/ui/brands';
 import { Field } from '@/ui/kit';
 import { SelectField, type SelectOption } from '@/ui/SelectField';
 
-const BANKS = brandsByKind('bank');
+const COMMERCIAL = banksBySegment('commercial');
+const COMMUNITY = banksBySegment('community');
 const CUSTOM_ID = '__custom__';
+
+function bankOption(b: (typeof COMMERCIAL)[number]): SelectOption {
+  return {
+    id: b.id,
+    label: b.name,
+    sublabel: b.segment === 'community' ? 'Community / rural bank' : b.short !== b.name ? b.short : undefined,
+    searchText: [b.name, b.short, b.segment === 'community' ? 'community rural' : '', ...(b.aliases ?? [])].join(' '),
+    leading: <BrandMark brand={b} size="sm" />,
+  };
+}
 
 export function BankPicker({
   bankId,
@@ -18,14 +29,17 @@ export function BankPicker({
   onChange: (bankId: string, customName: string) => void;
 }) {
   const options: SelectOption[] = [
-    ...BANKS.map((b) => ({
-      id: b.id,
-      label: b.name,
-      sublabel: b.short !== b.name ? b.short : undefined,
-      searchText: [b.name, b.short, ...(b.aliases ?? [])].join(' '),
-      leading: <BrandMark brand={b} size="sm" />,
-    })),
-    { id: CUSTOM_ID, label: 'Another bank', sublabel: 'Type the name yourself', icon: 'add-circle-outline' as const },
+    { id: '__hdr_commercial__', label: 'Commercial banks', section: true },
+    ...COMMERCIAL.map(bankOption),
+    { id: '__hdr_community__', label: 'Community & rural banks', section: true },
+    ...COMMUNITY.map(bankOption),
+    {
+      id: CUSTOM_ID,
+      label: 'Another bank',
+      sublabel: 'Credit union, susu, or bank not listed',
+      icon: 'add-circle-outline' as const,
+      searchText: 'another custom credit union susu rural community',
+    },
   ];
 
   return (
@@ -54,7 +68,7 @@ export function BankPicker({
 
 export function resolveBankName(bankId: string, customName: string): string | null {
   if (bankId === CUSTOM_ID) return customName.trim() || null;
-  return BANKS.find((b) => b.id === bankId)?.name ?? null;
+  return [...COMMERCIAL, ...COMMUNITY].find((b) => b.id === bankId)?.name ?? null;
 }
 
 export function bankBrandIdForMark(bankId: string): string {

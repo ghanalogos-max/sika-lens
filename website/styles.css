@@ -1092,13 +1092,6 @@ main {
   font-size: 0.95rem;
 }
 
-.plan-ghs {
-  margin: 6px 0 12px;
-  color: var(--primary-deep);
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-
 .plan-blurb {
   margin: 0;
   color: var(--soft);

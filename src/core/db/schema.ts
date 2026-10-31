@@ -64,6 +64,11 @@ export const transactions = sqliteTable(
     employer: text('employer'),
     /** Wallet this entry credited or debited (null for older rows). */
     accountId: integer('account_id').references(() => accounts.id, { onDelete: 'set null' }),
+    /**
+     * Shared id for a wallet-to-wallet move (two rows: out + in).
+     * Null for normal MoMo / bank / cash entries.
+     */
+    transferGroupId: text('transfer_group_id'),
     createdAt: text('created_at')
       .notNull()
       .$defaultFn(() => new Date().toISOString()),
@@ -72,6 +77,7 @@ export const transactions = sqliteTable(
     // Same network + same transaction ID = same transaction. NULL refs never collide.
     uniqueIndex('transactions_network_ref_uq').on(t.network, t.externalRef),
     index('transactions_occurred_idx').on(t.occurredAt),
+    index('transactions_transfer_group_idx').on(t.transferGroupId),
   ],
 );
 

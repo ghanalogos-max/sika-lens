@@ -21,6 +21,7 @@ const tx = (over: Partial<Transaction> = {}): Transaction => ({
   paymentChannel: null,
   employer: null,
   accountId: null,
+  transferGroupId: null,
   createdAt: '2026-10-20T14:33:00.000Z',
   ...over,
 });
@@ -44,11 +45,14 @@ describe('csvCell', () => {
 });
 
 describe('toCsv', () => {
-  it('writes a BOM, metadata, a header, and CRLF line endings', () => {
+  it('writes a BOM, metadata, summary, a header, and CRLF line endings', () => {
     const csv = toCsv([tx()], new Map([[3, 'Transport']]), { currencyCode: 'GHS', periodLabel: 'October 2026' });
     expect(csv.startsWith('\uFEFF')).toBe(true);
     expect(csv).toContain('SikaLens export');
     expect(csv).toContain('Celestial Web Solutions');
+    expect(csv).toContain('Summary');
+    expect(csv).toContain('Received (GHS)');
+    expect(csv).toContain('Net (GHS)');
     expect(csv).toContain(csvColumns('GHS').join(','));
     expect(csv.includes('\r\n')).toBe(true);
   });

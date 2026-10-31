@@ -1,4 +1,4 @@
-import { and, desc, eq, gte, lt, or, sql, type SQL } from 'drizzle-orm';
+import { and, desc, eq, gte, lt, ne, or, sql, type SQL } from 'drizzle-orm';
 
 import { db } from '@/core/db/client';
 import { categories, transactions } from '@/core/db/schema';
@@ -8,9 +8,10 @@ import { daysInMonth, monthBounds } from '@/lib/dates';
  * What counts as spending?
  *  - Every outgoing amount: sends, expenses, airtime, bills, cash-out, and other.
  *  - Cash-out is spent (money leaves the wallet to cash).
+ *  - Wallet-to-wallet transfers are not spent (money stays yours).
  *  - Income is money received from people, plus salary (not cash you deposited yourself).
  */
-const isSpend = eq(transactions.direction, 'out');
+const isSpend = and(eq(transactions.direction, 'out'), ne(transactions.type, 'transfer'));
 const isIncome = sql`(${transactions.type} = 'receive' or ${transactions.type} = 'salary')`;
 
 const inMonth = (month: string) => {
@@ -53,7 +54,7 @@ function asPesewas(value: number | string | null | undefined): number {
 export function monthSummary(month: string, smsSince?: string | null): MonthSummary {
   const row = db
     .select({
-      spent: sql<number>`coalesce(sum(case when ${isSpend} then ${transactions.amount} else 0 end), 0)`,
+      spent: sql<number>`coalesce(sum(case when ${transactions.direction} = 'out' and ${transactions.type} != 'transfer' then ${transactions.amount} else 0 end), 0)`,
       sent: sql<number>`coalesce(sum(case when ${transactions.type} = 'send' then ${transactions.amount} else 0 end), 0)`,
       received: sql<number>`coalesce(sum(case when ${isIncome} then ${transactions.amount} else 0 end), 0)`,
       fees: sql<number>`coalesce(sum(${transactions.fee}), 0)`,

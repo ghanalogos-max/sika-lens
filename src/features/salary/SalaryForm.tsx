@@ -10,6 +10,7 @@ import { daysAgo, parseDateTime, toDateInput, toTimeInput } from '@/lib/dates';
 import { BrandMark } from '@/ui/BrandMark';
 import { brandById } from '@/ui/brands';
 import { CHANNEL_ICONS } from '@/ui/categoryIcons';
+import { DateField, TimeField } from '@/ui/DateField';
 import { AppText, Button, Chip, Field } from '@/ui/kit';
 import { SelectField } from '@/ui/SelectField';
 import { radius, space, useTheme } from '@/ui/theme';
@@ -250,10 +251,10 @@ export function SalaryForm({
         </View>
         <View style={{ flexDirection: 'row', gap: 12 }}>
           <View style={{ flex: 2 }}>
-            <Field label="Date (YYYY-MM-DD)" value={date} onChangeText={setDate} keyboardType="numbers-and-punctuation" />
+            <DateField label="Date" value={date} onChange={setDate} />
           </View>
           <View style={{ flex: 1 }}>
-            <Field label="Time (24h)" value={time} onChangeText={setTime} keyboardType="numbers-and-punctuation" />
+            <TimeField label="Time" value={time} onChange={setTime} />
           </View>
         </View>
       </View>

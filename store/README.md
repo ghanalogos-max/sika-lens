@@ -1,5 +1,12 @@
 # Store listing assets
 
+Graphics for Google Play and the App Store. Full console walkthroughs:
+
+| Store | Guide |
+|-------|--------|
+| **Google Play** (AAB, Premium, listing) | [`docs/PLAY_STORE.md`](../docs/PLAY_STORE.md) |
+| **App Store** (IPA, IAP, review) | [`docs/APP_STORE.md`](../docs/APP_STORE.md) |
+
 Generated from device screenshots in `/mockups` plus the app icon.
 
 ## Google Play
@@ -12,15 +19,24 @@ Generated from device screenshots in `/mockups` plus the app icon.
 
 Upload order suggestion: lock → home → activity → insights → budgets → MoMo → bank → settings → currency.
 
+```powershell
+python scripts/build_store_assets.py
+```
+
 ## Apple App Store
 
 | Asset | File | Spec |
 |-------|------|------|
 | App icon | `appstore/icon-1024.png` | 1024×1024 PNG, no transparency |
-| iPhone 6.7" screenshots | `appstore/screenshots-6.7/*.png` | 1290×2796 |
+| iPhone 6.7″ screenshots | `appstore/screenshots-6.7/*.png` | 1290×2796 |
+| iPhone 6.1″ / 6.3″ screenshots | `appstore/screenshots-6.1/*.png` | 1206×2622 |
+| IAP review shots | `iap-review/*.png` | See `iap-review/LOCALIZATION.md` |
 
-Also upload the same set scaled for other required sizes in App Store Connect if prompted (use these as the primary 6.7" set).
+```powershell
+python scripts/build_marketing_screenshots.py
+python scripts/build_iap_review_shots.py
+```
 
 ## Website
 
-Copies used by the marketing site live in `website/store/`.
+Copies used by the marketing site live in `website/store/` (including QR codes for get-app).

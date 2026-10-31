@@ -4,7 +4,14 @@ import { View } from 'react-native';
 import type { Account, NewTransaction } from '@/core/db/schema';
 import { pesewasToInput, tryToPesewas } from '@/core/money/money';
 import { directionFor } from '@/core/parser/common';
-import { NETWORKS, PAYMENT_CHANNELS, TX_TYPES, type Network, type PaymentChannel, type TxType } from '@/core/parser/types';
+import {
+  MANUAL_TX_TYPES,
+  NETWORKS,
+  PAYMENT_CHANNELS,
+  type Network,
+  type PaymentChannel,
+  type TxType,
+} from '@/core/parser/types';
 import { listAccounts, preferMomoAccount } from '@/features/accounts/repository';
 import { useFormatMoney } from '@/features/currency/useFormatMoney';
 import { BankPicker, resolveBankName } from '@/features/salary/BankPicker';
@@ -14,6 +21,7 @@ import { daysAgo, parseDateTime, toDateInput, toTimeInput } from '@/lib/dates';
 import { BrandMark } from '@/ui/BrandMark';
 import { brandById } from '@/ui/brands';
 import { CHANNEL_ICONS, TYPE_ICONS } from '@/ui/categoryIcons';
+import { DateField, TimeField } from '@/ui/DateField';
 import { AppText, Button, Chip, Field } from '@/ui/kit';
 import { SelectField } from '@/ui/SelectField';
 import { CategoryField } from './CategoryField';
@@ -257,7 +265,7 @@ export function TransactionForm({
         keyboardType="decimal-pad"
         placeholder="0.00"
         icon="cash-outline"
-        hint="Enter the full amount of this transfer"
+        hint="Enter the full amount"
       />
       {type !== 'salary' && (
         <Field label={`Network fee (${money.symbol}), if any`} value={fee} onChangeText={setFee} keyboardType="decimal-pad" placeholder="0.00" />
@@ -295,7 +303,7 @@ export function TransactionForm({
 
       <SelectField
         label="What happened"
-        options={TX_TYPES.map((x) => ({ id: x, label: TYPE_LABEL[x], icon: TYPE_ICONS[x] }))}
+        options={MANUAL_TX_TYPES.map((x) => ({ id: x, label: TYPE_LABEL[x], icon: TYPE_ICONS[x] }))}
         value={type}
         onChange={(id) => pickType(id as TxType)}
       />
@@ -395,10 +403,10 @@ export function TransactionForm({
         </View>
         <View style={{ flexDirection: 'row', gap: 12 }}>
           <View style={{ flex: 2 }}>
-            <Field label="Date (YYYY-MM-DD)" value={date} onChangeText={setDate} keyboardType="numbers-and-punctuation" />
+            <DateField label="Date" value={date} onChange={setDate} />
           </View>
           <View style={{ flex: 1 }}>
-            <Field label="Time (24h)" value={time} onChangeText={setTime} keyboardType="numbers-and-punctuation" />
+            <TimeField label="Time" value={time} onChange={setTime} />
           </View>
         </View>
       </View>

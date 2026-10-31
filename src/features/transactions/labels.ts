@@ -9,6 +9,7 @@ export const TYPE_LABEL: Record<TxType, string> = {
   cash_in: 'Cash in',
   airtime: 'Airtime / data',
   bill: 'Bill',
+  transfer: 'Transfer',
   other: 'Other',
 };
 

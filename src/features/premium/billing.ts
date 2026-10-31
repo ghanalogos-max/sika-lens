@@ -1,14 +1,21 @@
 import { Platform } from 'react-native';
 
-import { daysForPlan, type PremiumPlan } from './pricing';
-import { PREMIUM_PRODUCT_IDS, productIdForPlan } from './products';
+import { approxExpiryDate, type PremiumPlan } from './pricing';
+import {
+  configureRevenueCat,
+  purchasePlanOnStore,
+  restorePurchasesOnStore,
+  revenueCatApiKey,
+  syncPremiumFromStore,
+} from './revenueCat';
 import { activatePremium, clearPremium, loadPremium, savePremium, type PremiumState } from './storage';
 
 /**
- * Flip to `true` only after Play + App Store subscription products exist and a real
- * IAP SDK (e.g. RevenueCat) is configured in `purchaseWithStore` / `restoreWithStore`.
+ * Live store billing via RevenueCat + App Store / Play subscriptions.
+ * Requires public SDK keys (see docs/APP_STORE.md) and products:
+ * premium_weekly / premium_monthly / premium_annual.
  */
-export const STORE_BILLING_LIVE = false;
+export const STORE_BILLING_LIVE = true;
 
 export type BillingFailure =
   | 'coming_soon'
@@ -27,14 +34,31 @@ export function storeDisplayName(): string {
 
 /** Human-readable status for the Premium screen. */
 export function billingStatusLabel(): string {
-  if (STORE_BILLING_LIVE) return `Billed through ${storeDisplayName()}`;
+  if (STORE_BILLING_LIVE) {
+    if (!revenueCatApiKey() && (Platform.OS === 'ios' || Platform.OS === 'android')) {
+      return 'Store billing misconfigured — missing RevenueCat API key';
+    }
+    return `Billed through ${storeDisplayName()}`;
+  }
   if (__DEV__) return 'Store billing not live — dev unlock only';
   return `Coming soon — billed through ${storeDisplayName()}`;
 }
 
+/** Configure SDK and refresh local Premium mirror from the store. */
+export async function refreshStorePremium(): Promise<PremiumState> {
+  if (!STORE_BILLING_LIVE) return loadPremium();
+  if (Platform.OS !== 'ios' && Platform.OS !== 'android') return loadPremium();
+  try {
+    await configureRevenueCat();
+    return await syncPremiumFromStore();
+  } catch {
+    return loadPremium();
+  }
+}
+
 /**
  * Purchase a plan.
- * - Live store: call `purchaseWithStore` (replace stub with RevenueCat / IAP).
+ * - Live store: RevenueCat → StoreKit / Play Billing.
  * - Dev + not live: local SecureStore unlock for QA.
  * - Production + not live: coming_soon (no charge).
  */
@@ -81,31 +105,16 @@ export async function clearLocalPremium(): Promise<void> {
   await clearPremium();
 }
 
-/**
- * Placeholder for real IAP. Replace with RevenueCat `Purchases.purchasePackage`
- * (or react-native-iap) using `productIdForPlan(plan)` / `PREMIUM_PRODUCT_IDS`.
- */
 async function purchaseWithStore(plan: PremiumPlan): Promise<BillingResult> {
-  const productId = productIdForPlan(plan);
-  void productId;
-  void PREMIUM_PRODUCT_IDS;
-  // Example shape after RevenueCat:
-  // const { customerInfo } = await Purchases.purchasePackage(pkg);
-  // if (customerInfo.entitlements.active[PREMIUM_ENTITLEMENT_ID]) { ... }
-  return {
-    ok: false,
-    reason: 'unavailable',
-    message: 'Store billing flag is on but no IAP SDK is configured yet.',
-  };
+  const result = await purchasePlanOnStore(plan);
+  if (result.ok) return { ok: true, state: result.state, source: 'store' };
+  return { ok: false, reason: result.reason, message: result.message };
 }
 
 async function restoreWithStore(): Promise<BillingResult> {
-  // Example: const info = await Purchases.restorePurchases();
-  return {
-    ok: false,
-    reason: 'unavailable',
-    message: 'Store billing flag is on but no IAP SDK is configured yet.',
-  };
+  const result = await restorePurchasesOnStore();
+  if (result.ok) return { ok: true, state: result.state, source: 'store' };
+  return { ok: false, reason: result.reason, message: result.message };
 }
 
 /** Apply a successful store entitlement into local SecureStore mirror (offline gates). */
@@ -118,7 +127,5 @@ export async function mirrorStoreEntitlement(plan: PremiumPlan, expiresAtIso: st
 }
 
 export function approxExpiryIso(plan: PremiumPlan): string {
-  const expires = new Date();
-  expires.setDate(expires.getDate() + daysForPlan(plan));
-  return expires.toISOString();
+  return approxExpiryDate(plan).toISOString();
 }

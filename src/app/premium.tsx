@@ -5,7 +5,6 @@ import { Alert, Pressable, View } from 'react-native';
 
 import { usePremium } from '@/features/premium/PremiumProvider';
 import { PREMIUM_PLANS, planTitle, type PremiumPlan } from '@/features/premium/pricing';
-import { productIdForPlan } from '@/features/premium/products';
 import { AppText, Button, Card, Screen } from '@/ui/kit';
 import { fonts, radius, space, useTheme } from '@/ui/theme';
 
@@ -37,6 +36,11 @@ const PERKS: { icon: React.ComponentProps<typeof Ionicons>['name']; title: strin
     title: 'Export',
     body: 'PDF or Excel with date ranges — share or save on this phone.',
   },
+  {
+    icon: 'notifications-outline',
+    title: 'Unlimited renewal reminders',
+    body: 'Free tracks 2 (Spotify, ChatGPT, …). Premium tracks every subscription renewal.',
+  },
 ];
 
 export default function PremiumScreen() {
@@ -54,8 +58,8 @@ export default function PremiumScreen() {
     }
 
     const body = storeBillingLive
-      ? `${p.labelUsd} ${p.period} (about ${p.labelGhs}).\n\nYou will confirm the charge in ${storeName}.\nProduct: ${productIdForPlan(selected)}`
-      : `${p.labelUsd} ${p.period} (about ${p.labelGhs}).\n\nStore billing isn't live yet — this unlocks Premium on this phone only (dev builds).`;
+      ? `${p.labelUsd} ${p.period}.\n\nYou will confirm the charge in ${storeName}.`
+      : `${p.labelUsd} ${p.period}.\n\nStore billing isn't live yet — this unlocks Premium on this phone only (dev builds).`;
 
     Alert.alert(storeBillingLive ? 'Confirm Premium' : 'Developer unlock', body, [
       { text: 'Cancel', style: 'cancel' },
@@ -118,7 +122,19 @@ export default function PremiumScreen() {
           </View>
           <AppText tone="soft">
             {planTitle(plan)} plan
-            {expiresAt ? ` · renews ${expiresAt.slice(0, 10)}` : ''}
+            {expiresAt
+              ? (() => {
+                  const end = new Date(expiresAt);
+                  const daysLeft = Math.round((end.getTime() - Date.now()) / 86_400_000);
+                  const dateLabel = end.toISOString().slice(0, 10);
+                  // App Store sandbox accelerates renewals (yearly ≈ 1 hour), so the next charge
+                  // can land tomorrow even on a Yearly plan. Production uses the real period.
+                  if (plan === 'annual' && daysLeft >= 0 && daysLeft < 14) {
+                    return ` · next sandbox renewal ${dateLabel} (TestFlight; live yearly renews in ~1 year)`;
+                  }
+                  return ` · renews ${dateLabel}`;
+                })()
+              : ''}
           </AppText>
         </Card>
         {PERKS.map((p) => (
@@ -156,14 +172,8 @@ export default function PremiumScreen() {
           </AppText>
         </View>
         <AppText tone="soft">
-          Bank and MoMo logos stay free. Prices are listed in US dollars; {storeName} charges in your local currency
-          (cedi or dollars).
+          Bank and MoMo logos stay free. Prices are listed in US dollars; {storeName} charges in your local currency.
         </AppText>
-        {!storeBillingLive && (
-          <AppText variant="caption" tone="soft">
-            Store billing is not live yet — production shows Coming soon.
-          </AppText>
-        )}
       </View>
 
       <View style={{ gap: space.md }}>
@@ -218,9 +228,6 @@ export default function PremiumScreen() {
                 </View>
                 <AppText variant="caption" tone="soft">
                   {p.blurb}
-                </AppText>
-                <AppText variant="caption" tone="soft">
-                  About {p.labelGhs}
                 </AppText>
               </View>
               <View style={{ alignItems: 'flex-end' }}>

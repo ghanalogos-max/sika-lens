@@ -10,10 +10,11 @@ const C = {
   lagoonSoft: '0.843 0.937 0.918',
   gold: '0.659 0.420 0.071',
   goldSoft: '0.965 0.906 0.784',
-  paper: '0.965 0.953 0.918',
+  paper: '0.969 0.976 0.980',
+  paperAlt: '0.941 0.961 0.957',
   ink: '0.110 0.141 0.188',
   inkSoft: '0.431 0.459 0.431',
-  line: '0.906 0.882 0.831',
+  line: '0.820 0.855 0.847',
   moneyIn: '0.110 0.541 0.337',
   moneyOut: '0.831 0.325 0.243',
   white: '1 1 1',
@@ -21,9 +22,9 @@ const C = {
 
 const PAGE_W = 595;
 const PAGE_H = 842;
-const LEFT = 48;
-const RIGHT = PAGE_W - 48;
-const HEADER_H = 96;
+const LEFT = 40;
+const RIGHT = PAGE_W - 40;
+const HEADER_H = 108;
 
 /** Unicode characters outside Latin-1 that WinAnsiEncoding still carries (byte value). */
 const WIN_ANSI_EXTRA: Record<string, number> = {
@@ -154,62 +155,82 @@ function buildPdf(streams: string[], meta: { title: string; period: string }): s
 }
 
 /**
- * Brand-first header: lagoon plane, SikaLens as the hero wordmark,
- * publisher under the name — period and meta live on the page body, not crowded into the band.
+ * Brand-first header: lagoon plane, gold accent strip, SikaLens wordmark.
  */
-function header(periodLabel: string, code: string, generated: string): string[] {
+function header(
+  periodLabel: string,
+  code: string,
+  generated: string,
+  rowCount: number,
+  ownerName?: string | null,
+): string[] {
   const bandBottom = PAGE_H - HEADER_H;
+  const who = ownerName?.trim();
   return [
     rect(0, bandBottom, PAGE_W, HEADER_H, C.lagoon),
-    // Brand
-    text(LEFT, bandBottom + 52, APP_NAME, 28, { bold: true, color: C.white }),
-    text(LEFT, bandBottom + 32, APP_OWNER, 11, { color: C.goldSoft }),
-    // Right label
-    textRight(RIGHT, bandBottom + 54, 'STATEMENT', 10, { bold: true, color: C.gold }),
-    textRight(RIGHT, bandBottom + 38, 'MoMo & bank', 9, { color: C.lagoonSoft }),
-    // Period block on the paper
-    text(LEFT, bandBottom - 28, periodLabel, 16, { bold: true, color: C.ink }),
-    text(LEFT, bandBottom - 46, `Currency ${code}   ·   Generated ${generated}`, 9, { color: C.inkSoft }),
+    rect(0, bandBottom, PAGE_W, 4, C.gold),
+    text(LEFT, bandBottom + 62, APP_NAME, 30, { bold: true, color: C.white }),
+    text(LEFT, bandBottom + 42, APP_OWNER, 10, { color: C.goldSoft }),
+    textRight(RIGHT, bandBottom + 64, 'STATEMENT', 11, { bold: true, color: C.gold }),
+    textRight(RIGHT, bandBottom + 48, 'MoMo & bank ledger', 9, { color: C.lagoonSoft }),
+    text(LEFT, bandBottom - 26, periodLabel, 15, { bold: true, color: C.ink }),
+    text(
+      LEFT,
+      bandBottom - 44,
+      [
+        who ? `Prepared for ${fit(who, 9, 180)}` : null,
+        `Currency ${code}`,
+        `Generated ${generated}`,
+        `${rowCount} transaction${rowCount === 1 ? '' : 's'}`,
+      ]
+        .filter(Boolean)
+        .join('   ·   '),
+      9,
+      { color: C.inkSoft },
+    ),
   ];
 }
 
 function footer(page: number, pageCount: number): string[] {
   return [
-    rect(0, 0, PAGE_W, 52, C.lagoonDeep),
-    text(LEFT, 30, APP_NAME, 10, { bold: true, color: C.white }),
-    text(LEFT + textWidth(APP_NAME, 10, true) + 8, 30, APP_OWNER, 8, { color: C.goldSoft }),
+    rect(0, 0, PAGE_W, 56, C.lagoonDeep),
+    rect(0, 54, PAGE_W, 2, C.gold),
+    text(LEFT, 32, APP_NAME, 10, { bold: true, color: C.white }),
+    text(LEFT + textWidth(APP_NAME, 10, true) + 8, 32, APP_OWNER, 8, { color: C.goldSoft }),
     text(LEFT, 16, SUPPORT_EMAIL, 8, { color: C.lagoonSoft }),
-    textRight(RIGHT, 30, `Page ${page} of ${pageCount}`, 9, { bold: true, color: C.white }),
-    textRight(RIGHT, 16, 'Saved on your phone · not a bank statement', 7, { color: C.lagoonSoft }),
+    textRight(RIGHT, 32, `Page ${page} of ${pageCount}`, 9, { bold: true, color: C.white }),
+    textRight(RIGHT, 16, 'On-device ledger · not a bank statement', 7, { color: C.lagoonSoft }),
   ];
 }
 
-function summaryCard(x: number, y: number, w: number, label: string, value: string, color: string): string[] {
+function summaryCard(x: number, y: number, w: number, label: string, value: string, accent: string): string[] {
   return [
-    rect(x, y, w, 52, C.paper),
-    text(x + 12, y + 32, label, 8, { bold: true, color: C.inkSoft }),
-    text(x + 12, y + 12, fit(value, 12, w - 20), 12, { bold: true, color }),
+    rect(x, y, w, 56, C.paper),
+    rect(x, y, 4, 56, accent),
+    text(x + 14, y + 34, label, 8, { bold: true, color: C.inkSoft }),
+    text(x + 14, y + 14, fit(value, 11, w - 24), 11, { bold: true, color: accent }),
   ];
 }
 
-const COL = { date: LEFT + 6, type: LEFT + 76, detail: LEFT + 158, feeRight: RIGHT - 96, amountRight: RIGHT - 6 };
+const COL = { date: LEFT + 8, type: LEFT + 78, detail: LEFT + 158, feeRight: RIGHT - 100, amountRight: RIGHT - 8 };
 
 export function statementPdf(
   title: string,
   rows: Transaction[],
-  opts?: { currencyCode?: string; periodLabel?: string },
+  opts?: { currencyCode?: string; periodLabel?: string; ownerName?: string | null },
 ): string {
   const code = opts?.currencyCode ?? moneyCodeLabel(getDisplayCurrency());
   const generated = new Date().toISOString().slice(0, 10);
   const stripped = title.replace(/^Statement\s+[—–-]\s*/i, '');
   const periodLabel = opts?.periodLabel ?? (stripped || title);
+  const ownerName = opts?.ownerName?.trim() || null;
 
   let received = 0;
   let spent = 0;
   let fees = 0;
   for (const tx of rows) {
     if (tx.type === 'receive' || tx.type === 'salary') received += tx.amount;
-    else if (tx.direction === 'out') spent += tx.amount;
+    else if (tx.direction === 'out' && tx.type !== 'transfer') spent += tx.amount;
     fees += tx.fee ?? 0;
   }
   const net = received - spent;
@@ -229,10 +250,10 @@ export function statementPdf(
     };
   });
 
-  const rowH = 18;
-  const firstTop = PAGE_H - HEADER_H - 128;
-  const otherTop = PAGE_H - HEADER_H - 56;
-  const bottom = 68;
+  const rowH = 20;
+  const firstTop = PAGE_H - HEADER_H - 140;
+  const otherTop = PAGE_H - HEADER_H - 52;
+  const bottom = 72;
   const firstCap = Math.max(1, Math.floor((firstTop - bottom) / rowH));
   const otherCap = Math.max(1, Math.floor((otherTop - bottom) / rowH));
   const pageCount = lines.length <= firstCap ? 1 : 1 + Math.ceil((lines.length - firstCap) / otherCap);
@@ -243,12 +264,12 @@ export function statementPdf(
     const cap = page === 0 ? firstCap : otherCap;
     const slice = lines.slice(cursor, cursor + cap);
     cursor += cap;
-    const cmds: string[] = header(periodLabel, code, generated);
+    const cmds: string[] = header(periodLabel, code, generated, rows.length, ownerName);
 
     if (page === 0) {
       const gap = 8;
       const w = (RIGHT - LEFT - gap * 3) / 4;
-      const y = PAGE_H - HEADER_H - 108;
+      const y = PAGE_H - HEADER_H - 118;
       cmds.push(
         ...summaryCard(LEFT, y, w, 'RECEIVED', `+${code} ${amountText(received)}`, C.moneyIn),
         ...summaryCard(LEFT + (w + gap), y, w, 'SPENT', `-${code} ${amountText(spent)}`, C.moneyOut),
@@ -266,26 +287,26 @@ export function statementPdf(
 
     const top = page === 0 ? firstTop : otherTop;
     cmds.push(
-      rect(LEFT, top, RIGHT - LEFT, 22, C.lagoon),
-      text(COL.date, top + 7, 'Date', 9, { bold: true, color: C.white }),
-      text(COL.type, top + 7, 'Type', 9, { bold: true, color: C.white }),
-      text(COL.detail, top + 7, 'Details', 9, { bold: true, color: C.white }),
-      textRight(COL.feeRight, top + 7, 'Fee', 9, { bold: true, color: C.white }),
-      textRight(COL.amountRight, top + 7, 'Amount', 9, { bold: true, color: C.white }),
+      rect(LEFT, top, RIGHT - LEFT, 24, C.lagoon),
+      text(COL.date, top + 8, 'Date', 9, { bold: true, color: C.white }),
+      text(COL.type, top + 8, 'Type', 9, { bold: true, color: C.white }),
+      text(COL.detail, top + 8, 'Details', 9, { bold: true, color: C.white }),
+      textRight(COL.feeRight, top + 8, 'Fee', 9, { bold: true, color: C.white }),
+      textRight(COL.amountRight, top + 8, 'Amount', 9, { bold: true, color: C.white }),
     );
 
     let y = top - rowH;
     if (slice.length === 0 && page === 0) {
-      cmds.push(text(COL.date, y + 5, 'No transactions in this period.', 10, { color: C.inkSoft }));
+      cmds.push(text(COL.date, y + 6, 'No transactions in this period.', 10, { color: C.inkSoft }));
     }
     slice.forEach((line, i) => {
-      if (i % 2 === 1) cmds.push(rect(LEFT, y, RIGHT - LEFT, rowH, C.paper));
+      if (i % 2 === 1) cmds.push(rect(LEFT, y, RIGHT - LEFT, rowH, C.paperAlt));
       cmds.push(
-        text(COL.date, y + 5.5, line.date, 9, { color: C.inkSoft }),
-        text(COL.type, y + 5.5, line.type, 9, { bold: true }),
-        text(COL.detail, y + 5.5, line.detail, 9),
-        textRight(COL.feeRight, y + 5.5, line.fee, 9, { color: C.inkSoft }),
-        textRight(COL.amountRight, y + 5.5, line.amount, 9, {
+        text(COL.date, y + 6, line.date, 9, { color: C.inkSoft }),
+        text(COL.type, y + 6, line.type, 9, { bold: true }),
+        text(COL.detail, y + 6, line.detail, 9),
+        textRight(COL.feeRight, y + 6, line.fee, 9, { color: C.inkSoft }),
+        textRight(COL.amountRight, y + 6, line.amount, 9, {
           bold: true,
           color: line.inflow ? C.moneyIn : C.moneyOut,
         }),
@@ -293,6 +314,22 @@ export function statementPdf(
       y -= rowH;
     });
     cmds.push(hline(y + rowH, C.line));
+
+    if (page === pageCount - 1 && rows.length > 0) {
+      const totalsY = Math.max(y - 8, bottom + 8);
+      cmds.push(
+        rect(LEFT, totalsY - 4, RIGHT - LEFT, 28, C.lagoonSoft),
+        text(COL.date, totalsY + 6, 'TOTALS', 9, { bold: true, color: C.lagoon }),
+        textRight(COL.feeRight, totalsY + 6, amountText(fees), 9, { bold: true, color: C.gold }),
+        textRight(
+          COL.amountRight,
+          totalsY + 6,
+          `${net >= 0 ? '+' : '-'}${code} ${amountText(net)}`,
+          9,
+          { bold: true, color: net >= 0 ? C.lagoon : C.moneyOut },
+        ),
+      );
+    }
 
     cmds.push(...footer(page + 1, pageCount));
     streams.push(cmds.join('\n'));

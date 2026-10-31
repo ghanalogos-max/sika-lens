@@ -1,6 +1,6 @@
 import type { Transaction } from '@/core/db/schema';
 import { getDisplayCurrency, moneyCodeLabel, pesewasToInput } from '@/core/money/money';
-import { APP_NAME, APP_OWNER } from '@/features/about/brand';
+import { APP_NAME, APP_OWNER, SUPPORT_EMAIL } from '@/features/about/brand';
 
 const TYPE_NAME: Record<Transaction['type'], string> = {
   expense: 'Expense',
@@ -66,21 +66,45 @@ export function csvCell(value: string): string {
   return /[",\r\n]/.test(safe) ? `"${safe.replace(/"/g, '""')}"` : safe;
 }
 
+function moneyMinor(minor: number): string {
+  return pesewasToInput(Math.abs(minor));
+}
+
 export function toCsv(
   rows: Transaction[],
   categoryNames: Map<number, string>,
-  opts?: { currencyCode?: string; periodLabel?: string },
+  opts?: { currencyCode?: string; periodLabel?: string; ownerName?: string | null },
 ): string {
   const code = opts?.currencyCode ?? moneyCodeLabel(getDisplayCurrency());
   const generated = new Date().toISOString().slice(0, 19).replace('T', ' ') + ' UTC';
   const period = opts?.periodLabel ?? 'All transactions';
+  const ownerName = opts?.ownerName?.trim() || null;
+
+  let received = 0;
+  let spent = 0;
+  let fees = 0;
+  for (const tx of rows) {
+    if (tx.type === 'receive' || tx.type === 'salary') received += tx.amount;
+    else if (tx.direction === 'out' && tx.type !== 'transfer') spent += tx.amount;
+    fees += tx.fee ?? 0;
+  }
+  const net = received - spent;
+
   const meta = [
     [`${APP_NAME} export`],
+    [`Publisher`, APP_OWNER],
+    [`Support`, SUPPORT_EMAIL],
+    ...(ownerName ? [[`Prepared for`, ownerName]] : []),
     [`Generated`, generated],
     [`Period`, period],
     [`Currency`, code],
     [`Rows`, String(rows.length)],
-    [`Publisher`, APP_OWNER],
+    [],
+    [`Summary`],
+    [`Received (${code})`, moneyMinor(received)],
+    [`Spent (${code})`, moneyMinor(spent)],
+    [`Fees (${code})`, moneyMinor(fees)],
+    [`Net (${code})`, `${net < 0 ? '-' : ''}${moneyMinor(net)}`],
     [],
   ];
 

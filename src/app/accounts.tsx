@@ -300,13 +300,38 @@ export default function AccountsScreen() {
           <SelectField
             label={kindFilter === 'momo' ? 'MoMo network' : kindFilter === 'bank' ? 'Bank' : 'Type'}
             sheetTitle={kindFilter === 'bank' ? 'Choose bank' : 'Choose wallet'}
-            options={brands.map((b) => ({
-              id: b.id,
-              label: b.name,
-              sublabel: b.short !== b.name ? b.short : undefined,
-              searchText: [b.name, b.short, ...(b.aliases ?? [])].join(' '),
-              leading: <BrandMark brand={b} size="sm" />,
-            }))}
+            options={
+              kindFilter === 'bank'
+                ? [
+                    { id: '__hdr_commercial__', label: 'Commercial banks', section: true },
+                    ...brands
+                      .filter((b) => (b.segment ?? 'commercial') === 'commercial')
+                      .map((b) => ({
+                        id: b.id,
+                        label: b.name,
+                        sublabel: b.short !== b.name ? b.short : undefined,
+                        searchText: [b.name, b.short, ...(b.aliases ?? [])].join(' '),
+                        leading: <BrandMark brand={b} size="sm" />,
+                      })),
+                    { id: '__hdr_community__', label: 'Community & rural banks', section: true },
+                    ...brands
+                      .filter((b) => b.segment === 'community')
+                      .map((b) => ({
+                        id: b.id,
+                        label: b.name,
+                        sublabel: 'Community / rural bank',
+                        searchText: [b.name, b.short, 'community rural', ...(b.aliases ?? [])].join(' '),
+                        leading: <BrandMark brand={b} size="sm" />,
+                      })),
+                  ]
+                : brands.map((b) => ({
+                    id: b.id,
+                    label: b.name,
+                    sublabel: b.short !== b.name ? b.short : undefined,
+                    searchText: [b.name, b.short, ...(b.aliases ?? [])].join(' '),
+                    leading: <BrandMark brand={b} size="sm" />,
+                  }))
+            }
             value={draft.brandId}
             onChange={(id) => pickBrand(brandById(id))}
           />

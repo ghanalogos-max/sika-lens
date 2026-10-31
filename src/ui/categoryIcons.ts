@@ -34,6 +34,7 @@ export const TYPE_ICONS: Record<string, IonName> = {
   cash_in: 'download-outline',
   airtime: 'phone-portrait-outline',
   bill: 'receipt-outline',
+  transfer: 'swap-horizontal-outline',
   other: 'ellipsis-horizontal-circle-outline',
 };
 

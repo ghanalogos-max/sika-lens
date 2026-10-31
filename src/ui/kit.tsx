@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import type { ReactNode } from 'react';
 import { useEffect, useState } from 'react';
 import {
+  KeyboardAvoidingView,
   Platform,
   Pressable,
   ScrollView,
@@ -21,7 +22,7 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useChartTheme } from '@/features/premium/ChartTheme';
 
@@ -44,10 +45,29 @@ export function Screen({
   decor?: ReactNode;
 }) {
   const t = useTheme();
-  // Extra bottom room so content clears the tab bar (absolute glass bar on iOS).
+  const insets = useSafeAreaInsets();
+  // Extra bottom room so content clears the floating glass tab bar.
   const pad = padded
-    ? { padding: space.lg, gap: space.lg, paddingBottom: space.xxl + (Platform.OS === 'ios' ? 56 : 24) }
+    ? { padding: space.lg, gap: space.lg, paddingBottom: space.xxl + 72 }
     : { gap: space.lg, paddingBottom: 8 };
+  // Android already resizes the window (softwareKeyboardLayoutMode). iOS needs padding lift.
+  const body =
+    scroll ? (
+      <ScrollView
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="interactive"
+        automaticallyAdjustKeyboardInsets={Platform.OS === 'ios'}
+        contentInsetAdjustmentBehavior="automatic"
+        style={{ backgroundColor: 'transparent', zIndex: 1 }}
+        contentContainerStyle={pad}>
+        <Animated.View entering={FadeInDown.duration(420).springify().damping(18)} style={{ gap: space.lg }}>
+          {children}
+        </Animated.View>
+      </ScrollView>
+    ) : (
+      <View style={[{ flex: 1, zIndex: 1, backgroundColor: 'transparent' }, pad]}>{children}</View>
+    );
+
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={{ flex: 1, backgroundColor: t.background }}>
       <LagoonBackdrop />
@@ -56,17 +76,12 @@ export function Screen({
           {decor}
         </View>
       ) : null}
-      {scroll ? (
-        <ScrollView
-          keyboardShouldPersistTaps="handled"
-          style={{ backgroundColor: 'transparent', zIndex: 1 }}
-          contentContainerStyle={pad}>
-          <Animated.View entering={FadeInDown.duration(420).springify().damping(18)} style={{ gap: space.lg }}>
-            {children}
-          </Animated.View>
-        </ScrollView>
+      {Platform.OS === 'ios' ? (
+        <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" keyboardVerticalOffset={insets.top}>
+          {body}
+        </KeyboardAvoidingView>
       ) : (
-        <View style={[{ flex: 1, zIndex: 1, backgroundColor: 'transparent' }, pad]}>{children}</View>
+        body
       )}
     </SafeAreaView>
   );
@@ -212,6 +227,19 @@ export function Button({
   const scale = useSharedValue(1);
   const anim = useAnimatedStyle(() => ({ transform: [{ scale: scale.value }] }));
 
+  const label = (
+    <Text
+      style={{
+        color: fg,
+        fontSize: 16,
+        fontFamily: fonts.semibold,
+        fontWeight: '600',
+        letterSpacing: 0.2,
+      }}>
+      {title}
+    </Text>
+  );
+
   return (
     <Pressable
       accessibilityRole="button"
@@ -224,31 +252,34 @@ export function Button({
         scale.value = withSpring(1, { damping: 14, stiffness: 280 });
       }}
       style={{ opacity: disabled ? 0.5 : 1 }}>
-      <Animated.View
-        style={[
-          {
-            backgroundColor: bg,
-            borderRadius: radius.md,
-            paddingVertical: 15,
-            alignItems: 'center',
-            shadowColor: variant === 'quiet' ? 'transparent' : bg,
-            shadowOpacity: variant === 'quiet' ? 0 : 0.28,
-            shadowRadius: 10,
-            shadowOffset: { width: 0, height: 5 },
-            elevation: variant === 'quiet' ? 0 : 3,
-          },
-          anim,
-        ]}>
-        <Text
-          style={{
-            color: fg,
-            fontSize: 16,
-            fontFamily: fonts.semibold,
-            fontWeight: '600',
-            letterSpacing: 0.2,
-          }}>
-          {title}
-        </Text>
+      <Animated.View style={anim}>
+        {variant === 'quiet' ? (
+          <GlassSurface
+            interactive
+            style={{
+              borderRadius: radius.md,
+              paddingVertical: 15,
+              alignItems: 'center',
+              backgroundColor: bg,
+            }}>
+            {label}
+          </GlassSurface>
+        ) : (
+          <View
+            style={{
+              backgroundColor: bg,
+              borderRadius: radius.md,
+              paddingVertical: 15,
+              alignItems: 'center',
+              shadowColor: bg,
+              shadowOpacity: 0.28,
+              shadowRadius: 10,
+              shadowOffset: { width: 0, height: 5 },
+              elevation: 3,
+            }}>
+            {label}
+          </View>
+        )}
       </Animated.View>
     </Pressable>
   );
@@ -276,50 +307,53 @@ export function QuickAction({
       onPress={onPress}
       style={({ pressed }) => ({
         flex: 1,
-        alignItems: 'center',
-        gap: 10,
-        paddingVertical: space.md,
-        borderRadius: radius.md,
-        borderWidth: 1,
-        borderColor: pressed ? t.primary : t.line,
-        backgroundColor: pressed ? t.primarySoft : t.surface,
-        shadowColor: '#1C2430',
-        shadowOpacity: pressed ? 0.02 : 0.06,
-        shadowRadius: 12,
-        shadowOffset: { width: 0, height: 4 },
-        elevation: 1,
         transform: [{ scale: pressed ? 0.97 : 1 }],
       })}>
-      <View
-        style={{
-          width: 48,
-          height: 48,
-          borderRadius: 16,
-          backgroundColor: bubble,
-          alignItems: 'center',
-          justifyContent: 'center',
-          shadowColor: bubble,
-          shadowOpacity: 0.25,
-          shadowRadius: 8,
-          shadowOffset: { width: 0, height: 3 },
-        }}>
-        <Ionicons name={icon} size={22} color={glyph} />
-      </View>
-      <Text style={{ color: t.ink, fontSize: 13, fontFamily: fonts.semibold, fontWeight: '600' }}>{label}</Text>
+      {({ pressed }) => (
+        <GlassSurface
+          interactive
+          style={{
+            alignItems: 'center',
+            gap: 10,
+            paddingVertical: space.md,
+            borderRadius: radius.md,
+            borderWidth: 1,
+            borderColor: pressed ? t.primary : t.line,
+          }}>
+          <View
+            style={{
+              width: 48,
+              height: 48,
+              borderRadius: 16,
+              backgroundColor: bubble,
+              alignItems: 'center',
+              justifyContent: 'center',
+              shadowColor: bubble,
+              shadowOpacity: 0.25,
+              shadowRadius: 8,
+              shadowOffset: { width: 0, height: 3 },
+            }}>
+            <Ionicons name={icon} size={22} color={glyph} />
+          </View>
+          <Text style={{ color: t.ink, fontSize: 13, fontFamily: fonts.semibold, fontWeight: '600' }}>{label}</Text>
+        </GlassSurface>
+      )}
     </Pressable>
   );
 }
 
 export function Chip({
   label,
-  selected,
+  selected = false,
   onPress,
   icon,
+  leading,
 }: {
   label: string;
-  selected: boolean;
+  selected?: boolean;
   onPress: () => void;
   icon?: IonName;
+  leading?: ReactNode;
 }) {
   const t = useTheme();
   const color = selected ? t.primary : t.ink;
@@ -329,27 +363,33 @@ export function Chip({
       accessibilityState={{ selected }}
       onPress={onPress}
       style={({ pressed }) => ({
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 6,
-        paddingVertical: 9,
-        paddingHorizontal: 14,
-        borderRadius: radius.full,
-        borderWidth: selected ? 1.5 : 1,
-        borderColor: selected ? t.primary : t.line,
-        backgroundColor: selected ? t.primarySoft : pressed ? t.surfaceRaised : t.surface,
         transform: [{ scale: pressed ? 0.97 : 1 }],
       })}>
-      {icon ? <Ionicons name={icon} size={16} color={color} /> : null}
-      <Text
+      <GlassSurface
+        interactive={!selected}
+        solid={selected}
         style={{
-          color,
-          fontSize: 14,
-          fontFamily: selected ? fonts.semibold : fonts.regular,
-          fontWeight: selected ? '600' : '400',
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 6,
+          paddingVertical: 9,
+          paddingHorizontal: 14,
+          borderRadius: radius.full,
+          borderWidth: selected ? 1.5 : StyleSheet.hairlineWidth,
+          borderColor: selected ? t.primary : t.line,
+          backgroundColor: selected ? t.primarySoft : undefined,
         }}>
-        {label}
-      </Text>
+        {leading ?? (icon ? <Ionicons name={icon} size={16} color={color} /> : null)}
+        <Text
+          style={{
+            color,
+            fontSize: 14,
+            fontFamily: selected ? fonts.semibold : fonts.regular,
+            fontWeight: selected ? '600' : '400',
+          }}>
+          {label}
+        </Text>
+      </GlassSurface>
     </Pressable>
   );
 }

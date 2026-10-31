@@ -13,8 +13,12 @@ export const PREMIUM_PRODUCT_IDS: Record<PremiumPlan, string> = {
 export const PREMIUM_ENTITLEMENT_ID = 'premium';
 
 export function planFromProductId(productId: string): PremiumPlan | null {
-  const entry = Object.entries(PREMIUM_PRODUCT_IDS).find(([, id]) => id === productId);
-  return entry ? (entry[0] as PremiumPlan) : null;
+  const raw = productId.trim();
+  const entry = Object.entries(PREMIUM_PRODUCT_IDS).find(([, id]) => id === raw);
+  if (entry) return entry[0] as PremiumPlan;
+  // Store / RC sometimes append base-plan suffixes (e.g. premium_annual:yearly).
+  const fuzzy = Object.entries(PREMIUM_PRODUCT_IDS).find(([, id]) => raw === id || raw.startsWith(`${id}:`) || raw.includes(id));
+  return fuzzy ? (fuzzy[0] as PremiumPlan) : null;
 }
 
 export function productIdForPlan(plan: PremiumPlan): string {

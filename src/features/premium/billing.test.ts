@@ -1,4 +1,4 @@
-import { planFromProductId, PREMIUM_PRODUCT_IDS, productIdForPlan } from './products';
+import { planFromProductId, PREMIUM_ENTITLEMENT_ID, PREMIUM_PRODUCT_IDS, productIdForPlan } from './products';
 
 describe('premium products', () => {
   it('maps plans to stable store product ids', () => {
@@ -11,5 +11,9 @@ describe('premium products', () => {
   it('resolves plan from product id', () => {
     expect(planFromProductId('premium_monthly')).toBe('monthly');
     expect(planFromProductId('unknown')).toBeNull();
+  });
+
+  it('uses a stable RevenueCat entitlement id', () => {
+    expect(PREMIUM_ENTITLEMENT_ID).toBe('premium');
   });
 });

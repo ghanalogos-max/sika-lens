@@ -17,10 +17,14 @@ export function canUseLiquidGlass(): boolean {
   }
 }
 
-/** Soft translucent fill when Liquid Glass is unavailable — reads as frosted glass on Apple. */
+/** Soft translucent fill when Liquid Glass is unavailable — reads as frosted glass. */
 export function glassFallbackFill(dark: boolean): string {
-  // Light stays near-opaque white so the page wash does not muddy cards.
-  return dark ? 'rgba(12, 28, 32, 0.88)' : 'rgba(255, 255, 255, 0.94)';
+  return dark ? 'rgba(12, 28, 32, 0.72)' : 'rgba(255, 255, 255, 0.78)';
+}
+
+/** Stronger frosted fill for interactive controls (chips, quiet buttons). */
+export function glassControlFill(dark: boolean): string {
+  return dark ? 'rgba(18, 40, 44, 0.82)' : 'rgba(255, 255, 255, 0.88)';
 }
 
 export function useResolvedColorScheme(): 'light' | 'dark' {

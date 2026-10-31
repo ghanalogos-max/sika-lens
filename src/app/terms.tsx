@@ -47,9 +47,8 @@ export default function TermsScreen() {
       <Card style={{ gap: space.sm }}>
         <AppText variant="label">Premium</AppText>
         <AppText tone="soft">
-          Optional Premium features will renew through Google Play or the App Store once billing is live, until you
-          cancel in that store's subscription settings. Prices shown may be listed in US dollars; the store charges in
-          your local currency. Store purchase is not charged while billing shows Coming soon.
+          Optional Premium subscriptions renew through Google Play or the App Store until you cancel in that store's
+          subscription settings. Prices shown may be listed in US dollars; the store charges in your local currency.
         </AppText>
       </Card>
 

@@ -1,6 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
 
-import { daysForPlan, type PremiumPlan } from './pricing';
+import { approxExpiryDate, type PremiumPlan } from './pricing';
 
 const KEY = 'sikalens.premium.v1';
 
@@ -38,12 +38,10 @@ export async function loadPremium(): Promise<PremiumState> {
 }
 
 export async function activatePremium(plan: PremiumPlan): Promise<PremiumState> {
-  const expires = new Date();
-  expires.setDate(expires.getDate() + daysForPlan(plan));
   return savePremium({
     active: true,
     plan,
-    expiresAt: expires.toISOString(),
+    expiresAt: approxExpiryDate(plan).toISOString(),
   });
 }
 

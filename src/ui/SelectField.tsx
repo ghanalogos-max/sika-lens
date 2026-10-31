@@ -17,6 +17,8 @@ export type SelectOption = {
   /** Custom leading element (brand logo); takes priority over `icon`. */
   leading?: ReactNode;
   icon?: IonName;
+  /** Non-selectable section title in the sheet list. */
+  section?: boolean;
 };
 
 /**
@@ -50,7 +52,25 @@ export function SelectField({
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return options;
-    return options.filter((o) => (o.searchText ?? `${o.label} ${o.sublabel ?? ''}`).toLowerCase().includes(q));
+    const matched = options.filter(
+      (o) => !o.section && (o.searchText ?? `${o.label} ${o.sublabel ?? ''}`).toLowerCase().includes(q),
+    );
+    // Keep a section header only when at least one of its following options matched.
+    const out: SelectOption[] = [];
+    for (let i = 0; i < options.length; i++) {
+      const o = options[i];
+      if (o.section) {
+        const hasMatch = matched.some((m) => {
+          const mi = options.findIndex((x) => x.id === m.id);
+          const nextHeader = options.findIndex((x, j) => j > i && x.section);
+          return mi > i && (nextHeader === -1 || mi < nextHeader);
+        });
+        if (hasMatch) out.push(o);
+      } else if (matched.some((m) => m.id === o.id)) {
+        out.push(o);
+      }
+    }
+    return out;
   }, [options, query]);
 
   const close = () => {
@@ -179,6 +199,15 @@ export function SelectField({
             keyboardShouldPersistTaps="handled"
             contentContainerStyle={{ paddingHorizontal: space.sm }}
             renderItem={({ item }) => {
+              if (item.section) {
+                return (
+                  <View style={{ paddingHorizontal: space.md, paddingTop: space.md, paddingBottom: space.xs }}>
+                    <AppText variant="caption" tone="soft" style={{ fontFamily: fonts.semibold, letterSpacing: 0.4 }}>
+                      {item.label.toUpperCase()}
+                    </AppText>
+                  </View>
+                );
+              }
               const active = item.id === value;
               return (
                 <Pressable

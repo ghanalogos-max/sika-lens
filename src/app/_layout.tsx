@@ -53,6 +53,22 @@ function AppShell({ fontsReady }: { fontsReady: boolean }) {
     if (fontsReady && ready) void SplashScreen.hideAsync().catch(() => {});
   }, [fontsReady, ready]);
 
+  useEffect(() => {
+    if (!ready || status === 'locked' || showWelcome) return;
+    void (async () => {
+      try {
+        const { loadDailyLogReminder, loadSubscriptionReminders } = await import('@/features/reminders/storage');
+        const { rescheduleAllReminders, notificationsAvailable } = await import('@/features/reminders/notifications');
+        if (!notificationsAvailable()) return;
+        const daily = await loadDailyLogReminder();
+        const subs = await loadSubscriptionReminders();
+        await rescheduleAllReminders(daily, subs);
+      } catch {
+        // Native module may be missing until the next EAS build.
+      }
+    })();
+  }, [ready, status, showWelcome]);
+
   if (error) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', padding: 24, backgroundColor: t.background }}>
@@ -91,6 +107,7 @@ function AppShell({ fontsReady }: { fontsReady: boolean }) {
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="add-transaction" options={{ title: 'Add a transaction', presentation: 'modal' }} />
           <Stack.Screen name="edit-transaction" options={{ title: 'Edit transaction', presentation: 'modal' }} />
+          <Stack.Screen name="add-transfer" options={{ title: 'Move money', presentation: 'modal' }} />
           <Stack.Screen name="add-salary" options={{ title: 'Log salary', presentation: 'modal' }} />
           <Stack.Screen name="import-sms" options={{ title: 'Read a MoMo message', presentation: 'modal' }} />
           <Stack.Screen name="accounts" options={{ title: 'Wallets & banks', presentation: 'modal' }} />
@@ -99,6 +116,11 @@ function AppShell({ fontsReady }: { fontsReady: boolean }) {
           <Stack.Screen name="terms" options={{ title: 'Terms of use', presentation: 'modal' }} />
           <Stack.Screen name="convert" options={{ title: 'Currency converter', presentation: 'modal' }} />
           <Stack.Screen name="export" options={{ title: 'Export', presentation: 'modal' }} />
+          <Stack.Screen name="reminders" options={{ title: 'Reminders', presentation: 'modal' }} />
+          <Stack.Screen
+            name="subscription-reminder"
+            options={{ title: 'Subscription', presentation: 'modal' }}
+          />
         </Stack>
       </View>
       {/* Welcome is above the PIN so first-time setup (name, currency) happens before unlock. */}

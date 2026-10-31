@@ -16,12 +16,17 @@ jest.mock('@/core/db/client', () => {
 import {
   addCategory,
   addTransaction,
+  addTransfer,
   checkBalancesAgainstTransactions,
   deleteTransaction,
+  getTransferPair,
   reconcileBalancesFromTransactions,
   updateTransaction,
+  updateTransfer,
   walletDelta,
 } from '@/features/transactions/repository';
+import { monthSummary } from '@/features/insights/queries';
+import { currentMonth } from '@/lib/dates';
 import {
   addAccount,
   applySmsBalance,
@@ -254,5 +259,51 @@ describe('accounts', () => {
     expect(reconcileBalancesFromTransactions()).toBeGreaterThanOrEqual(1);
     expect(listAccounts().find((a) => a.id === mtnId)?.balance).toBe(8000);
     expect(totalBalances()).toBe(listAccounts().reduce((s, a) => s + a.balance, 0));
+  });
+
+  it('moves money between wallets without counting as spent or received', () => {
+    const bankId = addAccount({ name: 'GCB', kind: 'bank', brandId: 'gcb', balance: 100000, syncNetwork: null });
+    const momoId = addAccount({ name: 'MTN', kind: 'momo', brandId: 'mtn', balance: 5000, syncNetwork: 'mtn' });
+    const month = currentMonth(new Date('2026-10-22T12:00:00.000Z'));
+
+    const result = addTransfer({
+      fromAccountId: bankId,
+      toAccountId: momoId,
+      amount: 20000,
+      fee: 100,
+      occurredAt: '2026-10-22T12:00:00.000Z',
+      note: 'Salary sweep',
+    });
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+
+    expect(listAccounts().find((a) => a.id === bankId)?.balance).toBe(79900);
+    expect(listAccounts().find((a) => a.id === momoId)?.balance).toBe(25000);
+    expect(totalBalances()).toBe(104900);
+
+    const summary = monthSummary(month);
+    expect(summary.spent).toBe(0);
+    expect(summary.received).toBe(0);
+    expect(summary.fees).toBe(100);
+
+    const pair = getTransferPair(result.groupId)!;
+    expect(pair.out.counterparty).toBe('MTN');
+    expect(pair.in.counterparty).toBe('GCB');
+
+    expect(updateTransfer({
+      groupId: result.groupId,
+      fromAccountId: bankId,
+      toAccountId: momoId,
+      amount: 10000,
+      fee: 50,
+      occurredAt: '2026-10-22T12:00:00.000Z',
+    }).ok).toBe(true);
+    expect(listAccounts().find((a) => a.id === bankId)?.balance).toBe(89950);
+    expect(listAccounts().find((a) => a.id === momoId)?.balance).toBe(15000);
+
+    deleteTransaction(pair.out.id);
+    expect(listAccounts().find((a) => a.id === bankId)?.balance).toBe(100000);
+    expect(listAccounts().find((a) => a.id === momoId)?.balance).toBe(5000);
+    expect(getTransferPair(result.groupId)).toBeNull();
   });
 });

@@ -4,6 +4,7 @@ import {
   billingStatusLabel,
   clearLocalPremium,
   purchasePremium,
+  refreshStorePremium,
   restorePremium,
   STORE_BILLING_LIVE,
   storeDisplayName,
@@ -58,14 +59,25 @@ export function PremiumProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<PremiumState>({ active: false, plan: null, expiresAt: null });
 
   const refresh = useCallback(async () => {
+    if (STORE_BILLING_LIVE) {
+      setState(await refreshStorePremium());
+      return;
+    }
     setState(await loadPremium());
   }, []);
 
   useEffect(() => {
-    void loadPremium().then((s) => {
-      setState(s);
-      setReady(true);
-    });
+    void (async () => {
+      try {
+        if (STORE_BILLING_LIVE) {
+          setState(await refreshStorePremium());
+        } else {
+          setState(await loadPremium());
+        }
+      } finally {
+        setReady(true);
+      }
+    })();
   }, []);
 
   const purchase = useCallback(async (plan: PremiumPlan) => {

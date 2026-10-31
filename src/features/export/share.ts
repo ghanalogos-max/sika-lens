@@ -12,6 +12,7 @@ import { db } from '@/core/db/client';
 import { transactions, type Transaction } from '@/core/db/schema';
 import { getDisplayCurrency, moneyCodeLabel } from '@/core/money/money';
 import { listAccounts } from '@/features/accounts/repository';
+import { loadProfileName } from '@/features/profile/storage';
 import { listCategories } from '@/features/transactions/repository';
 import { dateRangeBounds, dateRangeLabel, monthBounds, monthLabel } from '@/lib/dates';
 
@@ -115,12 +116,17 @@ function buildContent(
   rows: Transaction[],
   resolved: { title: string; label: string },
   code: string,
+  ownerName: string | null,
 ): string {
   if (format === 'pdf') {
-    return statementPdf(resolved.title, rows, { currencyCode: code, periodLabel: resolved.label });
+    return statementPdf(resolved.title, rows, {
+      currencyCode: code,
+      periodLabel: resolved.label,
+      ownerName,
+    });
   }
   const names = new Map(listCategories().map((c) => [c.id, c.name]));
-  return toCsv(rows, names, { currencyCode: code, periodLabel: resolved.label });
+  return toCsv(rows, names, { currencyCode: code, periodLabel: resolved.label, ownerName });
 }
 
 /** Persist into the app Documents folder (always available). */
@@ -202,7 +208,8 @@ export async function exportTransactions(
 
   const code = moneyCodeLabel(getDisplayCurrency());
   const fileName = `sikalens-${stamp}.${format}`;
-  const content = buildContent(format, rows, { title, label: periodLabel }, code);
+  const ownerName = await loadProfileName();
+  const content = buildContent(format, rows, { title, label: periodLabel }, code, ownerName);
 
   if (destination === 'save') {
     try {

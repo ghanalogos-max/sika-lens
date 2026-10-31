@@ -240,7 +240,7 @@ export default function Settings() {
         <AppText tone="soft">
           {isPremium
             ? 'Full history, unlimited wallets, earlier months, background themes, and export.'
-            : 'From $0.99 / week, $1.99 / month, or $14.99 / year (about GHS). Logos and moving phones stay free.'}
+            : 'From $0.99 / week, $1.99 / month, or $14.99 / year. Logos and moving phones stay free.'}
         </AppText>
         <Button
           title={isPremium ? 'Manage Premium' : 'See Premium plans'}
@@ -313,10 +313,19 @@ export default function Settings() {
       </Card>
 
       <Card>
+        <AppText variant="label">Reminders</AppText>
+        <AppText tone="soft">
+          Evening nudge to log transactions (default 6:00 PM), plus renewal alerts for Spotify, ChatGPT, Claude, and more.
+          Free keeps 2 subscription reminders; Premium unlocks unlimited.
+        </AppText>
+        <Button title="Manage reminders" variant="quiet" onPress={() => router.push('/reminders')} />
+      </Card>
+
+      <Card>
         <AppText variant="label">Export</AppText>
         <AppText tone="soft">
           {isPremium
-            ? 'PDF statement or Excel (CSV). Pick this month, a custom date range, or everything.'
+            ? 'PDF statement or Excel (CSV). Pick this month, a custom date range, or everything. Uses your profile name.'
             : 'CSV and PDF statements are part of Premium.'}
         </AppText>
         <Button

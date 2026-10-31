@@ -206,13 +206,208 @@ export function addTransaction(
   return { inserted: true, id };
 }
 
+function newTransferGroupId(): string {
+  return `xfer_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
+}
+
+export type TransferInput = {
+  fromAccountId: number;
+  toAccountId: number;
+  amount: number;
+  fee?: number;
+  note?: string | null;
+  occurredAt: string;
+};
+
+function networkForAccount(accountId: number): NewTransaction['network'] {
+  const account = listAccounts().find((a) => a.id === accountId);
+  if (account?.syncNetwork && account.syncNetwork !== 'unknown') return account.syncNetwork;
+  if (account?.kind === 'momo' && (account.brandId === 'mtn' || account.brandId === 'telecel' || account.brandId === 'airteltigo')) {
+    return account.brandId;
+  }
+  return 'unknown';
+}
+
+/**
+ * Move money between two wallets: one out leg (fee on source) + one in leg.
+ * Does not count as spent or received in Insights.
+ */
+export function addTransfer(input: TransferInput): { ok: true; groupId: string } | { ok: false; reason: string } {
+  const amount = asPesewas(input.amount);
+  const fee = asPesewas(input.fee);
+  if (amount <= 0) return { ok: false, reason: 'Enter an amount greater than zero.' };
+  if (fee < 0) return { ok: false, reason: 'Fee cannot be negative.' };
+  if (input.fromAccountId === input.toAccountId) {
+    return { ok: false, reason: 'Pick two different accounts.' };
+  }
+  const accounts = listAccounts();
+  const from = accounts.find((a) => a.id === input.fromAccountId);
+  const to = accounts.find((a) => a.id === input.toAccountId);
+  if (!from || !to) return { ok: false, reason: 'One of those accounts was removed.' };
+
+  const groupId = newTransferGroupId();
+  const note = input.note?.trim() || null;
+  const fromNetwork = networkForAccount(from.id);
+  const toNetwork = networkForAccount(to.id);
+
+  db.transaction(() => {
+    addTransaction(
+      {
+        amount,
+        fee,
+        direction: 'out',
+        type: 'transfer',
+        network: fromNetwork,
+        counterparty: to.name,
+        categoryId: null,
+        note,
+        occurredAt: input.occurredAt,
+        source: 'manual',
+        transferGroupId: groupId,
+      },
+      { accountId: from.id },
+    );
+    addTransaction(
+      {
+        amount,
+        fee: 0,
+        direction: 'in',
+        type: 'transfer',
+        network: toNetwork,
+        counterparty: from.name,
+        categoryId: null,
+        note,
+        occurredAt: input.occurredAt,
+        source: 'manual',
+        transferGroupId: groupId,
+      },
+      { accountId: to.id },
+    );
+  });
+
+  return { ok: true, groupId };
+}
+
+export function listTransferGroup(groupId: string): Transaction[] {
+  return db
+    .select()
+    .from(transactions)
+    .where(eq(transactions.transferGroupId, groupId))
+    .orderBy(asc(transactions.id))
+    .all();
+}
+
+export function getTransferPair(groupId: string): { out: Transaction; in: Transaction } | null {
+  const rows = listTransferGroup(groupId);
+  const out = rows.find((r) => r.direction === 'out');
+  const inn = rows.find((r) => r.direction === 'in');
+  if (!out || !inn) return null;
+  return { out, in: inn };
+}
+
+export type UpdateTransferInput = TransferInput & { groupId: string };
+
+/** Rewrites both legs of a transfer and keeps wallet balances in step. */
+export function updateTransfer(input: UpdateTransferInput): { ok: true } | { ok: false; reason: string } {
+  const amount = asPesewas(input.amount);
+  const fee = asPesewas(input.fee);
+  if (amount <= 0) return { ok: false, reason: 'Enter an amount greater than zero.' };
+  if (fee < 0) return { ok: false, reason: 'Fee cannot be negative.' };
+  if (input.fromAccountId === input.toAccountId) {
+    return { ok: false, reason: 'Pick two different accounts.' };
+  }
+  const pair = getTransferPair(input.groupId);
+  if (!pair) return { ok: false, reason: 'That transfer was not found.' };
+  const accounts = listAccounts();
+  const from = accounts.find((a) => a.id === input.fromAccountId);
+  const to = accounts.find((a) => a.id === input.toAccountId);
+  if (!from || !to) return { ok: false, reason: 'One of those accounts was removed.' };
+
+  const note = input.note?.trim() || null;
+  const fromNetwork = networkForAccount(from.id);
+  const toNetwork = networkForAccount(to.id);
+
+  db.transaction(() => {
+    reverseWalletEffect(pair.out);
+    reverseWalletEffect(pair.in);
+
+    db.update(transactions)
+      .set({
+        amount,
+        fee,
+        direction: 'out',
+        type: 'transfer',
+        network: fromNetwork,
+        counterparty: to.name,
+        note,
+        occurredAt: input.occurredAt,
+        accountId: from.id,
+        balanceAfter: null,
+      })
+      .where(eq(transactions.id, pair.out.id))
+      .run();
+
+    db.update(transactions)
+      .set({
+        amount,
+        fee: 0,
+        direction: 'in',
+        type: 'transfer',
+        network: toNetwork,
+        counterparty: from.name,
+        note,
+        occurredAt: input.occurredAt,
+        accountId: to.id,
+        balanceAfter: null,
+      })
+      .where(eq(transactions.id, pair.in.id))
+      .run();
+
+    applyWalletEffect(
+      {
+        direction: 'out',
+        amount,
+        fee,
+        network: fromNetwork,
+        balanceAfter: null,
+        accountId: from.id,
+      },
+      from.id,
+    );
+    applyWalletEffect(
+      {
+        direction: 'in',
+        amount,
+        fee: 0,
+        network: toNetwork,
+        balanceAfter: null,
+        accountId: to.id,
+      },
+      to.id,
+    );
+  });
+
+  return { ok: true };
+}
+
+function deleteTransferGroup(groupId: string) {
+  const rows = listTransferGroup(groupId);
+  for (const row of rows) reverseWalletEffect(row);
+  db.delete(transactions).where(eq(transactions.transferGroupId, groupId)).run();
+}
+
 /**
  * Removes the row and undoes the wallet change when the entry used +/- math
  * (no SMS balanceAfter). Absolute SMS balances are left as they are.
+ * Transfer legs delete as a pair.
  */
 export function deleteTransaction(id: number) {
   const tx = db.select().from(transactions).where(eq(transactions.id, id)).get();
   if (!tx) return;
+  if (tx.transferGroupId) {
+    deleteTransferGroup(tx.transferGroupId);
+    return;
+  }
   reverseWalletEffect(tx);
   db.delete(transactions).where(eq(transactions.id, id)).run();
 }

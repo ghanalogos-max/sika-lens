@@ -15,8 +15,12 @@ export function TransactionRow({ tx, categoryName }: { tx: Transaction; category
   const router = useRouter();
   const money = useFormatMoney();
   const incoming = tx.direction === 'in';
-  const title =
-    tx.type === 'salary'
+  const isTransfer = tx.type === 'transfer';
+  const title = isTransfer
+    ? tx.direction === 'out'
+      ? `To ${tx.counterparty ?? 'wallet'}`
+      : `From ${tx.counterparty ?? 'wallet'}`
+    : tx.type === 'salary'
       ? tx.employer ?? tx.counterparty ?? 'Salary'
       : tx.type === 'expense' && categoryName
         ? categoryName
@@ -29,7 +33,13 @@ export function TransactionRow({ tx, categoryName }: { tx: Transaction; category
 
   const meta = [
     shortDate(tx.occurredAt),
-    tx.type === 'salary' ? 'Salary' : tx.type === 'expense' ? (tx.counterparty ?? 'Expense') : (categoryName ?? TYPE_LABEL[tx.type]),
+    isTransfer
+      ? 'Transfer'
+      : tx.type === 'salary'
+        ? 'Salary'
+        : tx.type === 'expense'
+          ? (tx.counterparty ?? 'Expense')
+          : (categoryName ?? TYPE_LABEL[tx.type]),
     channelLabel,
     tx.network !== 'unknown' ? NETWORK_LABEL[tx.network] : null,
   ]

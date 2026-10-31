@@ -63,30 +63,89 @@ $sources = [ordered]@{
   fab = @('https://www.google.com/s2/favicons?domain=firstatlanticbank.com.gh&sz=128')
   uba = @('https://cdn.jsdelivr.net/gh/supermx1/nigerian-banks-api@master/logos/united-bank-for-africa.png')
   fidelity_life = @('https://www.google.com/s2/favicons?domain=fbnbankghana.com&sz=128')
+  standard_chartered = @(
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Standard_Chartered_%282021%29.svg/256px-Standard_Chartered_%282021%29.svg.png',
+    'https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://www.sc.com/gh&size=128',
+    'https://www.google.com/s2/favicons?domain=sc.com&sz=128'
+  )
+  ghl = @(
+    'https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://www.ghlbank.com&size=128',
+    'https://www.google.com/s2/favicons?domain=ghlbank.com&sz=128',
+    'https://www.google.com/s2/favicons?domain=ghanahomeloans.com&sz=128'
+  )
 }
 
-foreach ($id in $sources.Keys) {
-  $ok = $false
-  foreach ($url in $sources[$id]) {
-    $tmp = Join-Path $out "$id.tmp"
-    try {
-      Invoke-WebRequest -Uri $url -OutFile $tmp -TimeoutSec 30 -UseBasicParsing -Headers $hdr
-      $bytes = [System.IO.File]::ReadAllBytes($tmp)
-      if ($bytes.Length -lt 400 -or $bytes[0] -eq 0x3C) {
-        Remove-Item $tmp -Force -ErrorAction SilentlyContinue
-        continue
-      }
-      $ext = if ($bytes[0] -eq 0xFF -and $bytes[1] -eq 0xD8) { 'jpg' } else { 'png' }
-      Move-Item -Force $tmp (Join-Path $out "$id.$ext")
-      # Drop sibling with the other extension so require paths stay unambiguous.
-      $other = Join-Path $out "$id.$(if ($ext -eq 'png') { 'jpg' } else { 'png' })"
-      if (Test-Path $other) { Remove-Item $other -Force }
-      Write-Output "ok $id $ext bytes=$($bytes.Length)"
-      $ok = $true
-      break
-    } catch {
-      if (Test-Path $tmp) { Remove-Item $tmp -Force -ErrorAction SilentlyContinue }
-    }
-  }
-  if (-not $ok) { Write-Output "fail $id" }
+# Subscription / SaaS marks → assets/subscriptions/
+$subOut = Join-Path $PSScriptRoot '..\assets\subscriptions'
+New-Item -ItemType Directory -Force -Path $subOut | Out-Null
+$subSources = [ordered]@{
+  spotify = @(
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/200px-Spotify_logo_without_text.svg.png',
+    'https://www.google.com/s2/favicons?domain=spotify.com&sz=128'
+  )
+  chatgpt = @(
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/200px-ChatGPT_logo.svg.png',
+    'https://www.google.com/s2/favicons?domain=chatgpt.com&sz=128'
+  )
+  claude = @(
+    'https://www.google.com/s2/favicons?domain=claude.ai&sz=128',
+    'https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://claude.ai&size=128'
+  )
+  netflix = @(
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_N_logo.svg/200px-Netflix_2015_N_logo.svg.png',
+    'https://www.google.com/s2/favicons?domain=netflix.com&sz=128'
+  )
+  youtube = @(
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/200px-YouTube_full-color_icon_%282017%29.svg.png',
+    'https://www.google.com/s2/favicons?domain=youtube.com&sz=128'
+  )
+  apple_music = @(
+    'https://www.google.com/s2/favicons?domain=music.apple.com&sz=128',
+    'https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://music.apple.com&size=128'
+  )
+  disney = @(
+    'https://www.google.com/s2/favicons?domain=disneyplus.com&sz=128',
+    'https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://www.disneyplus.com&size=128'
+  )
+  microsoft365 = @(
+    'https://www.google.com/s2/favicons?domain=microsoft365.com&sz=128',
+    'https://www.google.com/s2/favicons?domain=office.com&sz=128'
+  )
+  icloud = @(
+    'https://www.google.com/s2/favicons?domain=icloud.com&sz=128'
+  )
+  adobe = @(
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Adobe_Systems_logo_and_wordmark.svg/200px-Adobe_Systems_logo_and_wordmark.svg.png',
+    'https://www.google.com/s2/favicons?domain=adobe.com&sz=128'
+  )
 }
+
+function Fetch-Marks($map, $dir, $label) {
+  foreach ($id in $map.Keys) {
+    $ok = $false
+    foreach ($url in $map[$id]) {
+      $tmp = Join-Path $dir "$id.tmp"
+      try {
+        Invoke-WebRequest -Uri $url -OutFile $tmp -TimeoutSec 30 -UseBasicParsing -Headers $hdr
+        $bytes = [System.IO.File]::ReadAllBytes($tmp)
+        if ($bytes.Length -lt 400 -or $bytes[0] -eq 0x3C) {
+          Remove-Item $tmp -Force -ErrorAction SilentlyContinue
+          continue
+        }
+        $ext = if ($bytes[0] -eq 0xFF -and $bytes[1] -eq 0xD8) { 'jpg' } else { 'png' }
+        Move-Item -Force $tmp (Join-Path $dir "$id.$ext")
+        $other = Join-Path $dir "$id.$(if ($ext -eq 'png') { 'jpg' } else { 'png' })"
+        if (Test-Path $other) { Remove-Item $other -Force }
+        Write-Output "ok $label/$id $ext bytes=$($bytes.Length)"
+        $ok = $true
+        break
+      } catch {
+        if (Test-Path $tmp) { Remove-Item $tmp -Force -ErrorAction SilentlyContinue }
+      }
+    }
+    if (-not $ok) { Write-Output "fail $label/$id" }
+  }
+}
+
+Fetch-Marks $sources $out 'brands'
+Fetch-Marks $subSources $subOut 'subscriptions'

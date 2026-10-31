@@ -29,6 +29,13 @@
       "when": 1792650000000,
       "tag": "0003_tx_account",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1793520000000,
+      "tag": "0004_transfer",
+      "breakpoints": true
     }
   ]
 }

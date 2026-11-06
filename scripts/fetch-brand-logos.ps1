@@ -63,8 +63,9 @@ $sources = [ordered]@{
   fab = @('https://www.google.com/s2/favicons?domain=firstatlanticbank.com.gh&sz=128')
   uba = @('https://cdn.jsdelivr.net/gh/supermx1/nigerian-banks-api@master/logos/united-bank-for-africa.png')
   fidelity_life = @('https://www.google.com/s2/favicons?domain=fbnbankghana.com&sz=128')
+  # Official Standard Chartered trustmark (blue/green) — crop to square after download
   standard_chartered = @(
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Standard_Chartered_%282021%29.svg/256px-Standard_Chartered_%282021%29.svg.png',
+    'https://commons.wikimedia.org/wiki/Special:FilePath/Standard_Chartered_(2021).svg?width=512',
     'https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://www.sc.com/gh&size=128',
     'https://www.google.com/s2/favicons?domain=sc.com&sz=128'
   )

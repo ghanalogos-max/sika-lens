@@ -1,10 +1,9 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useMemo, useState, type ReactNode } from 'react';
-import { FlatList, Modal, Pressable, TextInput, View } from 'react-native';
+import { FlatList, Modal, Pressable, StyleSheet, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import type { IonName } from './categoryIcons';
-import { GlassSurface } from './GlassSurface';
 import { AppText } from './kit';
 import { fonts, radius, space, useTheme } from './theme';
 
@@ -142,111 +141,116 @@ export function SelectField({
       </Pressable>
 
       <Modal visible={open} transparent animationType="slide" statusBarTranslucent onRequestClose={close}>
-        <Pressable style={{ flex: 1, backgroundColor: 'rgba(4, 14, 17, 0.45)' }} onPress={close} />
-        <GlassSurface
-          style={{
-            maxHeight: '78%',
-            borderTopLeftRadius: radius.lg,
-            borderTopRightRadius: radius.lg,
-            borderBottomLeftRadius: 0,
-            borderBottomRightRadius: 0,
-            paddingTop: space.sm,
-            paddingBottom: Math.max(insets.bottom, space.lg),
-          }}>
-          <View style={{ alignSelf: 'center', width: 44, height: 5, borderRadius: 3, backgroundColor: t.line, marginBottom: space.sm }} />
-          <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: space.lg, paddingBottom: space.sm }}>
-            <AppText variant="title" style={{ flex: 1, fontSize: 19 }}>
-              {sheetTitle ?? label}
-            </AppText>
-            <Pressable onPress={close} hitSlop={12} accessibilityLabel="Close">
-              <Ionicons name="close" size={24} color={t.inkSoft} />
-            </Pressable>
-          </View>
-
-          {searchable && (
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: 8,
-                marginHorizontal: space.lg,
-                marginBottom: space.sm,
-                paddingHorizontal: space.md,
-                borderRadius: radius.md,
-                borderWidth: 1,
-                borderColor: t.line,
-                backgroundColor: t.background,
-              }}>
-              <Ionicons name="search" size={16} color={t.primary} />
-              <TextInput
-                value={query}
-                onChangeText={setQuery}
-                placeholder="Search name or short form"
-                placeholderTextColor={t.inkSoft}
-                style={{ flex: 1, paddingVertical: 12, fontSize: 16, fontFamily: fonts.regular, color: t.ink }}
-              />
-              {query.length > 0 ? (
-                <Pressable onPress={() => setQuery('')} hitSlop={8} accessibilityLabel="Clear search">
-                  <Ionicons name="close-circle" size={18} color={t.inkSoft} />
-                </Pressable>
-              ) : null}
-            </View>
-          )}
-
-          <FlatList
-            data={filtered}
-            keyExtractor={(o) => o.id}
-            keyboardShouldPersistTaps="handled"
-            contentContainerStyle={{ paddingHorizontal: space.sm }}
-            renderItem={({ item }) => {
-              if (item.section) {
-                return (
-                  <View style={{ paddingHorizontal: space.md, paddingTop: space.md, paddingBottom: space.xs }}>
-                    <AppText variant="caption" tone="soft" style={{ fontFamily: fonts.semibold, letterSpacing: 0.4 }}>
-                      {item.label.toUpperCase()}
-                    </AppText>
-                  </View>
-                );
-              }
-              const active = item.id === value;
-              return (
-                <Pressable
-                  onPress={() => {
-                    onChange(item.id);
-                    close();
-                  }}
-                  style={({ pressed }) => ({
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    gap: space.md,
-                    paddingVertical: 10,
-                    paddingHorizontal: space.md,
-                    borderRadius: radius.sm,
-                    backgroundColor: active ? t.primarySoft : pressed ? t.surfaceRaised : 'transparent',
-                  })}>
-                  {leadingFor(item, active)}
-                  <View style={{ flex: 1, minWidth: 0, paddingRight: space.xs }}>
-                    <AppText variant="label" style={{ color: active ? t.primary : t.ink }} numberOfLines={3}>
-                      {item.label}
-                    </AppText>
-                    {item.sublabel ? (
-                      <AppText variant="caption" tone="soft" numberOfLines={1}>
-                        {item.sublabel}
-                      </AppText>
-                    ) : null}
-                  </View>
-                  {active ? <Ionicons name="checkmark-circle" size={22} color={t.primary} /> : null}
-                </Pressable>
-              );
-            }}
-            ListEmptyComponent={
-              <AppText tone="soft" style={{ textAlign: 'center', padding: space.lg }}>
-                Nothing matches “{query}”.
+        <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+          <Pressable style={{ ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(4, 14, 17, 0.55)' }} onPress={close} />
+          {/* Solid sheet — Liquid Glass would show the form underneath. */}
+          <View
+            style={{
+              maxHeight: '78%',
+              borderTopLeftRadius: radius.lg,
+              borderTopRightRadius: radius.lg,
+              backgroundColor: t.surfaceRaised,
+              borderWidth: StyleSheet.hairlineWidth,
+              borderBottomWidth: 0,
+              borderColor: t.line,
+              paddingTop: space.sm,
+              paddingBottom: Math.max(insets.bottom, space.lg),
+            }}>
+            <View style={{ alignSelf: 'center', width: 44, height: 5, borderRadius: 3, backgroundColor: t.line, marginBottom: space.sm }} />
+            <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: space.lg, paddingBottom: space.sm }}>
+              <AppText variant="title" style={{ flex: 1, fontSize: 19 }}>
+                {sheetTitle ?? label}
               </AppText>
-            }
-          />
-          {sheetFooter ? <View style={{ paddingHorizontal: space.lg, paddingTop: space.sm }}>{sheetFooter}</View> : null}
-        </GlassSurface>
+              <Pressable onPress={close} hitSlop={12} accessibilityLabel="Close">
+                <Ionicons name="close" size={24} color={t.inkSoft} />
+              </Pressable>
+            </View>
+
+            {searchable && (
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  gap: 8,
+                  marginHorizontal: space.lg,
+                  marginBottom: space.sm,
+                  paddingHorizontal: space.md,
+                  borderRadius: radius.md,
+                  borderWidth: 1,
+                  borderColor: t.line,
+                  backgroundColor: t.background,
+                }}>
+                <Ionicons name="search" size={16} color={t.primary} />
+                <TextInput
+                  value={query}
+                  onChangeText={setQuery}
+                  placeholder="Search name or short form"
+                  placeholderTextColor={t.inkSoft}
+                  style={{ flex: 1, paddingVertical: 12, fontSize: 16, fontFamily: fonts.regular, color: t.ink }}
+                />
+                {query.length > 0 ? (
+                  <Pressable onPress={() => setQuery('')} hitSlop={8} accessibilityLabel="Clear search">
+                    <Ionicons name="close-circle" size={18} color={t.inkSoft} />
+                  </Pressable>
+                ) : null}
+              </View>
+            )}
+
+            <FlatList
+              data={filtered}
+              keyExtractor={(o) => o.id}
+              keyboardShouldPersistTaps="handled"
+              contentContainerStyle={{ paddingHorizontal: space.sm }}
+              renderItem={({ item }) => {
+                if (item.section) {
+                  return (
+                    <View style={{ paddingHorizontal: space.md, paddingTop: space.md, paddingBottom: space.xs }}>
+                      <AppText variant="caption" tone="soft" style={{ fontFamily: fonts.semibold, letterSpacing: 0.4 }}>
+                        {item.label.toUpperCase()}
+                      </AppText>
+                    </View>
+                  );
+                }
+                const active = item.id === value;
+                return (
+                  <Pressable
+                    onPress={() => {
+                      onChange(item.id);
+                      close();
+                    }}
+                    style={({ pressed }) => ({
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      gap: space.md,
+                      paddingVertical: 10,
+                      paddingHorizontal: space.md,
+                      borderRadius: radius.sm,
+                      backgroundColor: active ? t.primarySoft : pressed ? t.surface : 'transparent',
+                    })}>
+                    {leadingFor(item, active)}
+                    <View style={{ flex: 1, minWidth: 0, paddingRight: space.xs }}>
+                      <AppText variant="label" style={{ color: active ? t.primary : t.ink }} numberOfLines={3}>
+                        {item.label}
+                      </AppText>
+                      {item.sublabel ? (
+                        <AppText variant="caption" tone="soft" numberOfLines={1}>
+                          {item.sublabel}
+                        </AppText>
+                      ) : null}
+                    </View>
+                    {active ? <Ionicons name="checkmark-circle" size={22} color={t.primary} /> : null}
+                  </Pressable>
+                );
+              }}
+              ListEmptyComponent={
+                <AppText tone="soft" style={{ textAlign: 'center', padding: space.lg }}>
+                  Nothing matches “{query}”.
+                </AppText>
+              }
+            />
+            {sheetFooter ? <View style={{ paddingHorizontal: space.lg, paddingTop: space.sm }}>{sheetFooter}</View> : null}
+          </View>
+        </View>
       </Modal>
     </View>
   );

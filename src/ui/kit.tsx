@@ -46,11 +46,15 @@ export function Screen({
 }) {
   const t = useTheme();
   const insets = useSafeAreaInsets();
-  // Extra bottom room so content clears the floating glass tab bar.
+  // iOS NativeTabs inset + scroll-under-glass; Android uses a floating glass dock (~72).
+  const bottomClearance =
+    Platform.OS === 'android' ? space.xxl + 72 : space.xxl + Math.max(insets.bottom, 8);
   const pad = padded
-    ? { padding: space.lg, gap: space.lg, paddingBottom: space.xxl + 72 }
+    ? { padding: space.lg, gap: space.lg, paddingBottom: bottomClearance }
     : { gap: space.lg, paddingBottom: 8 };
   // Android already resizes the window (softwareKeyboardLayoutMode). iOS needs padding lift.
+  // contentInsetAdjustmentBehavior + collapsable wrappers let NativeTabs see the scroll
+  // view so Liquid Glass / blur can react (minimize on scroll, content under glass).
   const body =
     scroll ? (
       <ScrollView
@@ -58,7 +62,8 @@ export function Screen({
         keyboardDismissMode="interactive"
         automaticallyAdjustKeyboardInsets={Platform.OS === 'ios'}
         contentInsetAdjustmentBehavior="automatic"
-        style={{ backgroundColor: 'transparent', zIndex: 1 }}
+        scrollEventThrottle={16}
+        style={{ backgroundColor: 'transparent', zIndex: 1, flex: 1 }}
         contentContainerStyle={pad}>
         <Animated.View entering={FadeInDown.duration(420).springify().damping(18)} style={{ gap: space.lg }}>
           {children}
@@ -77,8 +82,14 @@ export function Screen({
         </View>
       ) : null}
       {Platform.OS === 'ios' ? (
-        <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" keyboardVerticalOffset={insets.top}>
-          {body}
+        <KeyboardAvoidingView
+          collapsable={false}
+          style={{ flex: 1 }}
+          behavior="padding"
+          keyboardVerticalOffset={insets.top}>
+          <View collapsable={false} style={{ flex: 1 }}>
+            {body}
+          </View>
         </KeyboardAvoidingView>
       ) : (
         body

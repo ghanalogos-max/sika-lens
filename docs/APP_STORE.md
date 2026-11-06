@@ -167,11 +167,11 @@ Do **not** claim “no data” if analytics/crash SDKs also send device data.
 ```text
 SikaLens 1.1.0
 
-• Premium subscriptions — weekly, monthly, or yearly via the App Store
-• Restore purchases on a new phone or reinstall
-• Reminders for daily logging and upcoming renewals
-• Clearer Premium benefits, themes, and export unlocks
-• Stability and billing fixes for production builds
+• Move money between MoMo, bank & cash without counting as spend
+• Reminders for daily logging and subscription renewals
+• Premium — weekly, monthly, or yearly via the App Store; restore on a new phone
+• Quick Services on Home, clearer bank logos, and Liquid Glass tab bar on iOS
+• Forms that stay readable above the keyboard
 
 Core MoMo & bank tracking stays free and offline on your phone.
 ```
@@ -252,11 +252,12 @@ Upload from `store/appstore/`:
 MoMo & bank expense tracker
 ```
 
-**Promotional Text** (170 max — conversion hook, editable anytime):
+**Promotional Text** (170 max — conversion hook, editable anytime without a new build):
 
 ```text
-Offline MoMo & bank tracker for Ghana. Paste MTN, Telecel & AirtelTigo SMS, track GHS wallets, budgets & insights — PIN-locked on your phone.
+Offline MoMo & bank tracker for Ghana. Move money between wallets, renewal reminders, Premium insights & exports—PIN-locked on your phone.
 ```
+
 
 **Keywords** (100 max, comma-separated, no spaces; omit words already in Name/Subtitle):
 

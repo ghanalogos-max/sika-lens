@@ -1,17 +1,17 @@
 /**
  * Store download URLs for sikalens.app
  *
- * When App Store Connect assigns a numeric Apple ID, set APPLE_APP_ID and flip
- * APP_STORE_LIVE to true. Play uses the Android package id already.
+ * Flip PLAY_LIVE / APP_STORE_LIVE when each listing is public.
+ * Keep APPLE_APP_ID in sync with src/features/about/brand.ts.
  */
 (function () {
   var PLAY_PACKAGE = 'com.sikalens.app';
   var PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=' + PLAY_PACKAGE;
   var PLAY_LIVE = false; // set true when the Play listing is public
 
-  // App Store Connect numeric id for SikaLens
+  // App Store Connect numeric id for SikaLens (live)
   var APPLE_APP_ID = '6826582927';
-  var APP_STORE_LIVE = false;
+  var APP_STORE_LIVE = true;
   var APP_STORE_URL = 'https://apps.apple.com/app/id' + APPLE_APP_ID;
 
   function wire(id, href, live, label) {

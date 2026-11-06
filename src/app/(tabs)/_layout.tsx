@@ -1,5 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { GlassView } from 'expo-glass-effect';
+import { NativeTabs } from 'expo-router/native-tabs';
 import { Tabs } from 'expo-router';
 import { Platform, StyleSheet, View, type ColorValue } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -15,12 +16,80 @@ import { fonts, useTheme } from '@/ui/theme';
 
 type IconName = React.ComponentProps<typeof Ionicons>['name'];
 
+/**
+ * iOS: system NativeTabs — App Store–style frosted glass (≤18) / Liquid Glass (26+)
+ * with content scrolling under the bar and minimize-on-scroll on iOS 26+.
+ * Android: floating glass dock with a clear selected pill (Material has no Liquid Glass).
+ */
+export default function TabsLayout() {
+  if (Platform.OS === 'ios') return <IosLiquidGlassTabs />;
+  return <AndroidGlassTabs />;
+}
+
+function IosLiquidGlassTabs() {
+  const t = useTheme();
+  const soft = t.inkSoft;
+  const selected = t.primary;
+
+  return (
+    <NativeTabs
+      // iOS 26+: Liquid Glass shrinks while content scrolls (App Store motion).
+      minimizeBehavior="onScrollDown"
+      // iOS ≤18: system material blur so content shows through like App Store.
+      // No-op on iOS 26+ where the system draws Liquid Glass from content behind.
+      blurEffect="systemDefault"
+      // Keep the frosted bar opaque at scroll edges (avoids a sudden clear bar).
+      disableTransparentOnScrollEdge
+      tintColor={selected}
+      iconColor={{ default: soft, selected }}
+      labelStyle={{
+        default: { color: soft, fontSize: 10, fontWeight: '600' },
+        selected: { color: selected, fontSize: 10, fontWeight: '600' },
+      }}>
+      <NativeTabs.Trigger name="index">
+        <NativeTabs.Trigger.Label>Home</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Icon
+          sf={{ default: 'house', selected: 'house.fill' }}
+          md={{ default: 'home', selected: 'home_filled' }}
+        />
+      </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="transactions">
+        <NativeTabs.Trigger.Label>Activity</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Icon
+          sf={{ default: 'arrow.left.arrow.right', selected: 'arrow.left.arrow.right.circle.fill' }}
+          md={{ default: 'swap_vert', selected: 'swap_vert' }}
+        />
+      </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="budgets">
+        <NativeTabs.Trigger.Label>Budgets</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Icon
+          sf={{ default: 'wallet.pass', selected: 'wallet.pass.fill' }}
+          md={{ default: 'account_balance_wallet', selected: 'account_balance_wallet' }}
+        />
+      </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="insights">
+        <NativeTabs.Trigger.Label>Insights</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Icon
+          sf={{ default: 'chart.pie', selected: 'chart.pie.fill' }}
+          md={{ default: 'pie_chart', selected: 'pie_chart_filled' }}
+        />
+      </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="settings">
+        <NativeTabs.Trigger.Label>Settings</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Icon
+          sf={{ default: 'gearshape', selected: 'gearshape.fill' }}
+          md={{ default: 'settings', selected: 'settings_filled' }}
+        />
+      </NativeTabs.Trigger>
+    </NativeTabs>
+  );
+}
+
 const icon = (name: IconName, focusedName: IconName) =>
   function TabIcon({ color, focused }: { color: ColorValue; size: number; focused: boolean }) {
     return <TabGlyph name={focused ? focusedName : name} color={color} focused={focused} />;
   };
 
-/** Glass pill behind each of the five tab icons when focused. */
 function TabGlyph({ name, color, focused }: { name: IconName; color: ColorValue; focused: boolean }) {
   const t = useTheme();
   const scheme = useResolvedColorScheme();
@@ -31,11 +100,7 @@ function TabGlyph({ name, color, focused }: { name: IconName; color: ColorValue;
 
   if (focused && liquid) {
     return (
-      <GlassView
-        glassEffectStyle="clear"
-        isInteractive
-        colorScheme={scheme}
-        style={styles.iconPill}>
+      <GlassView glassEffectStyle="clear" isInteractive colorScheme={scheme} style={styles.iconPill}>
         <Ionicons name={name} size={22} color={tint} />
       </GlassView>
     );
@@ -119,22 +184,7 @@ function TabBarBackground() {
   );
 }
 
-const styles = StyleSheet.create({
-  barShape: {
-    borderRadius: 28,
-    overflow: 'hidden',
-  },
-  iconPill: {
-    width: 52,
-    height: 32,
-    borderRadius: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflow: 'hidden',
-  },
-});
-
-export default function TabsLayout() {
+function AndroidGlassTabs() {
   const t = useTheme();
   const insets = useSafeAreaInsets();
   const bottomGap = Math.max(insets.bottom, 10);
@@ -182,3 +232,18 @@ export default function TabsLayout() {
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  barShape: {
+    borderRadius: 28,
+    overflow: 'hidden',
+  },
+  iconPill: {
+    width: 52,
+    height: 32,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+  },
+});

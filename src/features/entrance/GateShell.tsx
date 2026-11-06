@@ -150,7 +150,8 @@ export function GateShell({
                 {welcome ? (
                   <AppText
                     style={{ color: 'rgba(234, 241, 240, 0.88)', fontSize: 14, fontFamily: fonts.medium }}
-                    numberOfLines={1}>
+                    numberOfLines={2}
+                    ellipsizeMode="tail">
                     {welcome}
                   </AppText>
                 ) : null}

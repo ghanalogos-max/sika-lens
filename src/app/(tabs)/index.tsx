@@ -212,13 +212,12 @@ export default function Home() {
     void saveBalancesVisible(next);
   };
 
-  const greeting = profileName ? `${dayGreeting()}, ${profileName}` : dayGreeting();
   const netMonth = summary.received - summary.expenses;
   const initial = (profileName?.trim().charAt(0) || 'S').toUpperCase();
 
   return (
     <Screen>
-      <View style={{ position: 'relative', minHeight: 56, justifyContent: 'visible' }}>
+      <View style={{ position: 'relative', minHeight: 56 }}>
         <CediBubble
           size={200}
           style={{ position: 'absolute', top: -36, right: -20, zIndex: 0 }}
@@ -243,12 +242,12 @@ export default function Home() {
               }}>
               <AppText style={{ color: t.onPrimary, fontFamily: fonts.bold, fontSize: 18 }}>{initial}</AppText>
             </View>
-            <View style={{ flex: 1, minWidth: 0 }}>
-              <AppText variant="caption" tone="soft">
-                {monthLabel(month)} · SikaLens
+            <View style={{ flex: 1, minWidth: 0, gap: 2 }}>
+              <AppText variant="caption" tone="soft" numberOfLines={1}>
+                {monthLabel(month)} · {dayGreeting()}
               </AppText>
-              <AppText variant="title" style={{ fontSize: 20 }} numberOfLines={1}>
-                {greeting}
+              <AppText variant="title" style={{ fontSize: 20 }} numberOfLines={2} ellipsizeMode="tail">
+                {profileName?.trim() || 'SikaLens'}
               </AppText>
             </View>
           </View>
@@ -375,15 +374,19 @@ export default function Home() {
           <ServiceTile icon="add-circle-outline" label="Add money" onPress={() => router.push('/add-transaction')} />
           <ServiceTile icon="briefcase-outline" label="Salary" onPress={() => router.push('/add-salary')} />
           <ServiceTile icon="chatbubble-ellipses-outline" label="Read SMS" onPress={() => router.push('/import-sms')} />
+          <ServiceTile icon="notifications-outline" label="Reminders" onPress={() => router.push('/reminders')} />
+          <ServiceTile
+            icon="document-text-outline"
+            label="PDF / Excel"
+            onPress={() => router.push(isPremium ? '/export' : '/premium')}
+          />
+          <ServiceTile icon="swap-horizontal-outline" label="Move money" onPress={() => router.push('/add-transfer')} />
           <ServiceTile icon="wallet-outline" label="Budgets" onPress={() => router.push('/budgets')} />
           <ServiceTile icon="pie-chart-outline" label="Insights" onPress={() => router.push('/insights')} />
         </View>
       </Card>
 
-      <View style={{ flexDirection: 'row', gap: space.sm }}>
-        <WideCta icon="swap-horizontal-outline" label="Move money" onPress={() => router.push('/add-transfer')} />
-        <WideCta icon="sparkles-outline" label="Live rates" tone="gold" onPress={() => router.push('/convert')} />
-      </View>
+      <WideCta icon="trending-up-outline" label="Live rates" tone="gold" onPress={() => router.push('/convert')} />
 
       <SectionHeader
         title="Balances"

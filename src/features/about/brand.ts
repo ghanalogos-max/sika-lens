@@ -18,8 +18,7 @@ export const TERMS_URL = `${SITE_URL}/terms`;
 export const PLAY_STORE_URL = `https://play.google.com/store/apps/details?id=${APP_PACKAGE}`;
 
 /**
- * App Store listing. Replace APPLE_APP_ID with the numeric id from App Store Connect
- * (keep in sync with website/stores.js). Until then, search is the placeholder.
+ * App Store listing (live). Keep APPLE_APP_ID in sync with website/stores.js.
  */
 export const APPLE_APP_ID = '6826582927';
 export const APP_STORE_URL = `https://apps.apple.com/app/id${APPLE_APP_ID}`;

@@ -40,8 +40,8 @@ const LOGOS: Record<string, BrandLogo> = {
   fab: { source: require('../../assets/brands/fab.jpg'), bg: '#5B2C83', fill: true },
   uba: { source: require('../../assets/brands/uba.png'), bg: '#FFFFFF' },
   fidelity_life: { source: require('../../assets/brands/fidelity_life.png'), bg: '#FFFFFF' },
-  /** Standard Chartered Ghana — SC monogram tile */
-  standard_chartered: { source: require('../../assets/brands/standard_chartered.jpg'), bg: '#0072AA', fill: true },
+  /** Standard Chartered — official blue/green trustmark */
+  standard_chartered: { source: require('../../assets/brands/standard_chartered.jpg'), bg: '#000000', fill: true },
   /** GHL Bank Ghana */
   ghl: { source: require('../../assets/brands/ghl.jpg'), bg: '#C8102E', fill: true },
 };

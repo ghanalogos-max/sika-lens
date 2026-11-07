@@ -10,16 +10,35 @@ import {
 const SUBS_KEY = 'sikalens.reminders.subs.v1';
 const DAILY_KEY = 'sikalens.reminders.daily.v1';
 
-function isSub(value: unknown): value is SubscriptionReminder {
-  if (!value || typeof value !== 'object') return false;
-  const v = value as SubscriptionReminder;
-  return (
-    typeof v.id === 'string' &&
-    typeof v.name === 'string' &&
-    typeof v.renewsOn === 'string' &&
-    typeof v.remindDaysBefore === 'number' &&
-    typeof v.enabled === 'boolean'
-  );
+function normalizeSub(value: unknown): SubscriptionReminder | null {
+  if (!value || typeof value !== 'object') return null;
+  const v = value as Partial<SubscriptionReminder>;
+  if (
+    typeof v.id !== 'string' ||
+    typeof v.name !== 'string' ||
+    typeof v.renewsOn !== 'string' ||
+    typeof v.remindDaysBefore !== 'number' ||
+    typeof v.enabled !== 'boolean'
+  ) {
+    return null;
+  }
+  const cycle = v.billingCycle;
+  const billingCycle =
+    cycle === 'weekly' || cycle === 'yearly' || cycle === 'monthly' ? cycle : 'monthly';
+  const amountPesewas =
+    typeof v.amountPesewas === 'number' && Number.isFinite(v.amountPesewas) && v.amountPesewas >= 0
+      ? Math.round(v.amountPesewas)
+      : null;
+  return {
+    id: v.id,
+    name: v.name,
+    presetId: typeof v.presetId === 'string' ? v.presetId : undefined,
+    renewsOn: v.renewsOn,
+    remindDaysBefore: v.remindDaysBefore,
+    enabled: v.enabled,
+    amountPesewas,
+    billingCycle,
+  };
 }
 
 export async function loadSubscriptionReminders(): Promise<SubscriptionReminder[]> {
@@ -28,7 +47,7 @@ export async function loadSubscriptionReminders(): Promise<SubscriptionReminder[
   try {
     const parsed = JSON.parse(raw) as unknown;
     if (!Array.isArray(parsed)) return [];
-    return parsed.filter(isSub);
+    return parsed.map(normalizeSub).filter((s): s is SubscriptionReminder => s != null);
   } catch {
     return [];
   }

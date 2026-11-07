@@ -355,6 +355,43 @@ export default function Settings() {
             });
           }}
         />
+        <Button
+          title="Rate SikaLens"
+          variant="quiet"
+          onPress={() => {
+            void import('@/features/engagement/reviewPrompt').then((m) => m.openStoreForReview()).catch(() => {
+              void Linking.openURL(APP_STORE_URL);
+            });
+          }}
+        />
+        <Button
+          title="Check for updates"
+          variant="quiet"
+          onPress={() => {
+            void import('@/features/engagement/updatePrompt')
+              .then(async (m) => {
+                const result = await m.checkForAppUpdate();
+                if (result.status === 'update') {
+                  Alert.alert('Update available', result.message, [
+                    { text: 'Later', style: 'cancel' },
+                    { text: 'Update', onPress: () => void m.openStoreForUpdate() },
+                  ]);
+                  return;
+                }
+                if (result.status === 'current') {
+                  Alert.alert('You’re up to date', `SikaLens ${result.local} matches the store listing.`);
+                  return;
+                }
+                Alert.alert('Could not check', 'Open the store to see if a newer build is ready.', [
+                  { text: 'Not now', style: 'cancel' },
+                  { text: 'Open store', onPress: () => void m.openStoreForUpdate() },
+                ]);
+              })
+              .catch(() => {
+                void Linking.openURL(APP_STORE_URL);
+              });
+          }}
+        />
         <Button title="Open website" variant="quiet" onPress={() => void Linking.openURL(SITE_URL)} />
         <Button title="Open Google Play" variant="quiet" onPress={() => void Linking.openURL(PLAY_STORE_URL)} />
         <Button title="Open App Store" variant="quiet" onPress={() => void Linking.openURL(APP_STORE_URL)} />

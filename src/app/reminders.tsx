@@ -2,6 +2,7 @@ import { useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useMemo, useState } from 'react';
 import { Alert, Pressable, Switch, View } from 'react-native';
 
+import { useFormatMoney } from '@/features/currency/useFormatMoney';
 import { usePremium } from '@/features/premium/PremiumProvider';
 import { PremiumUpsell } from '@/features/premium/PremiumUpsell';
 import { rescheduleAllReminders, notificationsAvailable } from '@/features/reminders/notifications';
@@ -15,6 +16,7 @@ import {
 import {
   FREE_SUBSCRIPTION_REMINDER_LIMIT,
   SUBSCRIPTION_PRESETS,
+  sumMonthlySubscriptions,
   type DailyLogReminder,
   type SubscriptionReminder,
 } from '@/features/reminders/types';
@@ -38,11 +40,13 @@ const TIME_PRESETS: { label: string; hour: number; minute: number }[] = [
 
 export default function RemindersScreen() {
   const t = useTheme();
+  const money = useFormatMoney();
   const router = useRouter();
   const { isPremium } = usePremium();
   const [daily, setDaily] = useState<DailyLogReminder>({ enabled: true, hour: 18, minute: 0 });
   const [subs, setSubs] = useState<SubscriptionReminder[]>([]);
   const [busy, setBusy] = useState(false);
+  const monthlyTotal = useMemo(() => sumMonthlySubscriptions(subs), [subs]);
 
   const refresh = useCallback(async () => {
     setDaily(await loadDailyLogReminder());
@@ -146,9 +150,19 @@ export default function RemindersScreen() {
       </Card>
 
       <Card>
+        <AppText variant="caption" tone="soft">
+          Monthly subscription total
+        </AppText>
+        <AppText variant="display">{money.format(monthlyTotal)}</AppText>
+        <AppText tone="soft">
+          Sum of enabled renewals (weekly ÷ ≈4.3, yearly ÷ 12). Add an amount on each subscription.
+        </AppText>
+      </Card>
+
+      <Card>
         <AppText variant="label">Subscription renewals</AppText>
         <AppText tone="soft">
-          Open ChatGPT, Spotify, Claude, and others on their own page to set renewal dates. Free keeps{' '}
+          Open ChatGPT, Spotify, Claude, and others — official logos, renewal dates, and charges. Free keeps{' '}
           {FREE_SUBSCRIPTION_REMINDER_LIMIT}; Premium unlocks more.
         </AppText>
 
@@ -168,7 +182,10 @@ export default function RemindersScreen() {
             <View style={{ flex: 1, gap: 2 }}>
               <AppText variant="label">{s.name}</AppText>
               <AppText variant="caption" tone="soft">
-                Renews {s.renewsOn} · remind {s.remindDaysBefore}d before
+                {s.amountPesewas != null
+                  ? `${money.format(s.amountPesewas)} · ${s.billingCycle}`
+                  : 'No amount yet'}
+                {' · '}Renews {s.renewsOn}
               </AppText>
             </View>
             <Switch

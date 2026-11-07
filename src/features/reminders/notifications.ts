@@ -87,11 +87,15 @@ export async function rescheduleAllReminders(
     fire.setDate(fire.getDate() - Math.max(0, Math.min(14, sub.remindDaysBefore)));
     fire.setHours(10, 0, 0, 0);
     if (fire.getTime() <= now) continue;
+    const amountBit =
+      sub.amountPesewas != null && sub.amountPesewas > 0
+        ? ` About ${(sub.amountPesewas / 100).toFixed(2)} (${sub.billingCycle}).`
+        : '';
     await Notifications.scheduleNotificationAsync({
       identifier: `${SUB_PREFIX}${sub.id}`,
       content: {
         title: `${sub.name} renews soon`,
-        body: `${sub.name} renews on ${sub.renewsOn}. Open SikaLens if you want to note the charge.`,
+        body: `${sub.name} renews on ${sub.renewsOn}.${amountBit} Open SikaLens if you want to note the charge.`,
         sound: true,
       },
       trigger: {

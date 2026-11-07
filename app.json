@@ -10,6 +10,7 @@
     "ios": {
       "bundleIdentifier": "com.sikalens.app",
       "icon": "./assets/images/icon.png",
+      "appStoreUrl": "https://apps.apple.com/app/id6826582927",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
@@ -24,6 +25,7 @@
       "icon": "./assets/images/icon.png",
       "predictiveBackGestureEnabled": false,
       "package": "com.sikalens.app",
+      "playStoreUrl": "https://play.google.com/store/apps/details?id=com.sikalens.app",
       "softwareKeyboardLayoutMode": "resize",
       "permissions": [
         "android.permission.USE_BIOMETRIC",

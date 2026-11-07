@@ -2,6 +2,8 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Alert, Switch, View } from 'react-native';
 
+import { pesewasToInput, tryToPesewas } from '@/core/money/money';
+import { useFormatMoney } from '@/features/currency/useFormatMoney';
 import { usePremium } from '@/features/premium/PremiumProvider';
 import { PremiumUpsell } from '@/features/premium/PremiumUpsell';
 import { rescheduleAllReminders, notificationsAvailable } from '@/features/reminders/notifications';
@@ -11,9 +13,11 @@ import {
   loadSubscriptionReminders,
   saveSubscriptionReminders,
 } from '@/features/reminders/storage';
+import { suggestAmountFromLedger } from '@/features/reminders/suggestAmount';
 import {
   subscriptionPresetById,
   subscriptionPresetByName,
+  type BillingCycle,
   type SubscriptionReminder,
 } from '@/features/reminders/types';
 import { isDateInput } from '@/lib/dates';
@@ -33,9 +37,15 @@ function defaultRenewsOn(): string {
 }
 
 const DAYS_BEFORE = [1, 2, 3, 5, 7, 14] as const;
+const CYCLES: { id: BillingCycle; label: string }[] = [
+  { id: 'weekly', label: 'Weekly' },
+  { id: 'monthly', label: 'Monthly' },
+  { id: 'yearly', label: 'Yearly' },
+];
 
 export default function SubscriptionReminderScreen() {
   const t = useTheme();
+  const money = useFormatMoney();
   const router = useRouter();
   const { isPremium } = usePremium();
   const params = useLocalSearchParams<{ id?: string; name?: string; presetId?: string }>();
@@ -49,6 +59,8 @@ export default function SubscriptionReminderScreen() {
   const [renewsOn, setRenewsOn] = useState(defaultRenewsOn);
   const [remindDaysBefore, setRemindDaysBefore] = useState(3);
   const [enabled, setEnabled] = useState(true);
+  const [amountText, setAmountText] = useState('');
+  const [billingCycle, setBillingCycle] = useState<BillingCycle>('monthly');
   const [busy, setBusy] = useState(false);
   const [existingCount, setExistingCount] = useState(0);
 
@@ -70,6 +82,8 @@ export default function SubscriptionReminderScreen() {
       setRenewsOn(found.renewsOn);
       setRemindDaysBefore(found.remindDaysBefore);
       setEnabled(found.enabled);
+      setAmountText(found.amountPesewas != null ? pesewasToInput(found.amountPesewas) : '');
+      setBillingCycle(found.billingCycle);
     } else {
       const fromParam = paramPresetId ? subscriptionPresetById(paramPresetId) : null;
       const fromName = presetName.trim() ? subscriptionPresetByName(presetName) : null;
@@ -108,6 +122,18 @@ export default function SubscriptionReminderScreen() {
     }
   };
 
+  const fillFromLedger = () => {
+    const suggested = suggestAmountFromLedger(name.trim() || presetName);
+    if (suggested == null) {
+      Alert.alert(
+        'No matching spend',
+        'Paste or log a charge that mentions this name (counterparty or note), then try again — or type the amount.',
+      );
+      return;
+    }
+    setAmountText(pesewasToInput(suggested));
+  };
+
   const save = async () => {
     const trimmed = name.trim();
     if (!trimmed) {
@@ -118,6 +144,15 @@ export default function SubscriptionReminderScreen() {
       Alert.alert('Date needed', 'Pick the next renewal date.');
       return;
     }
+    let amountPesewas: number | null = null;
+    if (amountText.trim()) {
+      const parsed = tryToPesewas(amountText);
+      if (parsed === null) {
+        Alert.alert('Check the amount', 'Enter a charge like 49.99, or leave it blank.');
+        return;
+      }
+      amountPesewas = parsed;
+    }
     if (atLimit) {
       router.push('/premium');
       return;
@@ -127,39 +162,24 @@ export default function SubscriptionReminderScreen() {
     try {
       const list = await loadSubscriptionReminders();
       let next: SubscriptionReminder[];
+      const resolvedPreset = presetId || subscriptionPresetByName(trimmed)?.id || undefined;
+      const payload = {
+        name: trimmed.slice(0, 40),
+        presetId: resolvedPreset,
+        renewsOn: renewsOn.trim(),
+        remindDaysBefore,
+        enabled,
+        amountPesewas,
+        billingCycle,
+      };
       if (editId) {
-        const resolvedPreset =
-          presetId || subscriptionPresetByName(trimmed)?.id || undefined;
-        next = list.map((s) =>
-          s.id === editId
-            ? {
-                ...s,
-                name: trimmed.slice(0, 40),
-                presetId: resolvedPreset,
-                renewsOn: renewsOn.trim(),
-                remindDaysBefore,
-                enabled,
-              }
-            : s,
-        );
+        next = list.map((s) => (s.id === editId ? { ...s, ...payload } : s));
       } else {
         if (!canAddSubscriptionReminder(list.length, isPremium)) {
           router.push('/premium');
           return;
         }
-        const resolvedPreset =
-          presetId || subscriptionPresetByName(trimmed)?.id || undefined;
-        next = [
-          ...list,
-          {
-            id: newId(),
-            name: trimmed.slice(0, 40),
-            presetId: resolvedPreset,
-            renewsOn: renewsOn.trim(),
-            remindDaysBefore,
-            enabled,
-          },
-        ];
+        next = [...list, { id: newId(), ...payload }];
       }
       await persistAndSchedule(next);
       router.back();
@@ -208,8 +228,8 @@ export default function SubscriptionReminderScreen() {
           <AppText variant="title">{title}</AppText>
           <AppText tone="soft">
             {isNew
-              ? 'Set the next renewal date and when to remind you.'
-              : 'Edit renewal date, reminder timing, or turn this alert off.'}
+              ? 'Set the charge, renewal date, and when to remind you.'
+              : 'Edit amount, renewal date, reminder timing, or turn this alert off.'}
           </AppText>
         </View>
       </View>
@@ -223,6 +243,30 @@ export default function SubscriptionReminderScreen() {
 
       <Card>
         <Field label="Name" value={name} onChangeText={setName} placeholder="ChatGPT" autoCapitalize="words" />
+        <Field
+          label={`Amount (${money.symbol})`}
+          value={amountText}
+          onChangeText={setAmountText}
+          keyboardType="decimal-pad"
+          placeholder="0.00"
+        />
+        <AppText variant="caption" tone="soft">
+          Type the charge, or fill it from a matching spend in your ledger.
+        </AppText>
+        <Button title="Fill from last matching spend" variant="quiet" onPress={fillFromLedger} />
+        <AppText variant="caption" tone="soft">
+          Bills
+        </AppText>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+          {CYCLES.map((c) => (
+            <Chip
+              key={c.id}
+              label={c.label}
+              selected={billingCycle === c.id}
+              onPress={() => setBillingCycle(c.id)}
+            />
+          ))}
+        </View>
         <DateField label="Next renewal" value={renewsOn} onChange={setRenewsOn} />
         <AppText variant="caption" tone="soft">
           Remind me

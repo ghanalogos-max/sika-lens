@@ -79,44 +79,51 @@ $sources = [ordered]@{
 # Subscription / SaaS marks → assets/subscriptions/
 $subOut = Join-Path $PSScriptRoot '..\assets\subscriptions'
 New-Item -ItemType Directory -Force -Path $subOut | Out-Null
+# Prefer App Store / Play artwork (official app icons) over tiny favicons.
 $subSources = [ordered]@{
   spotify = @(
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/200px-Spotify_logo_without_text.svg.png',
+    'https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/3e/8e/8a/3e8e8a3d-0c5a-0f5a-5a5a-5e5e5e5e5e5e/AppIcon-0-0-1x_U007emarketing-0-7-0-85-220.png/512x512bb.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Spotify_icon.svg/240px-Spotify_icon.svg.png',
     'https://www.google.com/s2/favicons?domain=spotify.com&sz=128'
   )
   chatgpt = @(
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/200px-ChatGPT_logo.svg.png',
+    'https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/c7/8f/5a/c78f5a3d-chatgpt/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/512x512bb.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/240px-ChatGPT_logo.svg.png',
     'https://www.google.com/s2/favicons?domain=chatgpt.com&sz=128'
   )
   claude = @(
-    'https://www.google.com/s2/favicons?domain=claude.ai&sz=128',
-    'https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://claude.ai&size=128'
+    'https://www.google.com/s2/favicons?domain=claude.ai&sz=256',
+    'https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://claude.ai&size=256'
   )
   netflix = @(
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_N_logo.svg/200px-Netflix_2015_N_logo.svg.png',
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_N_logo.svg/240px-Netflix_2015_N_logo.svg.png',
     'https://www.google.com/s2/favicons?domain=netflix.com&sz=128'
   )
   youtube = @(
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/200px-YouTube_full-color_icon_%282017%29.svg.png',
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/240px-YouTube_full-color_icon_%282017%29.svg.png',
     'https://www.google.com/s2/favicons?domain=youtube.com&sz=128'
   )
   apple_music = @(
-    'https://www.google.com/s2/favicons?domain=music.apple.com&sz=128',
-    'https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://music.apple.com&size=128'
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Apple_Music_icon.svg/240px-Apple_Music_icon.svg.png',
+    'https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,FAVICON&url=https://music.apple.com&size=256',
+    'https://www.google.com/s2/favicons?domain=music.apple.com&sz=128'
   )
   disney = @(
-    'https://www.google.com/s2/favicons?domain=disneyplus.com&sz=128',
-    'https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://www.disneyplus.com&size=128'
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Disney%2B_logo.svg/240px-Disney%2B_logo.svg.png',
+    'https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://www.disneyplus.com&size=256',
+    'https://www.google.com/s2/favicons?domain=disneyplus.com&sz=128'
   )
   microsoft365 = @(
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Microsoft_365_%282022%29.svg/240px-Microsoft_365_%282022%29.svg.png',
     'https://www.google.com/s2/favicons?domain=microsoft365.com&sz=128',
     'https://www.google.com/s2/favicons?domain=office.com&sz=128'
   )
   icloud = @(
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/ICloud_logo.svg/240px-ICloud_logo.svg.png',
     'https://www.google.com/s2/favicons?domain=icloud.com&sz=128'
   )
   adobe = @(
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Adobe_Systems_logo_and_wordmark.svg/200px-Adobe_Systems_logo_and_wordmark.svg.png',
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Adobe_Creative_Cloud_rainbow_icon.svg/240px-Adobe_Creative_Cloud_rainbow_icon.svg.png',
     'https://www.google.com/s2/favicons?domain=adobe.com&sz=128'
   )
 }

@@ -325,6 +325,27 @@ export const BRANDS: Brand[] = [
     aliases: ['Manya Kro', 'Upper Manya'],
   },
 
+  // Custom / international — any country MoMo or bank with your own display name
+  {
+    id: 'custom_momo',
+    name: 'My mobile money',
+    short: 'MM',
+    kind: 'momo',
+    color: '#0F6B73',
+    onColor: '#FFFFFF',
+    aliases: ['custom momo', 'other momo', 'mobile money', 'mpesa', 'orange money', 'wave', 'opay'],
+  },
+  {
+    id: 'custom_bank',
+    name: 'My bank',
+    short: 'Bank',
+    kind: 'bank',
+    segment: 'commercial',
+    color: '#1C2430',
+    onColor: '#FFFFFF',
+    aliases: ['custom bank', 'other bank', 'international bank', 'foreign bank'],
+  },
+
   // Other
   { id: 'cash', name: 'Cash', short: '₵', kind: 'cash', color: '#2B7A57', onColor: '#FFFFFF' },
   { id: 'other', name: 'Other wallet', short: '…', kind: 'other', color: '#51666B', onColor: '#FFFFFF' },

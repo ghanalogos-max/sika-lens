@@ -1,3 +1,5 @@
+export type BillingCycle = 'weekly' | 'monthly' | 'yearly';
+
 export type SubscriptionReminder = {
   id: string;
   /** Display name, e.g. Spotify */
@@ -9,7 +11,23 @@ export type SubscriptionReminder = {
   /** Days before renewsOn to notify (1–14). */
   remindDaysBefore: number;
   enabled: boolean;
+  /** Charge amount in minor units (pesewas/cents). Null when not set. */
+  amountPesewas: number | null;
+  /** How often the charge repeats — used for the monthly total. */
+  billingCycle: BillingCycle;
 };
+
+/** Convert a subscription charge into an equivalent monthly total (minor units). */
+export function monthlyEquivalentPesewas(sub: Pick<SubscriptionReminder, 'amountPesewas' | 'billingCycle' | 'enabled'>): number {
+  if (!sub.enabled || sub.amountPesewas == null || sub.amountPesewas <= 0) return 0;
+  if (sub.billingCycle === 'weekly') return Math.round((sub.amountPesewas * 52) / 12);
+  if (sub.billingCycle === 'yearly') return Math.round(sub.amountPesewas / 12);
+  return sub.amountPesewas;
+}
+
+export function sumMonthlySubscriptions(subs: SubscriptionReminder[]): number {
+  return subs.reduce((sum, s) => sum + monthlyEquivalentPesewas(s), 0);
+}
 
 export type DailyLogReminder = {
   enabled: boolean;

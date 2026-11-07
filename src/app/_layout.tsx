@@ -69,6 +69,23 @@ function AppShell({ fontsReady }: { fontsReady: boolean }) {
     })();
   }, [ready, status, showWelcome]);
 
+  useEffect(() => {
+    if (!ready || status === 'locked' || showWelcome) return;
+    void (async () => {
+      try {
+        const { recordAppOpen, maybeRequestReview } = await import('@/features/engagement/reviewPrompt');
+        const { maybePromptAppUpdate } = await import('@/features/engagement/updatePrompt');
+        await recordAppOpen();
+        // Let the home screen settle before store dialogs.
+        await new Promise((r) => setTimeout(r, 1800));
+        await maybePromptAppUpdate();
+        await maybeRequestReview();
+      } catch {
+        // Optional engagement helpers should never block the app.
+      }
+    })();
+  }, [ready, status, showWelcome]);
+
   if (error) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', padding: 24, backgroundColor: t.background }}>

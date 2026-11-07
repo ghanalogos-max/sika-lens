@@ -17,9 +17,9 @@ const LOGOS: Record<string, BrandLogo> = {
   ecobank: { source: require('../../assets/brands/ecobank.png'), bg: '#FFFFFF' },
   /** Official Absa Bank Ghana mark from absa.com.gh */
   absa: { source: require('../../assets/brands/absa.png'), bg: '#000000', fill: true },
-  stanbic: { source: require('../../assets/brands/stanbic.png'), bg: '#FFFFFF' },
+  stanbic: { source: require('../../assets/brands/stanbic.jpg'), bg: '#FFFFFF' },
   /** Fidelity Bank Ghana app mark — orange circle, white F */
-  fidelity: { source: require('../../assets/brands/fidelity.png'), bg: '#F48221', fill: true },
+  fidelity: { source: require('../../assets/brands/fidelity.jpg'), bg: '#F48221', fill: true },
   calbank: { source: require('../../assets/brands/calbank.png'), bg: '#FFFFFF' },
   access: { source: require('../../assets/brands/access.png'), bg: '#000000', fill: true },
   zenith: { source: require('../../assets/brands/zenith.png'), bg: '#FFFFFF' },
@@ -41,7 +41,7 @@ const LOGOS: Record<string, BrandLogo> = {
   uba: { source: require('../../assets/brands/uba.png'), bg: '#FFFFFF' },
   fidelity_life: { source: require('../../assets/brands/fidelity_life.png'), bg: '#FFFFFF' },
   /** Standard Chartered — official blue/green trustmark */
-  standard_chartered: { source: require('../../assets/brands/standard_chartered.jpg'), bg: '#000000', fill: true },
+  standard_chartered: { source: require('../../assets/brands/standard_chartered.png'), bg: '#000000', fill: true },
   /** GHL Bank Ghana */
   ghl: { source: require('../../assets/brands/ghl.jpg'), bg: '#C8102E', fill: true },
 };

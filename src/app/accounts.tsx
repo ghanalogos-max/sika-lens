@@ -95,11 +95,12 @@ export default function AccountsScreen() {
   };
 
   const pickBrand = (b: Brand) => {
+    const custom = b.id === 'custom_momo' || b.id === 'custom_bank';
     setDraft((d) => ({
       ...d,
       brandId: b.id,
-      name: d.name.trim() ? d.name : b.name,
-      syncSms: b.kind === 'momo' ? d.syncSms : false,
+      name: custom ? '' : d.name.trim() ? d.name : b.name,
+      syncSms: b.kind === 'momo' && !!b.network ? d.syncSms : false,
     }));
   };
 
@@ -110,7 +111,12 @@ export default function AccountsScreen() {
       return;
     }
     const brand = brandById(draft.brandId);
-    const name = draft.name.trim() || brand.name;
+    const custom = brand.id === 'custom_momo' || brand.id === 'custom_bank';
+    const name = draft.name.trim() || (custom ? '' : brand.name);
+    if (!name) {
+      Alert.alert('Name needed', 'Type the bank or mobile-money name as you know it.');
+      return;
+    }
     const syncNetwork = draft.syncSms && brand.network ? brand.network : null;
 
     if (editing) {
@@ -161,8 +167,9 @@ export default function AccountsScreen() {
     <Screen>
       <AppText variant="title">Wallets & banks</AppText>
       <AppText tone="soft">
-        Set an opening balance for each MoMo or bank wallet (like a bank book), then paste or record every transaction so
-        the total stays correct. A MoMo SMS with a “balance after” line updates the linked wallet.
+        Ghana MoMo and banks are listed, or pick My mobile money / My bank and type any name for other countries. Set an
+        opening balance, then record every move so totals stay true. Ghana MoMo SMS with a “balance after” line can update
+        the linked network wallet.
       </AppText>
 
       <Card>
@@ -298,14 +305,24 @@ export default function AccountsScreen() {
           </ScrollView>
 
           <SelectField
-            label={kindFilter === 'momo' ? 'MoMo network' : kindFilter === 'bank' ? 'Bank' : 'Type'}
+            label={kindFilter === 'momo' ? 'MoMo / mobile money' : kindFilter === 'bank' ? 'Bank' : 'Type'}
             sheetTitle={kindFilter === 'bank' ? 'Choose bank' : 'Choose wallet'}
             options={
               kindFilter === 'bank'
                 ? [
-                    { id: '__hdr_commercial__', label: 'Commercial banks', section: true },
+                    { id: '__hdr_own__', label: 'Your own bank', section: true },
                     ...brands
-                      .filter((b) => (b.segment ?? 'commercial') === 'commercial')
+                      .filter((b) => b.id === 'custom_bank')
+                      .map((b) => ({
+                        id: b.id,
+                        label: b.name,
+                        sublabel: 'Any country — type the bank name below',
+                        searchText: [b.name, b.short, ...(b.aliases ?? [])].join(' '),
+                        leading: <BrandMark brand={b} size="sm" />,
+                      })),
+                    { id: '__hdr_commercial__', label: 'Commercial banks (Ghana)', section: true },
+                    ...brands
+                      .filter((b) => b.id !== 'custom_bank' && (b.segment ?? 'commercial') === 'commercial')
                       .map((b) => ({
                         id: b.id,
                         label: b.name,
@@ -324,19 +341,58 @@ export default function AccountsScreen() {
                         leading: <BrandMark brand={b} size="sm" />,
                       })),
                   ]
-                : brands.map((b) => ({
-                    id: b.id,
-                    label: b.name,
-                    sublabel: b.short !== b.name ? b.short : undefined,
-                    searchText: [b.name, b.short, ...(b.aliases ?? [])].join(' '),
-                    leading: <BrandMark brand={b} size="sm" />,
-                  }))
+                : kindFilter === 'momo'
+                  ? [
+                      { id: '__hdr_own_momo__', label: 'Your own mobile money', section: true },
+                      ...brands
+                        .filter((b) => b.id === 'custom_momo')
+                        .map((b) => ({
+                          id: b.id,
+                          label: b.name,
+                          sublabel: 'Any country — type the wallet name below',
+                          searchText: [b.name, b.short, ...(b.aliases ?? [])].join(' '),
+                          leading: <BrandMark brand={b} size="sm" />,
+                        })),
+                      { id: '__hdr_gh_momo__', label: 'Ghana MoMo networks', section: true },
+                      ...brands
+                        .filter((b) => b.id !== 'custom_momo')
+                        .map((b) => ({
+                          id: b.id,
+                          label: b.name,
+                          sublabel: b.short !== b.name ? b.short : undefined,
+                          searchText: [b.name, b.short, ...(b.aliases ?? [])].join(' '),
+                          leading: <BrandMark brand={b} size="sm" />,
+                        })),
+                    ]
+                  : brands.map((b) => ({
+                      id: b.id,
+                      label: b.name,
+                      sublabel: b.short !== b.name ? b.short : undefined,
+                      searchText: [b.name, b.short, ...(b.aliases ?? [])].join(' '),
+                      leading: <BrandMark brand={b} size="sm" />,
+                    }))
             }
             value={draft.brandId}
             onChange={(id) => pickBrand(brandById(id))}
           />
 
-          <Field label="Display name" value={draft.name} onChangeText={(name) => setDraft((d) => ({ ...d, name }))} placeholder={brandById(draft.brandId).name} />
+          <Field
+            label="Display name"
+            value={draft.name}
+            onChangeText={(name) => setDraft((d) => ({ ...d, name }))}
+            placeholder={
+              draft.brandId === 'custom_momo'
+                ? 'e.g. M-Pesa, Wave, Orange Money'
+                : draft.brandId === 'custom_bank'
+                  ? 'e.g. Chase, GTBank Nigeria, Barclays UK'
+                  : brandById(draft.brandId).name
+            }
+          />
+          {(draft.brandId === 'custom_momo' || draft.brandId === 'custom_bank') && (
+            <AppText variant="caption" tone="soft">
+              Use any name that fits your country. SMS auto-balance sync stays on Ghana MTN, Telecel, and AirtelTigo.
+            </AppText>
+          )}
           <Field
             label={`Balance (${money.symbol})`}
             value={draft.balanceText}

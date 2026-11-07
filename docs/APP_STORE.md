@@ -162,16 +162,19 @@ Do **not** claim “no data” if analytics/crash SDKs also send device data.
 | Sign-in required? | **Yes** (app PIN) — provide PIN instructions |
 | Attachments | Optional screen recording of unlock |
 
-**What’s New / release notes (paste) — version `1.1.0`:**
+**What’s New / release notes (paste) — version `1.1.1`:**
+
+> Apple closed the `1.1.0` train (ITMS-90186 / ITMS-90062). New binaries must use **`version` > 1.1.0** (`app.json`). Create App Store Connect version **1.1.1**, then upload the new build.
 
 ```text
-SikaLens 1.1.0
+SikaLens 1.1.1
 
-• Move money between MoMo, bank & cash without counting as spend
-• Reminders for daily logging and subscription renewals
-• Premium — weekly, monthly, or yearly via the App Store; restore on a new phone
-• Quick Services on Home, clearer bank logos, and Liquid Glass tab bar on iOS
-• Forms that stay readable above the keyboard
+• Subscription reminders with amounts — type a charge or fill from a matching ledger spend
+• See your monthly subscription total (weekly and yearly normalised)
+• Official logos for Spotify, ChatGPT, Netflix, and more
+• Add your own mobile money or bank for any country (My MoMo / My bank)
+• Rate SikaLens and check for updates from Settings
+• Move money between wallets, daily logging reminders, and Premium via the App Store
 
 Core MoMo & bank tracking stays free and offline on your phone.
 ```

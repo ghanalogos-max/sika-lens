@@ -59,25 +59,26 @@ Or download the AAB from the Expo build page → Play Console → **Testing** �
 
 `eas.json` submit track is **`internal`**. Promote the release to Closed testing or Production when ready.
 
-## 3. Release notes (current build — `1.1.0`)
+## 3. Release notes (current build — `1.1.1`)
 
-Paste into Play Console → Release → **Release notes** (en-US / en-GB). Keep under ~500 characters per language if you want it short on the store page.
+Paste into Play Console → Release → **Release notes** (en-US / en-GB). Keep under ~500 characters per language if you want it short on the store page. Match `app.json` `version` (`1.1.1`); Play `versionCode` still auto-increments via EAS.
 
 ```text
-SikaLens 1.1.0
+SikaLens 1.1.1
 
-• Move money between your wallets (bank ↔ MoMo ↔ cash) without counting as spend
-• Reminders for daily logging and subscription renewals (ChatGPT, Spotify, …)
-• Premium — weekly, monthly, or yearly via Google Play; restore on a new phone
-• Bank and subscription logos, native date pickers, keyboard-friendly forms
+• Subscription amounts + monthly total (type it or fill from a matching spend)
+• Official logos for Spotify, ChatGPT, Netflix, and more
+• Add your own MoMo or bank for any country
+• Rate the app and check for updates in Settings
+• Move money between wallets; Premium via Google Play
 
-Core MoMo & bank tracking stays free and offline on your phone.
+Ledger stays free and offline on your phone.
 ```
 
 Shorter variant (if the field is tight):
 
 ```text
-Move money between wallets, renewal reminders, Premium via Play, and clearer forms. Ledger stays offline on your phone.
+Subscription amounts & monthly total, custom MoMo/bank for any country, rate & update prompts. Offline ledger on your phone.
 ```
 
 ## 4. Play Console — testing tracks

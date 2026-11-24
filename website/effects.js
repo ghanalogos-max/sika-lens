@@ -73,8 +73,8 @@
     });
   }
 
-  /* —— Promo videos: play first clip when visible (muted) —— */
-  var promo = document.querySelector('.watch-video');
+  /* —— Promo videos: play vertical clip when visible (muted) —— */
+  var promo = document.querySelector('.watch-video-vertical') || document.querySelector('.watch-video');
   if (promo && !reduce && 'IntersectionObserver' in window) {
     var vio = new IntersectionObserver(
       function (entries) {

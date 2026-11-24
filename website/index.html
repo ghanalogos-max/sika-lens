@@ -248,39 +248,39 @@
         <p class="section-kicker">Demo</p>
         <h2 id="watch-heading" class="section-title">See SikaLens in motion</h2>
         <p class="section-lead">
-          Short vertical promos — wallets, MoMo tracking, and the private ledger on your phone.
+          Watch SikaLens in landscape or vertical — wallets, MoMo tracking, and the private ledger on your phone.
         </p>
         <div class="watch-rail" role="list">
-          <figure class="watch-card" role="listitem">
-            <div class="watch-frame">
+          <figure class="watch-card watch-card-landscape" role="listitem">
+            <div class="watch-frame watch-frame-landscape">
               <video
                 class="watch-video"
                 controls
                 playsinline
                 muted
-                loop
                 preload="metadata"
                 poster="/store/screenshots/02-home.png"
-                aria-label="SikaLens 15 second promo video">
-                <source src="/store/SikaLens_Promo_15s_Vertical.mp4" type="video/mp4" />
+                aria-label="SikaLens landscape promo video">
+                <source src="/store/SikaLens_Promo_v3.mp4" type="video/mp4" />
               </video>
             </div>
-            <figcaption>15-second overview</figcaption>
+            <figcaption>Landscape overview</figcaption>
           </figure>
           <figure class="watch-card" role="listitem">
             <div class="watch-frame">
               <video
-                class="watch-video"
+                class="watch-video watch-video-vertical"
                 controls
                 playsinline
                 muted
+                loop
                 preload="metadata"
                 poster="/store/screenshots/07-wallets.png"
                 aria-label="SikaLens vertical promo video">
                 <source src="/store/SikaLens_Promo_Vertical_9x16.mp4" type="video/mp4" />
               </video>
             </div>
-            <figcaption>Product walkthrough</figcaption>
+            <figcaption>Vertical walkthrough</figcaption>
           </figure>
         </div>
       </section>
@@ -704,16 +704,18 @@
                 data-store="btn-apple"
                 href="https://apps.apple.com/app/id6826582927"
                 rel="noopener noreferrer"
-                >App Store</a
-              >
+                aria-label="Download SikaLens on the App Store">
+                <img src="/store/badge-app-store.svg" width="148" height="44" alt="Download on the App Store" />
+              </a>
               <a
                 class="footer-store"
                 id="btn-play-footer"
                 data-store="btn-play"
                 href="https://play.google.com/store/apps/details?id=com.sikalens.app"
                 rel="noopener noreferrer"
-                >Google Play</a
-              >
+                aria-label="Get SikaLens on Google Play">
+                <img src="/store/badge-google-play.svg" width="162" height="44" alt="Get it on Google Play" />
+              </a>
             </div>
             <a class="footer-mail" href="mailto:support@sikalens.app">support@sikalens.app</a>
           </div>
@@ -735,7 +737,6 @@
           <div class="footer-col">
             <h3>Publisher</h3>
             <a href="https://www.celestialwebsolutions.net/" rel="noopener noreferrer">Celestial Web Solutions</a>
-            <a href="https://www.celestialwebsolutions.net/" rel="noopener noreferrer">celestialwebsolutions.net</a>
             <a href="https://www.sikalens.app/">sikalens.app</a>
           </div>
         </div>

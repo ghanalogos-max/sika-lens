@@ -602,72 +602,32 @@ main {
 .store-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-}
-
-.store-badge {
-  display: inline-flex;
+  gap: 14px;
   align-items: center;
-  gap: 12px;
-  min-width: 200px;
-  padding: 12px 16px;
-  border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: #0b1220;
-  color: #fff;
-  text-decoration: none;
-  transition: transform 0.18s ease, background 0.18s ease;
 }
 
-.store-badge:hover {
+.store-row-official {
+  gap: 16px;
+}
+
+.store-badge-official {
+  display: inline-flex;
+  line-height: 0;
+  border-radius: 10px;
   text-decoration: none;
+  transition: transform 0.18s ease, opacity 0.18s ease;
+}
+
+.store-badge-official img {
+  display: block;
+  height: 53px;
+  width: auto;
+}
+
+.store-badge-official:hover {
   transform: translateY(-2px);
-}
-
-.store-badge.play {
-  background: #101826;
-}
-
-.store-badge.apple {
-  background: #000;
-}
-
-.store-badge-mark {
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-}
-
-.store-badge-copy {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  line-height: 1.15;
-}
-
-.store-badge-kicker {
-  font-size: 0.66rem;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  opacity: 0.75;
-}
-
-.store-badge-name {
-  font-size: 1.12rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-
-.store-badge-status {
-  margin-top: 4px;
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: #f0c56a;
-}
-
-.store-badge-status.is-live {
-  color: #7dffb3;
+  opacity: 0.94;
+  text-decoration: none;
 }
 
 /* —— Sections —— */
@@ -1135,10 +1095,6 @@ main {
   margin: 0 0 14px;
   color: var(--soft);
   font-size: 0.95rem;
-}
-
-.store-row-light .store-badge {
-  min-width: 210px;
 }
 
 .qr-row {

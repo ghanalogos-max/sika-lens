@@ -11,7 +11,7 @@ Static pages live in `website/` (home, privacy, terms, store badges, sitemap). R
 
 Or in Vercel → Project → Settings → General → **Root Directory** = `website`.
 
-Point `sikalens.app` DNS at Vercel after the deploy is healthy. Store badges: edit `website/stores.js` — `APP_STORE_LIVE` is on; set `PLAY_LIVE` when Google Play goes public.
+Point `sikalens.app` DNS at Vercel after the deploy is healthy. Store badges: `website/stores.js` has `APP_STORE_LIVE` and `PLAY_LIVE` on.
 
 ### Store guides & graphics
 

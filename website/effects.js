@@ -73,6 +73,25 @@
     });
   }
 
+  /* —— Promo videos: play first clip when visible (muted) —— */
+  var promo = document.querySelector('.watch-video');
+  if (promo && !reduce && 'IntersectionObserver' in window) {
+    var vio = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            var play = promo.play();
+            if (play && typeof play.catch === 'function') play.catch(function () {});
+          } else {
+            promo.pause();
+          }
+        });
+      },
+      { threshold: 0.45 },
+    );
+    vio.observe(promo);
+  }
+
   if (reduce) return;
 
   /* —— Hero phone tilt —— */

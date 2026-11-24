@@ -51,13 +51,13 @@ npx --yes eas-cli@latest build --platform android --profile preview
 ### Upload / submit
 
 ```powershell
-# Upload latest successful production AAB to Play (internal track by default in eas.json)
+# Upload latest successful production AAB to Play (production track in eas.json)
 npx --yes eas-cli@latest submit --platform android --profile production --latest
 ```
 
-Or download the AAB from the Expo build page → Play Console → **Testing** → Closed / Open / Internal → **Create new release** → upload AAB.
+Or download the AAB from the Expo build page → Play Console → **Production** → **Create new release** → upload AAB.
 
-`eas.json` submit track is **`internal`**. Promote the release to Closed testing or Production when ready.
+`eas.json` submit track is **`production`**. Google Play listing is live; keep `PLAY_LIVE = true` in `website/stores.js`.
 
 ## 3. Release notes (current build — `1.1.1`)
 
@@ -290,7 +290,7 @@ Support: support@sikalens.app
 - [ ] Data safety + content rating + ads declaration complete  
 - [ ] PIN instructions available for reviewers / testers  
 - [ ] Promote to Production when Closed testing is healthy  
-- [ ] Flip `PLAY_LIVE = true` in `website/stores.js` when the public listing is live  
+- [x] Flip `PLAY_LIVE = true` in `website/stores.js` (Play listing live)  
 
 ## 11. Related commands
 

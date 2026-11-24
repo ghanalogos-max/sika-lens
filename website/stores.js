@@ -7,7 +7,7 @@
 (function () {
   var PLAY_PACKAGE = 'com.sikalens.app';
   var PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=' + PLAY_PACKAGE;
-  var PLAY_LIVE = false; // set true when the Play listing is public
+  var PLAY_LIVE = true; // Play listing is public
 
   // App Store Connect numeric id for SikaLens (live)
   var APPLE_APP_ID = '6826582927';

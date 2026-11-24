@@ -167,7 +167,7 @@
                 "name": "Where can I download SikaLens?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "SikaLens is available on the App Store for iPhone. Google Play is coming soon. Use the download buttons or QR codes on this page, or email support@sikalens.app."
+                  "text": "SikaLens is available on the App Store for iPhone and on Google Play for Android. Use the download buttons or QR codes on this page, or email support@sikalens.app."
                 }
               }
             ]
@@ -194,6 +194,7 @@
           <span class="nav-toggle-bars" aria-hidden="true"></span>
         </button>
         <nav id="site-nav" aria-label="Primary">
+          <a href="#watch">Watch</a>
           <a href="#screenshots">Screens</a>
           <a href="#features">Features</a>
           <a href="#premium">Premium</a>
@@ -214,10 +215,10 @@
           </p>
           <div class="hero-actions">
             <a class="btn-primary" href="#get-app">Get the app</a>
+            <a class="btn-ghost" href="#watch">Watch demo</a>
             <a class="btn-ghost" href="#screenshots">See screens</a>
-            <a class="btn-ghost" href="#premium">Premium plans</a>
           </div>
-          <p class="download-note">On the App Store now. Google Play coming soon — scan or tap below.</p>
+          <p class="download-note">On the App Store and Google Play — scan or tap below.</p>
         </div>
 
         <div class="hero-visual reveal delay-1">
@@ -241,6 +242,47 @@
           SikaLens helps you understand spends and balances on your phone. Demo screens below use masked sample data —
           no real names, numbers, or SMS text from anyone’s account.
         </p>
+      </section>
+
+      <section id="watch" class="watch reveal" aria-labelledby="watch-heading">
+        <p class="section-kicker">Demo</p>
+        <h2 id="watch-heading" class="section-title">See SikaLens in motion</h2>
+        <p class="section-lead">
+          Short vertical promos — wallets, MoMo tracking, and the private ledger on your phone.
+        </p>
+        <div class="watch-rail" role="list">
+          <figure class="watch-card" role="listitem">
+            <div class="watch-frame">
+              <video
+                class="watch-video"
+                controls
+                playsinline
+                muted
+                loop
+                preload="metadata"
+                poster="/store/screenshots/02-home.png"
+                aria-label="SikaLens 15 second promo video">
+                <source src="/store/SikaLens_Promo_15s_Vertical.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>15-second overview</figcaption>
+          </figure>
+          <figure class="watch-card" role="listitem">
+            <div class="watch-frame">
+              <video
+                class="watch-video"
+                controls
+                playsinline
+                muted
+                preload="metadata"
+                poster="/store/screenshots/07-wallets.png"
+                aria-label="SikaLens vertical promo video">
+                <source src="/store/SikaLens_Promo_Vertical_9x16.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>Product walkthrough</figcaption>
+          </figure>
+        </div>
       </section>
 
       <section id="screenshots" class="shots reveal" aria-labelledby="shots-heading">
@@ -470,7 +512,7 @@
         <p class="section-kicker">Download</p>
         <h2 id="get-app-heading" class="section-title">Get SikaLens on your phone</h2>
         <p class="section-lead">
-          Tap a store badge, or scan a QR code with your phone camera. App Store is live; Google Play is coming soon.
+          Tap a store badge, or scan a QR code with your phone camera. App Store and Google Play are both live.
         </p>
 
         <div class="get-app-grid">
@@ -483,7 +525,7 @@
                 data-store="btn-play"
                 href="https://play.google.com/store/apps/details?id=com.sikalens.app"
                 rel="noopener noreferrer"
-                aria-label="Get SikaLens on Google Play (listing coming soon)">
+                aria-label="Get SikaLens on Google Play">
                 <span class="store-badge-mark" aria-hidden="true">
                   <svg viewBox="0 0 24 24" width="28" height="28" focusable="false">
                     <path
@@ -495,7 +537,7 @@
                 <span class="store-badge-copy">
                   <span class="store-badge-kicker">GET IT ON</span>
                   <span class="store-badge-name">Google Play</span>
-                  <span class="store-badge-status">Coming soon</span>
+                  <span class="store-badge-status is-live">Available now</span>
                 </span>
               </a>
 
@@ -602,7 +644,9 @@
             <p>
               SikaLens is available on the
               <a href="https://apps.apple.com/app/id6826582927" rel="noopener noreferrer">App Store</a>
-              for iPhone. Google Play is coming soon. Use the download buttons or QR codes above, or email
+              for iPhone and on
+              <a href="https://play.google.com/store/apps/details?id=com.sikalens.app" rel="noopener noreferrer">Google Play</a>
+              for Android. Use the download buttons or QR codes above, or email
               <a href="mailto:support@sikalens.app">support@sikalens.app</a>.
             </p>
           </details>
@@ -643,24 +687,43 @@
         <div class="footer-grid">
           <div class="footer-brand-col">
             <a class="footer-brand" href="/">
-              <img src="/sikalens-logo.png" width="40" height="40" alt="" />
+              <img src="/sikalens-logo.png" width="44" height="44" alt="" />
               <span>
                 <strong>SikaLens</strong>
                 <em>Offline MoMo &amp; bank tracker for Ghana</em>
               </span>
             </a>
             <p class="footer-blurb">
-              Keep a private GH₵ ledger on your phone — paste MoMo SMS, track wallets, lock with a PIN.
+              Private GH₵ ledger on your phone — paste MoMo SMS, track wallets, lock with a PIN. Available on the App
+              Store and Google Play.
             </p>
+            <div class="footer-stores">
+              <a
+                class="footer-store"
+                id="btn-apple-footer"
+                data-store="btn-apple"
+                href="https://apps.apple.com/app/id6826582927"
+                rel="noopener noreferrer"
+                >App Store</a
+              >
+              <a
+                class="footer-store"
+                id="btn-play-footer"
+                data-store="btn-play"
+                href="https://play.google.com/store/apps/details?id=com.sikalens.app"
+                rel="noopener noreferrer"
+                >Google Play</a
+              >
+            </div>
             <a class="footer-mail" href="mailto:support@sikalens.app">support@sikalens.app</a>
           </div>
           <div class="footer-col">
             <h3>Product</h3>
+            <a href="#watch">Watch</a>
             <a href="#get-app">Get the app</a>
             <a href="#screenshots">Screens</a>
             <a href="#features">Features</a>
             <a href="#premium">Premium</a>
-            <a href="#how">How it works</a>
             <a href="#faq">FAQ</a>
           </div>
           <div class="footer-col">
@@ -673,11 +736,18 @@
             <h3>Publisher</h3>
             <a href="https://www.celestialwebsolutions.net/" rel="noopener noreferrer">Celestial Web Solutions</a>
             <a href="https://www.celestialwebsolutions.net/" rel="noopener noreferrer">celestialwebsolutions.net</a>
+            <a href="https://www.sikalens.app/">sikalens.app</a>
           </div>
         </div>
         <div class="footer-bottom">
           <p class="footer-copy">© <span id="y"></span> Celestial Web Solutions · Built in Ghana</p>
-          <a class="footer-top" href="#main">Back to top</a>
+          <div class="footer-bottom-links">
+            <a href="/privacy">Privacy</a>
+            <span aria-hidden="true">·</span>
+            <a href="/terms">Terms</a>
+            <span aria-hidden="true">·</span>
+            <a class="footer-top" href="#main">Back to top</a>
+          </div>
         </div>
       </div>
     </footer>

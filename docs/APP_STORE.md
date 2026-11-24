@@ -258,7 +258,7 @@ MoMo & bank expense tracker
 **Promotional Text** (170 max — conversion hook, editable anytime without a new build):
 
 ```text
-Offline MoMo & bank tracker for Ghana. Move money between wallets, renewal reminders, Premium insights & exports—PIN-locked on your phone.
+Offline MoMo & bank tracker for Ghana. Subscription amounts, monthly total, custom wallets for any country—PIN-locked on your phone.
 ```
 
 

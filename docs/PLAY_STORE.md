@@ -66,19 +66,19 @@ Paste into Play Console → Release → **Release notes** (en-US / en-GB). Keep 
 ```text
 SikaLens 1.1.1
 
-• Subscription amounts + monthly total (type it or fill from a matching spend)
-• Official logos for Spotify, ChatGPT, Netflix, and more
-• Add your own MoMo or bank for any country
+• Premium now available on Google Play (weekly, monthly, or yearly)
+• Full history, unlimited wallets, themes, export, and more reminders
+• Subscription amounts + monthly total
+• Custom MoMo or bank for any country
 • Rate the app and check for updates in Settings
-• Move money between wallets; Premium via Google Play
 
-Ledger stays free and offline on your phone.
+Ledger stays free and offline on your phone. Cancel Premium anytime in Play Store → Subscriptions.
 ```
 
 Shorter variant (if the field is tight):
 
 ```text
-Subscription amounts & monthly total, custom MoMo/bank for any country, rate & update prompts. Offline ledger on your phone.
+Premium is live on Google Play — weekly, monthly, or yearly. Offline ledger stays free on your phone.
 ```
 
 ## 4. Play Console — testing tracks

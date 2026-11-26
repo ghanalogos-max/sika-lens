@@ -1231,28 +1231,45 @@ main {
   margin: 0 auto;
 }
 
-.watch-card-featured {
+.watch-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 36px;
   margin-top: 28px;
-  justify-items: stretch;
+  align-items: end;
 }
 
-.watch-card-featured .watch-frame-landscape {
-  max-width: 860px;
-  margin-inline: auto;
+.watch-card-featured {
+  justify-self: center;
+  width: 100%;
+  max-width: 340px;
 }
 
-.watch-card-featured figcaption {
-  text-align: center;
+.watch-frame-voice {
+  width: 100%;
+  max-width: 340px;
+  aspect-ratio: 9 / 16;
+  border-radius: 32px;
+  overflow: hidden;
+  background: #0c1c1a;
+  border: 1px solid rgba(14, 106, 98, 0.22);
+  box-shadow:
+    0 28px 56px rgba(18, 32, 40, 0.16),
+    0 0 0 9px rgba(255, 255, 255, 0.7);
+}
+
+.watch-video-voice {
+  object-fit: contain;
 }
 
 .watch-rail {
   display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.75fr);
-  gap: 28px;
-  margin-top: 32px;
+  grid-template-columns: 1fr;
+  gap: 22px;
   list-style: none;
+  margin: 0;
   padding: 0;
-  align-items: end;
+  align-content: end;
 }
 
 .watch-card {
@@ -1262,8 +1279,13 @@ main {
   justify-items: center;
 }
 
+.watch-card-landscape {
+  width: 100%;
+  justify-items: stretch;
+}
+
 .watch-frame {
-  width: min(100%, 280px);
+  width: min(100%, 240px);
   aspect-ratio: 9 / 16;
   border-radius: 28px;
   overflow: hidden;
@@ -1276,7 +1298,7 @@ main {
 
 .watch-frame-landscape {
   width: 100%;
-  max-width: 640px;
+  max-width: none;
   aspect-ratio: 16 / 9;
   border-radius: 20px;
   box-shadow:
@@ -1300,18 +1322,34 @@ main {
   letter-spacing: -0.01em;
 }
 
+.watch-card-featured figcaption {
+  text-align: center;
+}
+
 @media (max-width: 900px) {
-  .watch-rail {
+  .watch-stage {
     grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 28px;
+  }
+
+  .watch-rail {
+    width: 100%;
     justify-items: center;
   }
 
+  .watch-card-featured,
+  .watch-frame-voice {
+    max-width: 300px;
+  }
+
   .watch-frame {
-    width: min(100%, 260px);
+    width: min(100%, 240px);
   }
 
   .watch-frame-landscape {
     width: min(100%, 560px);
+    margin-inline: auto;
   }
 }
 

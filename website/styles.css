@@ -1231,11 +1231,25 @@ main {
   margin: 0 auto;
 }
 
+.watch-card-featured {
+  margin-top: 28px;
+  justify-items: stretch;
+}
+
+.watch-card-featured .watch-frame-landscape {
+  max-width: 860px;
+  margin-inline: auto;
+}
+
+.watch-card-featured figcaption {
+  text-align: center;
+}
+
 .watch-rail {
   display: grid;
   grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.75fr);
   gap: 28px;
-  margin-top: 28px;
+  margin-top: 32px;
   list-style: none;
   padding: 0;
   align-items: end;

@@ -4,10 +4,10 @@
   --ink: #0c1524;
   --soft: #5b6778;
   --line: #e6eaee;
-  --primary: #0b6b52;
-  --primary-deep: #08543f;
-  --accent: #0b6b52;
-  --accent-deep: #08543f;
+  --primary: #0f6b73;
+  --primary-deep: #0b555c;
+  --accent: #0f6b73;
+  --accent-deep: #0b555c;
   --navy: #0a1628;
   --gold: #c4891e;
   --gold-soft: #f7efd9;
@@ -256,27 +256,35 @@ body.nav-locked {
 .top.is-scrolled #site-nav a:hover,
 .top.is-scrolled #site-nav a[aria-current='page'] {
   color: var(--ink);
-  background: rgba(11, 107, 82, 0.08);
+  background: rgba(15, 107, 115, 0.08);
 }
 
-#site-nav .nav-cta {
+#site-nav .nav-cta,
+.top.is-scrolled #site-nav .nav-cta,
+#site-nav .nav-cta:hover,
+.top.is-scrolled #site-nav .nav-cta:hover {
   margin-left: 6px;
   padding: 9px 16px;
-  background: var(--accent);
-  color: #fff;
+  background: var(--primary);
+  color: #ffffff;
   font-weight: 600;
 }
 
-#site-nav .nav-cta:hover {
-  background: var(--accent-deep);
-  color: #fff;
+#site-nav .nav-cta:hover,
+.top.is-scrolled #site-nav .nav-cta:hover {
+  background: var(--primary-deep);
+  color: #ffffff;
 }
 
-main {
+main,
+.page-rest {
   max-width: var(--max);
   margin: 0 auto;
   padding: 48px 24px 72px;
-  overflow-x: clip;
+}
+
+.page-rest {
+  padding-top: 40px;
 }
 
 /* —— Hero: full-bleed navy, wealth-style —— */
@@ -642,11 +650,10 @@ main {
 }
 
 .companion {
-  width: 100vw;
-  margin: 48px 0 56px;
-  margin-left: calc(50% - 50vw);
-  padding: 56px 24px;
-  background: var(--accent);
+  width: 100%;
+  margin: 0;
+  padding: 64px 24px;
+  background: var(--primary);
   color: #fff;
   border: 0;
   border-radius: 0;
@@ -1823,15 +1830,24 @@ main {
     font-size: 1rem;
   }
 
-  #site-nav .nav-cta {
+  #site-nav .nav-cta,
+  .top.is-scrolled #site-nav .nav-cta {
     margin: 6px 0 0;
     text-align: center;
+    background: var(--primary);
+    color: #ffffff;
   }
 
   #site-nav a:hover,
   #site-nav a[aria-current='page'] {
     background: var(--bg-deep);
     text-decoration: none;
+  }
+
+  #site-nav .nav-cta:hover,
+  .top.is-scrolled #site-nav .nav-cta:hover {
+    background: var(--primary-deep);
+    color: #ffffff;
   }
 
   .hero {

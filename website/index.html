@@ -57,7 +57,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/styles.css" />
@@ -205,32 +205,55 @@
       </div>
     </header>
 
+    <section class="hero" aria-label="SikaLens">
+      <div class="hero-inner reveal">
+        <p class="hero-kicker">SikaLens</p>
+        <h1>Your money, in focus — wherever you are</h1>
+        <p class="hero-lead">
+          Track MoMo, bank accounts, and cash on your phone. Offline, PIN-locked, yours alone.
+        </p>
+        <div class="hero-stores">
+          <a
+            class="store-badge-official"
+            id="btn-apple-hero"
+            data-store="btn-apple"
+            href="https://apps.apple.com/app/id6826582927"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Download SikaLens on the App Store">
+            <img src="/store/badge-app-store.svg" width="159" height="53" alt="Download on the App Store" />
+          </a>
+          <a
+            class="store-badge-official"
+            id="btn-play-hero"
+            data-store="btn-play"
+            href="https://play.google.com/store/apps/details?id=com.sikalens.app"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Get SikaLens on Google Play">
+            <img src="/store/badge-google-play.svg" width="180" height="53" alt="Get it on Google Play" />
+          </a>
+        </div>
+      </div>
+      <div class="hero-device reveal delay-1">
+        <img
+          class="hero-phone"
+          src="/new/home-light.png"
+          width="720"
+          height="1558"
+          alt="SikaLens home screen on iPhone"
+        />
+        <img
+          class="hero-mascot"
+          src="/new/kobby.png"
+          width="480"
+          height="600"
+          alt="Kobby, the SikaLens money companion"
+        />
+      </div>
+    </section>
+
     <main id="main">
-      <section class="hero" aria-label="SikaLens">
-        <div class="hero-copy reveal">
-          <p class="brand-word">SikaLens</p>
-          <h1>Your money, in focus</h1>
-          <p class="lead">
-            Track MoMo, bank accounts, and cash on your phone — offline, PIN-locked, yours alone.
-          </p>
-          <div class="hero-actions">
-            <a class="btn-primary" href="#get-app">Get the app</a>
-            <a class="btn-ghost" href="#watch">Watch how-to</a>
-          </div>
-          <p class="download-note">On the App Store and Google Play.</p>
-        </div>
-
-        <div class="hero-visual reveal delay-1">
-          <img
-            class="hero-mascot"
-            src="/new/kobby.png"
-            width="640"
-            height="800"
-            alt="Kobby, the SikaLens money companion, holding the app"
-          />
-        </div>
-      </section>
-
       <section id="what" class="band reveal">
         <p class="section-kicker">What it does</p>
         <h2 class="section-title">A private ledger for Ghana MoMo and banks</h2>
@@ -239,24 +262,27 @@
         </p>
       </section>
 
-      <section id="kobby" class="companion reveal" aria-labelledby="kobby-heading">
-        <div class="companion-copy">
-          <p class="section-kicker">Meet Kobby</p>
-          <h2 id="kobby-heading" class="section-title">Your SikaLens money companion</h2>
-          <p class="section-lead">
-            Kobby walks you through tracking MoMo, wallets, budgets, and insights — so your GH₵ stays clear and private.
-          </p>
-          <a class="btn-primary btn-inline" href="#watch">Watch the how-to</a>
+      <section id="kobby" class="companion" aria-labelledby="kobby-heading">
+        <div class="companion-shell reveal">
+          <div class="companion-copy">
+            <p class="companion-kicker">Meet Kobby</p>
+            <h2 id="kobby-heading">Your SikaLens money companion</h2>
+            <p>
+              Kobby walks you through MoMo tracking, wallets, budgets, and insights — so your GH₵ stays clear and
+              private.
+            </p>
+            <a class="btn-on-accent" href="#watch">Watch the how-to</a>
+          </div>
+          <figure class="companion-visual">
+            <img
+              src="/new/kobby.png"
+              width="640"
+              height="800"
+              alt="Kobby holding the SikaLens app"
+              loading="lazy"
+            />
+          </figure>
         </div>
-        <figure class="companion-visual">
-          <img
-            src="/new/promo-kobby.png"
-            width="1200"
-            height="800"
-            alt="Kobby introducing SikaLens with light and dark app screens"
-            loading="lazy"
-          />
-        </figure>
       </section>
 
       <section id="watch" class="watch reveal" aria-labelledby="watch-heading">
@@ -637,34 +663,20 @@
         </div>
       </section>
 
-      <section class="trust reveal">
-        <h2 class="section-title">Your money stays on your device</h2>
-        <p class="section-lead">
-          SikaLens does not create an account. Mockups on this page are illustrative only and hide amounts on purpose.
-        </p>
-        <div class="trust-links">
-          <a class="text-link" href="/privacy">Privacy policy</a>
-          <a class="text-link" href="/terms">Terms of use</a>
-          <a class="text-link" href="mailto:support@sikalens.app">support@sikalens.app</a>
-          <a class="text-link" href="https://www.celestialwebsolutions.net/" target="_blank" rel="noopener noreferrer"
-            >celestialwebsolutions.net</a
-          >
-        </div>
-      </section>
-
-      <section class="publisher reveal">
-        <p class="section-kicker">Publisher</p>
-        <h2 class="section-title">Made by Celestial Web Solutions</h2>
-        <p class="section-lead">
-          SikaLens is built in Ghana by
-          <a href="https://www.celestialwebsolutions.net/" target="_blank" rel="noopener noreferrer">Celestial Web Solutions</a>
-          — web, apps, and digital products for businesses across Accra, Keta, and beyond.
-        </p>
-        <a class="btn-celestial" href="https://www.celestialwebsolutions.net/" target="_blank" rel="noopener noreferrer"
-          >Visit celestialwebsolutions.net</a
-        >
-      </section>
     </main>
+
+    <section class="support" aria-labelledby="support-heading">
+      <div class="support-inner reveal">
+        <p class="support-kicker">Support, whenever you need it</p>
+        <h2 id="support-heading">Your money stays on your device</h2>
+        <p>Guides, privacy, and help in one place. No cloud account required.</p>
+        <div class="support-actions">
+          <a class="btn-accent" href="#faq">FAQ</a>
+          <a class="btn-accent-ghost" href="/privacy">Privacy</a>
+          <a class="btn-accent-ghost" href="mailto:support@sikalens.app">Support</a>
+        </div>
+      </div>
+    </section>
 
     <footer class="site-footer">
       <div class="footer-panel">

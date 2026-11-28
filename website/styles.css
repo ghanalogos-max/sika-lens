@@ -6,16 +6,16 @@
   --line: #e6eaee;
   --primary: #0b6b52;
   --primary-deep: #08543f;
-  --accent: #f05a1a;
-  --accent-deep: #d4480f;
+  --accent: #0b6b52;
+  --accent-deep: #08543f;
   --navy: #0a1628;
   --gold: #c4891e;
   --gold-soft: #f7efd9;
   --surface: #ffffff;
   --hero-ink: #ffffff;
   --max: 1120px;
-  --font: 'Plus Jakarta Sans', 'Avenir Next', 'Segoe UI', sans-serif;
-  --display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+  --font: 'Outfit', system-ui, sans-serif;
+  --display: 'Outfit', system-ui, sans-serif;
 }
 
 * {
@@ -318,8 +318,8 @@ main {
   margin: 0 0 18px;
   font-family: var(--display);
   font-size: clamp(2.6rem, 6.5vw, 4.4rem);
-  font-weight: 400;
-  letter-spacing: -0.02em;
+  font-weight: 500;
+  letter-spacing: -0.03em;
   line-height: 1.08;
   color: #fff;
 }

@@ -276,7 +276,7 @@ body.nav-locked {
   color: #ffffff;
 }
 
-main,
+main:not(.soft-band),
 .page-rest {
   max-width: var(--max);
   margin: 0 auto;
@@ -285,6 +285,12 @@ main,
 
 .page-rest {
   padding-top: 40px;
+}
+
+main.soft-band {
+  max-width: none;
+  margin: 0;
+  padding: 56px 24px 64px;
 }
 
 /* —— Hero: IC Wealth–style stage (phone + orbits + float cards) —— */
@@ -946,13 +952,26 @@ main,
   text-decoration: none;
 }
 
-/* —— Solutions cards (IC Wealth–style) —— */
+/* —— Soft band + solutions (IC Wealth calculator area) —— */
+.soft-band {
+  width: 100%;
+  margin: 0;
+  padding: 56px 24px 64px;
+  background: #eef2f6;
+}
+
+.soft-band-inner {
+  max-width: var(--max);
+  margin: 0 auto;
+}
+
 .solutions {
-  padding: 28px 0 20px;
+  padding: 8px 0 36px;
   text-align: center;
 }
 
-.solutions-title {
+.solutions-title,
+.planner-title {
   margin: 0 auto 36px;
   max-width: 18ch;
   font-family: var(--font);
@@ -961,6 +980,11 @@ main,
   letter-spacing: -0.03em;
   line-height: 1.15;
   color: var(--ink);
+  text-align: center;
+}
+
+.planner-title {
+  max-width: 22ch;
 }
 
 .solutions-grid {
@@ -1084,69 +1108,80 @@ main,
 }
 
 .planner {
-  padding: 28px 0 12px;
+  padding: 12px 0 0;
 }
 
 .planner-card {
   display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
+  grid-template-columns: 1.15fr 0.9fr;
   gap: 0;
   border-radius: 28px;
   overflow: hidden;
-  background: #eef3f7;
-  border: 1px solid var(--line);
+  background: #ffffff;
+  border: 1px solid rgba(12, 21, 36, 0.06);
+  box-shadow: 0 18px 40px rgba(12, 21, 36, 0.06);
 }
 
 .planner-copy {
   padding: 36px 32px;
-}
-
-.planner-copy h2 {
-  margin: 0 0 12px;
-  font-size: clamp(1.6rem, 3vw, 2.1rem);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  color: var(--ink);
-}
-
-.planner-copy > p {
-  margin: 0 0 18px;
-  color: var(--soft);
-  font-size: 1rem;
-  max-width: 36rem;
-}
-
-.planner-list {
-  margin: 0 0 24px;
-  padding: 0;
-  list-style: none;
+  background: #f7fafc;
   display: grid;
-  gap: 10px;
+  gap: 14px;
+  align-content: start;
 }
 
-.planner-list li {
-  position: relative;
-  padding-left: 22px;
-  color: var(--ink);
+.planner-field {
+  display: grid;
+  gap: 6px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: #fff;
+  border: 1px solid var(--line);
+}
+
+.planner-field span {
+  color: var(--soft);
+  font-size: 0.82rem;
   font-weight: 500;
-  font-size: 0.98rem;
 }
 
-.planner-list li::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0.45em;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--primary);
+.planner-field strong {
+  font-size: 1.05rem;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.planner-note {
+  margin: 4px 0 0;
+  color: var(--soft);
+  font-size: 0.95rem;
+  line-height: 1.5;
 }
 
 .planner-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  margin-top: 8px;
+}
+
+.btn-navy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 13px 20px;
+  border-radius: 10px;
+  background: #0a2f34;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.98rem;
+  text-decoration: none;
+}
+
+.btn-navy:hover {
+  text-decoration: none;
+  background: #072226;
+  color: #fff;
 }
 
 .planner-panel {
@@ -1155,71 +1190,104 @@ main,
   color: #fff;
   display: grid;
   align-content: start;
-  gap: 16px;
+  gap: 14px;
 }
 
 .planner-panel-kicker {
   margin: 0;
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .planner-panel-value {
   margin: 0;
-  font-size: clamp(1.8rem, 3vw, 2.3rem);
+  font-size: clamp(2rem, 3.4vw, 2.55rem);
   font-weight: 700;
   letter-spacing: -0.03em;
 }
 
-.planner-panel-ring {
-  width: 120px;
-  height: 120px;
-  margin: 8px 0;
-  border-radius: 50%;
-  border: 10px solid #7ed4dc;
+.planner-result-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 18px;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.planner-donut {
+  position: relative;
+  width: 108px;
+  height: 108px;
+}
+
+.planner-donut svg {
+  width: 100%;
+  height: 100%;
+}
+
+.planner-donut-label {
+  position: absolute;
+  inset: 0;
   display: grid;
   place-content: center;
   text-align: center;
   gap: 2px;
 }
 
-.planner-panel-ring span {
-  font-size: 1.15rem;
-  font-weight: 700;
+.planner-donut-label strong {
+  font-size: 1.05rem;
   line-height: 1;
 }
 
-.planner-panel-ring small {
-  font-size: 0.75rem;
+.planner-donut-label small {
+  font-size: 0.72rem;
   color: rgba(255, 255, 255, 0.7);
 }
 
 .planner-stats {
-  margin: 8px 0 0;
+  margin: 0;
   display: grid;
-  gap: 12px;
+  gap: 14px;
 }
 
 .planner-stats div {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  padding-top: 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  display: grid;
+  gap: 4px;
 }
 
 .planner-stats dt {
-  color: rgba(255, 255, 255, 0.65);
-  font-size: 0.88rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
 }
 
 .planner-stats dd {
   margin: 0;
-  font-weight: 600;
-  font-size: 0.9rem;
+  padding-left: 16px;
+  font-weight: 700;
+  font-size: 0.98rem;
+}
+
+.planner-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #7ed4dc;
+}
+
+.planner-dot-light {
+  background: #fff;
+}
+
+.planner-disclaimer {
+  margin: 10px 0 0;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.78rem;
+  line-height: 1.45;
 }
 
 /* —— Sections —— */
@@ -2285,12 +2353,17 @@ main,
   }
 
   .solutions-grid,
-  .planner-card {
+  .planner-card,
+  .planner-result-row {
     grid-template-columns: 1fr;
   }
 
   .sol-card {
     min-height: 0;
+  }
+
+  .soft-band {
+    padding: 40px 16px 48px;
   }
 
   .planner-copy,

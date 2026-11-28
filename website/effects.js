@@ -75,26 +75,6 @@
 
   if (reduce) return;
 
-  /* —— Hero phone tilt —— */
-  var heroVisual = document.querySelector('.hero-visual');
-  var heroShot = document.querySelector('.hero-shot');
-  if (heroVisual && heroShot && window.matchMedia('(pointer: fine)').matches) {
-    heroVisual.addEventListener('pointermove', function (event) {
-      var rect = heroVisual.getBoundingClientRect();
-      var x = (event.clientX - rect.left) / rect.width - 0.5;
-      var y = (event.clientY - rect.top) / rect.height - 0.5;
-      heroShot.style.transform =
-        'perspective(900px) rotateY(' +
-        (x * 10).toFixed(2) +
-        'deg) rotateX(' +
-        (-y * 8).toFixed(2) +
-        'deg) translateY(-4px)';
-    });
-    heroVisual.addEventListener('pointerleave', function () {
-      heroShot.style.transform = '';
-    });
-  }
-
   /* —— Shot / feature mockup lift on enter —— */
   document.querySelectorAll('.shot-card, .feature-shot').forEach(function (card) {
     card.addEventListener('pointerenter', function () {

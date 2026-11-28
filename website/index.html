@@ -57,7 +57,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/styles.css" />
@@ -195,6 +195,7 @@
         </button>
         <nav id="site-nav" aria-label="Primary">
           <a href="#watch">Watch</a>
+          <a href="#kobby">Kobby</a>
           <a href="#screenshots">Screens</a>
           <a href="#features">Features</a>
           <a href="#premium">Premium</a>
@@ -207,31 +208,26 @@
     <main id="main">
       <section class="hero" aria-label="SikaLens">
         <div class="hero-copy reveal">
-          <img class="hero-logo" src="/sikalens-logo.png" width="88" height="88" alt="SikaLens" />
           <p class="brand-word">SikaLens</p>
-          <h1>See where your MoMo goes</h1>
+          <h1>Your money, in focus</h1>
           <p class="lead">
-            Paste SMS, track bank wallets, and keep a GH₵ ledger on your phone — offline, PIN-locked, yours alone.
+            Track MoMo, bank accounts, and cash on your phone — offline, PIN-locked, yours alone.
           </p>
           <div class="hero-actions">
             <a class="btn-primary" href="#get-app">Get the app</a>
-            <a class="btn-ghost" href="#watch">Watch demo</a>
-            <a class="btn-ghost" href="#screenshots">See screens</a>
+            <a class="btn-ghost" href="#watch">Watch how-to</a>
           </div>
-          <p class="download-note">On the App Store and Google Play — scan or tap below.</p>
+          <p class="download-note">On the App Store and Google Play.</p>
         </div>
 
         <div class="hero-visual reveal delay-1">
-          <div class="device-stage">
-            <img
-              class="hero-shot"
-              src="/store/screenshots/02-home.png"
-              width="720"
-              height="1558"
-              alt="SikaLens on iPhone — home screen with MoMo wallets"
-            />
-          </div>
-          <img class="hero-cedi" src="/cedi-200-bubble.png" width="280" height="280" alt="" />
+          <img
+            class="hero-mascot"
+            src="/new/kobby.png"
+            width="640"
+            height="800"
+            alt="Kobby, the SikaLens money companion, holding the app"
+          />
         </div>
       </section>
 
@@ -239,9 +235,28 @@
         <p class="section-kicker">What it does</p>
         <h2 class="section-title">A private ledger for Ghana MoMo and banks</h2>
         <p class="section-lead">
-          SikaLens helps you understand spends and balances on your phone. Demo screens below use masked sample data —
-          no real names, numbers, or SMS text from anyone’s account.
+          Paste SMS, manage wallets, and understand spending — all on device. Demo screens use masked sample data.
         </p>
+      </section>
+
+      <section id="kobby" class="companion reveal" aria-labelledby="kobby-heading">
+        <div class="companion-copy">
+          <p class="section-kicker">Meet Kobby</p>
+          <h2 id="kobby-heading" class="section-title">Your SikaLens money companion</h2>
+          <p class="section-lead">
+            Kobby walks you through tracking MoMo, wallets, budgets, and insights — so your GH₵ stays clear and private.
+          </p>
+          <a class="btn-primary btn-inline" href="#watch">Watch the how-to</a>
+        </div>
+        <figure class="companion-visual">
+          <img
+            src="/new/promo-kobby.png"
+            width="1200"
+            height="800"
+            alt="Kobby introducing SikaLens with light and dark app screens"
+            loading="lazy"
+          />
+        </figure>
       </section>
 
       <section id="watch" class="watch reveal" aria-labelledby="watch-heading">
@@ -275,6 +290,18 @@
         </p>
         <p class="shot-hint">Drag or scroll sideways to browse</p>
         <div class="shot-rail" role="list" tabindex="0" aria-label="SikaLens iPhone screenshots">
+          <figure class="shot-card" role="listitem">
+            <div class="shot-frame">
+              <img src="/new/home-light.png" width="720" height="1558" alt="SikaLens home — light mode with MoMo wallets" loading="lazy" />
+            </div>
+            <figcaption>Home · light</figcaption>
+          </figure>
+          <figure class="shot-card" role="listitem">
+            <div class="shot-frame">
+              <img src="/new/home-dark.png" width="720" height="1558" alt="SikaLens home — dark mode with MoMo wallets" loading="lazy" />
+            </div>
+            <figcaption>Home · dark</figcaption>
+          </figure>
           <figure class="shot-card" role="listitem">
             <div class="shot-frame">
               <img src="/store/screenshots/01-lock.png" width="720" height="1558" alt="SikaLens — PIN-locked MoMo and bank records" loading="lazy" />
@@ -356,7 +383,7 @@
           </div>
           <figure class="feature-shot">
             <div class="shot-frame">
-              <img src="/store/screenshots/07-wallets.png" width="720" height="1558" alt="SikaLens MoMo and bank wallets" loading="lazy" />
+              <img src="/new/home-light.png" width="720" height="1558" alt="SikaLens home with MoMo wallets" loading="lazy" />
             </div>
           </figure>
         </article>

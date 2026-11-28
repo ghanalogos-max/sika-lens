@@ -1034,9 +1034,14 @@ main.soft-band {
 .sol-visual {
   position: relative;
   margin-top: auto;
-  min-height: 140px;
+  min-height: 160px;
   display: grid;
   place-items: center;
+}
+
+.sol-visual-stack {
+  width: 100%;
+  min-height: 168px;
 }
 
 .sol-mini {
@@ -1047,34 +1052,63 @@ main.soft-band {
   box-shadow: 0 12px 28px rgba(12, 21, 36, 0.08);
 }
 
-.sol-mini-front {
-  position: relative;
+.sol-visual-stack .sol-mini-back,
+.sol-visual-stack .sol-mini-front {
+  position: absolute;
+  left: 50%;
+}
+
+.sol-visual-stack .sol-mini-back {
+  top: 8px;
+  width: min(88%, 190px);
+  transform: translateX(calc(-50% - 10px));
+  opacity: 0.72;
+  box-shadow: 0 8px 18px rgba(12, 21, 36, 0.05);
+}
+
+.sol-visual-stack .sol-mini-front {
+  top: 48px;
   z-index: 1;
-  margin-top: -28px;
-  margin-left: 18px;
+  width: min(92%, 210px);
+  transform: translateX(calc(-50% + 14px));
+  padding-top: 18px;
+  padding-bottom: 16px;
 }
 
 .sol-mini-label {
   display: block;
-  margin-bottom: 6px;
+  margin-top: 6px;
   color: var(--soft);
   font-size: 0.78rem;
   font-weight: 500;
 }
 
+.sol-mini-back .sol-mini-label {
+  margin-top: 0;
+  margin-bottom: 6px;
+}
+
 .sol-mini strong {
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.sol-mini-amount {
+  display: block;
+  margin-top: 8px;
+  font-size: 1.45rem !important;
+  font-weight: 700;
+  letter-spacing: -0.03em;
   color: var(--ink);
 }
 
 .sol-dot {
   display: block;
-  width: 42px;
-  height: 42px;
-  margin-bottom: 10px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
-  background: conic-gradient(var(--primary) 0 72%, #d9eef0 0);
+  background: conic-gradient(var(--primary) 0 78%, #d9eef0 0);
 }
 
 .sol-visual-chart {
